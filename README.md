@@ -1,5 +1,5 @@
 ![logo](http://mods.atomicbase.com/enhancedportals/forum_files/ep_banner.png)
-[![Build Status](https://travis-ci.org/enhanced-portals/enhanced-portals.svg?branch=master)](https://travis-ci.org/enhanced-portals/enhanced-portals)
+[![Build Status](https://travis-ci.org/enhancedportals/enhancedportals.svg)](https://travis-ci.org/enhancedportals/enhancedportals)
 
 Useful Links:
 * [License](docs/LICENSE)

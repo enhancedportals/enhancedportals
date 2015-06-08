@@ -15,7 +15,7 @@ buildscript {
     
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-	}
+    }
 }
 
 apply plugin: 'forge'
@@ -34,7 +34,7 @@ archivesBaseName = "EnhancedPortals_${config.minecraft_version}"
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
 }
 
 processResources {
