@@ -37,7 +37,7 @@ import enhancedportals.utility.CreativeTabEP3;
 @Mod(name = EnhancedPortals.MOD_NAME, modid = EnhancedPortals.MOD_ID, version = EnhancedPortals.VERSION, dependencies = EnhancedPortals.DEPENDENCIES)
 public class EnhancedPortals
 {
-    public static final String MOD_NAME = "EnhancedPortals", MOD_ID = "enhancedportals", VERSION = "3.0.12", DEPENDENCIES = "after:ThermalExpansion", UPDATE_URL = "https://raw.githubusercontent.com/enhanced-portals/enhanced-portals/master/docs/VERSION";
+    public static final String MOD_NAME = "EnhancedPortals", MOD_ID = "enhancedportals", VERSION = "3.0.11", DEPENDENCIES = "after:ThermalExpansion", UPDATE_URL = "https://raw.githubusercontent.com/enhancedportals/enhancedportals/master/docs/VERSION";
     public static final String MODID_OPENCOMPUTERS = "OpenComputers", MODID_COMPUTERCRAFT = "ComputerCraft", MODID_THERMALEXPANSION = "ThermalExpansion";
     public static final PacketPipeline packetPipeline = new PacketPipeline();
     public static final Logger logger = LogManager.getLogger("EnhancedPortals");
