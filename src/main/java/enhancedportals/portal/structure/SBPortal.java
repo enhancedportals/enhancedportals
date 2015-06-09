@@ -6,9 +6,11 @@ import net.minecraft.world.World;
 import enhancedportals.base.PortalStructureBlock;
 
 public class SBPortal extends PortalStructureBlock {
+	public static SBPortal instance;
 
 	protected SBPortal(String name, Material material) {
 		super(name, material);
+		instance = this;
 	}
 
 	@Override

@@ -55,6 +55,7 @@ public class EnhancedPortals {
     public void post(FMLPostInitializationEvent event) {
 		proxy.post();
     }
+	
 	@EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         NetworkMap.load(event.getServer());
@@ -67,7 +68,7 @@ public class EnhancedPortals {
         }
     }
     
-    @SubscribeEvent
+    @EventHandler
     public void serverStopping(FMLServerStoppedEvent event) {
     	NetworkMap.clear();
     }

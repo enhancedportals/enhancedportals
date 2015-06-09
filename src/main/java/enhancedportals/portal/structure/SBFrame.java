@@ -16,7 +16,6 @@ import enhancedportals.util.ConnectedTextures;
 import enhancedportals.util.ConnectedTexturesDetailed;
 
 public class SBFrame extends PortalStructureBlock {
-	
 	ConnectedTextures connectedTextures;
 	IIcon defaultTexture;
 	IIcon[] textureOverlays = new IIcon[10];
@@ -76,15 +75,18 @@ public class SBFrame extends PortalStructureBlock {
 	public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int s) {
 		if (ProxyClient.renderPass == 0) {
 			TileEntity tile = blockAccess.getTileEntity(x, y, z);
+			boolean useCT = false;
 			
 			if (tile != null && tile instanceof PortalStructureTileEntity) {
-				IIcon texture = ((PortalStructureTileEntity) tile).getBlockTexture(s);
+				PortalStructureTileEntity te = (PortalStructureTileEntity) tile;
+				IIcon texture = te.getBlockTexture(s);
+				useCT = te.hasController();
 				
 				if (texture != null)
 					return texture;
 			}
 			
-			if (connectedTextures != null) {
+			if (useCT && connectedTextures != null) {
 				return connectedTextures.getIconForSide(blockAccess, x, y, z, s);
 			}
 			
