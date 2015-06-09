@@ -25,15 +25,14 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import enhancedportals.EnhancedPortals;
-import enhancedportals.network.packet.PacketEP;
-import enhancedportals.tile.TileEP;
+import enhancedportals.base.TileEntityEP;
+import enhancedportals.network.packet.PacketBase;
 
 @ChannelHandler.Sharable
-public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, PacketEP>
+public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, PacketBase>
 {
     private EnumMap<Side, FMLEmbeddedChannel> channels;
-    private LinkedList<Class<? extends PacketEP>> packets = new LinkedList<Class<? extends PacketEP>>();
+    private LinkedList<Class<? extends PacketBase>> packets = new LinkedList<Class<? extends PacketBase>>();
     private boolean isPostInitialised = false;
 
     // In line decoding and handling of the packet
@@ -42,14 +41,14 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
     {
         ByteBuf payload = msg.payload();
         byte discriminator = payload.readByte();
-        Class<? extends PacketEP> clazz = packets.get(discriminator);
+        Class<? extends PacketBase> clazz = packets.get(discriminator);
 
         if (clazz == null)
         {
             throw new NullPointerException("No packet registered for discriminator: " + discriminator);
         }
 
-        PacketEP pkt = clazz.newInstance();
+        PacketBase pkt = clazz.newInstance();
         pkt.decodeInto(ctx, payload.slice());
 
         EntityPlayer player;
@@ -75,10 +74,10 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
 
     // In line encoding of the packet, including discriminator setting
     @Override
-    protected void encode(ChannelHandlerContext ctx, PacketEP msg, List<Object> out) throws Exception
+    protected void encode(ChannelHandlerContext ctx, PacketBase msg, List<Object> out) throws Exception
     {
         ByteBuf buffer = Unpooled.buffer();
-        Class<? extends PacketEP> clazz = msg.getClass();
+        Class<? extends PacketBase> clazz = msg.getClass();
 
         if (!packets.contains(msg.getClass()))
         {
@@ -114,11 +113,11 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
         }
 
         isPostInitialised = true;
-        Collections.sort(packets, new Comparator<Class<? extends PacketEP>>()
+        Collections.sort(packets, new Comparator<Class<? extends PacketBase>>()
         {
 
             @Override
-            public int compare(Class<? extends PacketEP> clazz1, Class<? extends PacketEP> clazz2)
+            public int compare(Class<? extends PacketBase> clazz1, Class<? extends PacketBase> clazz2)
             {
                 int com = String.CASE_INSENSITIVE_ORDER.compare(clazz1.getCanonicalName(), clazz2.getCanonicalName());
                 if (com == 0)
@@ -139,23 +138,23 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * 
      * @return whether registration was successful. Failure may occur if 256 packets have been registered or if the registry already contains this packet
      */
-    public boolean registerPacket(Class<? extends PacketEP> clazz)
+    public boolean registerPacket(Class<? extends PacketBase> clazz)
     {
         if (packets.size() > 256)
         {
-            EnhancedPortals.logger.warn("!!! You've registered too many packets...");
+        	ProxyCommon.logger.warn("!!! You've registered too many packets...");
             return false;
         }
 
         if (packets.contains(clazz))
         {
-            EnhancedPortals.logger.warn("!!! You've already registered this packet...");
+        	ProxyCommon.logger.warn("!!! You've already registered this packet...");
             return false;
         }
 
         if (isPostInitialised)
         {
-            EnhancedPortals.logger.warn("!!! You're registering your packet too late...");
+        	ProxyCommon.logger.warn("!!! You're registering your packet too late...");
             return false;
         }
 
@@ -173,7 +172,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * @param player
      *            The player to send it to
      */
-    public void sendTo(PacketEP message, EntityPlayerMP player)
+    public void sendTo(PacketBase message, EntityPlayerMP player)
     {
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
@@ -188,7 +187,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * @param message
      *            The message to send
      */
-    public void sendToAll(PacketEP message)
+    public void sendToAll(PacketBase message)
     {
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
         channels.get(Side.SERVER).writeAndFlush(message);
@@ -204,14 +203,14 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * @param point
      *            The {@link cpw.mods.fml.common.network.NetworkRegistry.TargetPoint} around which to send
      */
-    public void sendToAllAround(PacketEP message, NetworkRegistry.TargetPoint point)
+    public void sendToAllAround(PacketBase message, NetworkRegistry.TargetPoint point)
     {
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
         channels.get(Side.SERVER).writeAndFlush(message);
     }
 
-    public void sendToAllAround(PacketEP message, TileEP tile)
+    public void sendToAllAround(PacketBase message, TileEntityEP tile)
     {
         sendToAllAround(message, new TargetPoint(tile.getWorldObj().provider.dimensionId, tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, 128.0));
     }
@@ -226,7 +225,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * @param dimensionId
      *            The dimension id to target
      */
-    public void sendToDimension(PacketEP message, int dimensionId)
+    public void sendToDimension(PacketBase message, int dimensionId)
     {
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
         channels.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
@@ -241,7 +240,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Packet
      * @param message
      *            The message to send
      */
-    public void sendToServer(PacketEP message)
+    public void sendToServer(PacketBase message)
     {
         channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         channels.get(Side.CLIENT).writeAndFlush(message);
