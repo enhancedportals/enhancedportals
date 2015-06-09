@@ -1,8 +1,9 @@
-package enhancedportals.portal.network;
+package enhancedportals.portal;
 
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.server.MinecraftServer;
 import enhancedportals.util.WorldCoordinates;
 
 public class NetworkMap {
@@ -91,7 +92,7 @@ public class NetworkMap {
 	}
 	
 	/** Loads from JSON **/
-	public static void load() {
+	public static void load(MinecraftServer server) {
 		
 	}
 	

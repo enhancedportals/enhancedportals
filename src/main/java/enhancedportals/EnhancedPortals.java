@@ -1,11 +1,10 @@
 package enhancedportals;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.network.NetworkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,8 +15,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import enhancedportals.base.CreativeTab;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import enhancedportals.network.ProxyCommon;
+import enhancedportals.portal.NetworkMap;
 
 @Mod(name = EnhancedPortals.MOD_NAME, modid = EnhancedPortals.MOD_ID, version = EnhancedPortals.MOD_VERSION, dependencies = EnhancedPortals.MOD_DEPENDENCIES)
 public class EnhancedPortals {
@@ -52,5 +54,21 @@ public class EnhancedPortals {
 	@EventHandler
     public void post(FMLPostInitializationEvent event) {
 		proxy.post();
+    }
+	@EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        NetworkMap.load(event.getServer());
+    }
+
+    @SubscribeEvent
+    public void worldSave(WorldEvent.Save event) {
+        if (!event.world.isRemote) {
+            NetworkMap.save();
+        }
+    }
+    
+    @SubscribeEvent
+    public void serverStopping(FMLServerStoppedEvent event) {
+    	NetworkMap.clear();
     }
 }

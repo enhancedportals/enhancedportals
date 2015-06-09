@@ -32,6 +32,7 @@ public class ProxyCommon {
 	public static int CONFIG_FLUX_TIMER = 20;
 	
 	public static byte CONFIG_CT_LEVEL = 2; // 0 off, 1 fast, 2 adv
+	public static byte CONFIG_PLAYER_COOLDOWN_RATE = 10;
 	
 	public static boolean CONFIG_DBS = true;    // Dimensional Bridge Stabilizer
 	public static boolean CONFIG_UPDATE_NOTIFIER = true;
