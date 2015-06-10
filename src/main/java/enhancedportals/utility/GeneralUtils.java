@@ -16,31 +16,23 @@ import cpw.mods.fml.relauncher.Side;
 import enhancedportals.item.ItemGlasses;
 import enhancedportals.network.CommonProxy;
 
-public class GeneralUtils
-{
-    public static double getPowerMultiplier()
-    {
-        return hasEnergyCost() ? CommonProxy.powerMultiplier : 0;
+public class GeneralUtils {
+    public static double getPowerMultiplier() {
+        return hasEnergyCost() ? CommonProxy.CONFIG_POWER_MULTIPLIER : 0;
     }
 
-    public static boolean hasEnergyCost()
-    {
-        return CommonProxy.requirePower;
+    public static boolean hasEnergyCost() {
+        return CommonProxy.CONFIG_REQUIRE_POWER;
     }
 
-    public static boolean isEnergyContainerItem(ItemStack i)
-    {
+    public static boolean isEnergyContainerItem(ItemStack i) {
         return i != null && i.getItem() instanceof IEnergyContainerItem;
     }
 
-    public static boolean isWearingGoggles()
-    {
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
-        {
+    public static boolean isWearingGoggles() {
+        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             if (Minecraft.getMinecraft().thePlayer == null)
-            {
                 return false;
-            }
 
             ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.armorItemInSlot(3);
             return stack != null && stack.getItem() == ItemGlasses.instance;
@@ -49,31 +41,25 @@ public class GeneralUtils
         return false;
     }
 
-    public static boolean isWrench(ItemStack i)
-    {
+    public static boolean isWrench(ItemStack i) {
         return i != null && i.getItem() instanceof IToolWrench;
     }
 
-    public static ChunkCoordinates loadChunkCoord(NBTTagCompound tagCompound, String string)
-    {
+    public static ChunkCoordinates loadChunkCoord(NBTTagCompound tagCompound, String string) {
         if (tagCompound.getTag(string) == null)
-        {
             return null;
-        }
 
         NBTTagCompound t = (NBTTagCompound) tagCompound.getTag(string);
 
         return t.getInteger("Y") == -1 ? null : new ChunkCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z"));
     }
 
-    public static ArrayList<ChunkCoordinates> loadChunkCoordList(NBTTagCompound tag, String name)
-    {
+    public static ArrayList<ChunkCoordinates> loadChunkCoordList(NBTTagCompound tag, String name) {
         ArrayList<ChunkCoordinates> list = new ArrayList<ChunkCoordinates>();
 
         NBTTagList tagList = tag.getTagList(name, 10);
 
-        for (int i = 0; i < tagList.tagCount(); i++)
-        {
+        for (int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound t = tagList.getCompoundTagAt(i);
 
             list.add(new ChunkCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z")));
@@ -82,24 +68,18 @@ public class GeneralUtils
         return list;
     }
 
-    public static DimensionCoordinates loadWorldCoord(NBTTagCompound tagCompound, String string)
-    {
+    public static DimensionCoordinates loadWorldCoord(NBTTagCompound tagCompound, String string) {
         if (tagCompound.getTag(string) == null)
-        {
             return null;
-        }
 
         NBTTagCompound t = (NBTTagCompound) tagCompound.getTag(string);
 
         return t.getInteger("Y") == -1 ? null : new DimensionCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z"), t.getInteger("D"));
     }
 
-    public static void saveChunkCoord(NBTTagCompound tagCompound, ChunkCoordinates c, String string)
-    {
+    public static void saveChunkCoord(NBTTagCompound tagCompound, ChunkCoordinates c, String string) {
         if (c == null)
-        {
             return;
-        }
 
         NBTTagCompound t = new NBTTagCompound();
         t.setInteger("X", c.posX);
@@ -109,12 +89,10 @@ public class GeneralUtils
         tagCompound.setTag(string, t);
     }
 
-    public static void saveChunkCoordList(NBTTagCompound tag, List<ChunkCoordinates> list, String name)
-    {
+    public static void saveChunkCoordList(NBTTagCompound tag, List<ChunkCoordinates> list, String name) {
         NBTTagList tagList = new NBTTagList();
 
-        for (ChunkCoordinates c : list)
-        {
+        for (ChunkCoordinates c : list) {
             NBTTagCompound t = new NBTTagCompound();
             t.setInteger("X", c.posX);
             t.setInteger("Y", c.posY);
@@ -126,12 +104,9 @@ public class GeneralUtils
         tag.setTag(name, tagList);
     }
 
-    public static void saveWorldCoord(NBTTagCompound tagCompound, DimensionCoordinates c, String string)
-    {
+    public static void saveWorldCoord(NBTTagCompound tagCompound, DimensionCoordinates c, String string) {
         if (c == null)
-        {
             return;
-        }
 
         NBTTagCompound t = new NBTTagCompound();
         t.setInteger("X", c.posX);
@@ -142,8 +117,7 @@ public class GeneralUtils
         tagCompound.setTag(string, t);
     }
 
-    public static ChunkCoordinates offset(ChunkCoordinates c, ForgeDirection f)
-    {
+    public static ChunkCoordinates offset(ChunkCoordinates c, ForgeDirection f) {
         return new ChunkCoordinates(c.posX + f.offsetX, c.posY + f.offsetY, c.posZ + f.offsetZ);
     }
 }

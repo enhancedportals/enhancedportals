@@ -2,57 +2,47 @@ package enhancedportals.client.gui.elements;
 
 import java.util.List;
 
-import enhancedportals.EnhancedPortals;
 import enhancedportals.client.gui.GuiManual;
 import enhancedportals.network.ClientProxy;
+import enhancedportals.utility.Localization;
 
-public class ElementManualTextButton extends BaseElement
-{
+public class ElementManualTextButton extends BaseElement {
     String entry;
     String displayStr;
     boolean tooLong = false;
     int length = 21;
 
-    public ElementManualTextButton(GuiManual gui, int x, int y, String mEntry)
-    {
+    public ElementManualTextButton(GuiManual gui, int x, int y, String mEntry) {
         super(gui, x, y, 115, 8);
         entry = mEntry;
 
-        if (entry != null)
-        {
-            displayStr = EnhancedPortals.localize("manual." + entry + ".title");
+        if (entry != null) {
+            displayStr = Localization.get("manual." + entry + ".title");
 
-            if (displayStr.length() > length)
-            {
+            if (displayStr.length() > length) {
                 displayStr = displayStr.substring(0, length);
 
                 if (displayStr.endsWith(" "))
-                {
                     displayStr = displayStr.substring(0, displayStr.length() - 1);
-                }
 
                 displayStr += "...";
                 tooLong = true;
             }
         }
     }
-    public void updateEntry(String s)
-    {
+
+    public void updateEntry(String s) {
         entry = s;
         tooLong = false;
 
-        if (entry != null)
-        {
-            displayStr = EnhancedPortals.localize("manual." + entry + ".title");
+        if (entry != null) {
+            displayStr = Localization.get("manual." + entry + ".title");
 
-            if (displayStr.length() > length)
-            {
+            if (displayStr.length() > length) {
                 displayStr = displayStr.substring(0, length);
 
                 if (displayStr.endsWith(" "))
-                {
                     displayStr = displayStr.substring(0, displayStr.length() - 1);
-                }
 
                 displayStr += "...";
                 tooLong = true;
@@ -61,27 +51,20 @@ public class ElementManualTextButton extends BaseElement
     }
 
     @Override
-    public void addTooltip(List<String> list)
-    {
+    public void addTooltip(List<String> list) {
         if (tooLong)
-        {
-            list.add(EnhancedPortals.localize("manual." + entry + ".title"));
-        }
+            list.add(Localization.get("manual." + entry + ".title"));
     }
 
     @Override
-    protected void drawBackground()
-    {
+    protected void drawBackground() {
 
     }
 
     @Override
-    public boolean handleMouseClicked(int x, int y, int mouseButton)
-    {
+    public boolean handleMouseClicked(int x, int y, int mouseButton) {
         if (entry == null)
-        {
             return false;
-        }
 
         ClientProxy.manualChangeEntry(entry);
         ((GuiManual) parent).pageChanged();
@@ -89,18 +72,15 @@ public class ElementManualTextButton extends BaseElement
     }
 
     @Override
-    protected void drawContent()
-    {
-        if (entry != null)
-        {
+    protected void drawContent() {
+        if (entry != null) {
             boolean isHovering = intersectsWith(parent.getMouseX(), parent.getMouseY());
-            parent.getFontRenderer().drawString(displayStr,posX,posY,(isHovering?0xFF0000:0x991100));
+            parent.getFontRenderer().drawString(displayStr, posX, posY, (isHovering ? 0xFF0000 : 0x991100));
         }
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
 
     }
 }

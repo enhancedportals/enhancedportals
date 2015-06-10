@@ -59,8 +59,7 @@ import enhancedportals.tile.TileTransferEnergy;
 import enhancedportals.tile.TileTransferFluid;
 import enhancedportals.tile.TileTransferItem;
 
-public class GuiHandler implements IGuiHandler
-{
+public class GuiHandler implements IGuiHandler {
     public static final int PORTAL_CONTROLLER_A = 0;
     public static final int PORTAL_CONTROLLER_B = 1;
     public static final int NETWORK_INTERFACE_A = 2;
@@ -87,229 +86,128 @@ public class GuiHandler implements IGuiHandler
     public static final int DIMENSIONAL_BRIDGE_STABILIZER = 24;
     public static final int MANUAL = 25;
 
-    public static void openGui(EntityPlayer player, TileEntity tile, int gui)
-    {
+    public static void openGui(EntityPlayer player, TileEntity tile, int gui) {
         player.openGui(EnhancedPortals.instance, gui, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == MANUAL)
-        {
             return new GuiManual(player);
-        }
 
         TileEntity t = world.getTileEntity(x, y, z);
 
         if (!(t instanceof TileEP))
-        {
             return null;
-        }
 
         TileEP tile = (TileEP) t;
 
         if (ID == PORTAL_CONTROLLER_A)
-        {
             return new GuiPortalController((TileController) tile, player);
-        }
         else if (ID == PORTAL_CONTROLLER_B)
-        {
             return new GuiPortalControllerGlyphs((TileController) tile, player);
-        }
         else if (ID == REDSTONE_INTERFACE)
-        {
             return new GuiRedstoneInterface((TileRedstoneInterface) tile, player);
-        }
         else if (ID == NETWORK_INTERFACE_A)
-        {
             return new GuiNetworkInterface((TileController) tile, player);
-        }
         else if (ID == NETWORK_INTERFACE_B)
-        {
             return new GuiNetworkInterfaceGlyphs((TileController) tile, player);
-        }
         else if (ID == MODULE_MANIPULATOR)
-        {
             return new GuiModuleManipulator((TilePortalManipulator) tile, player);
-        }
         else if (ID == DIMENSIONAL_BRIDGE_STABILIZER)
-        {
             return new GuiDimensionalBridgeStabilizer((TileStabilizerMain) tile, player);
-        }
         else if (ID == DIALING_DEVICE_A)
-        {
             return new GuiDialingDevice((TileDialingDevice) tile, player);
-        }
         else if (ID == DIALING_DEVICE_B)
-        {
             return new GuiDialingManual((TileDialingDevice) tile, player);
-        }
         else if (ID == DIALING_DEVICE_C)
-        {
             return new GuiDialingAdd((TileDialingDevice) tile, player);
-        }
         else if (ID == DIALING_DEVICE_D)
-        {
             return new GuiDialingEdit((TileDialingDevice) tile, player);
-        }
         else if (ID == DIALING_DEVICE_E)
-        {
             return new GuiDialingEditIdentifier((TileDialingDevice) tile, player);
-        }
         else if (ID == TEXTURE_A)
-        {
             return new GuiTextureFrame((TileController) tile, player);
-        }
         else if (ID == TEXTURE_B)
-        {
             return new GuiTexturePortal((TileController) tile, player);
-        }
         else if (ID == TEXTURE_C)
-        {
             return new GuiTextureParticle((TileController) tile, player);
-        }
         else if (ID == TEXTURE_DIALING_SAVE_A)
-        {
             return new GuiDialingEditFrame((TileDialingDevice) tile, player, false);
-        }
         else if (ID == TEXTURE_DIALING_SAVE_B)
-        {
             return new GuiDialingEditPortal((TileDialingDevice) tile, player, false);
-        }
         else if (ID == TEXTURE_DIALING_SAVE_C)
-        {
             return new GuiDialingEditParticle((TileDialingDevice) tile, player, false);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_A)
-        {
             return new GuiDialingEditFrame((TileDialingDevice) tile, player, true);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_B)
-        {
             return new GuiDialingEditPortal((TileDialingDevice) tile, player, true);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_C)
-        {
             return new GuiDialingEditParticle((TileDialingDevice) tile, player, true);
-        }
         else if (ID == TRANSFER_FLUID)
-        {
             return new GuiTransferFluid((TileTransferFluid) tile, player);
-        }
         else if (ID == TRANSFER_ENERGY)
-        {
             return new GuiTransferEnergy((TileTransferEnergy) tile, player);
-        }
         else if (ID == TRANSFER_ITEM)
-        {
             return new GuiTransferItem((TileTransferItem) tile, player);
-        }
 
         return null;
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-    {
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == MANUAL)
-        {
             return new ContainerManual(player.inventory);
-        }
 
         TileEntity t = world.getTileEntity(x, y, z);
 
         if (!(t instanceof TileEP))
-        {
             return null;
-        }
 
         TileEP tile = (TileEP) t;
 
         if (ID == PORTAL_CONTROLLER_A)
-        {
             return new ContainerPortalController((TileController) tile, player.inventory);
-        }
         else if (ID == PORTAL_CONTROLLER_B)
-        {
             return new ContainerPortalControllerGlyphs((TileController) tile, player.inventory);
-        }
         else if (ID == REDSTONE_INTERFACE)
-        {
             return new ContainerRedstoneInterface((TileRedstoneInterface) tile, player.inventory);
-        }
         else if (ID == NETWORK_INTERFACE_A)
-        {
             return new ContainerNetworkInterface((TileController) tile, player.inventory);
-        }
         else if (ID == NETWORK_INTERFACE_B)
-        {
             return new ContainerNetworkInterfaceGlyphs((TileController) tile, player.inventory);
-        }
         else if (ID == MODULE_MANIPULATOR)
-        {
             return new ContainerModuleManipulator((TilePortalManipulator) tile, player.inventory);
-        }
         else if (ID == DIMENSIONAL_BRIDGE_STABILIZER)
-        {
             return new ContainerDimensionalBridgeStabilizer((TileStabilizerMain) tile, player.inventory);
-        }
         else if (ID == DIALING_DEVICE_A)
-        {
             return new ContainerDialingDevice((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == DIALING_DEVICE_B)
-        {
             return new ContainerDialingManual((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == DIALING_DEVICE_C)
-        {
             return new ContainerDialingAdd((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == DIALING_DEVICE_D)
-        {
             return new ContainerDialingEdit((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == DIALING_DEVICE_E)
-        {
             return new ContainerDialingEditIdentifier((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == TEXTURE_A)
-        {
             return new ContainerTextureFrame((TileController) tile, player.inventory);
-        }
         else if (ID == TEXTURE_B)
-        {
             return new ContainerTexturePortal((TileController) tile, player.inventory);
-        }
         else if (ID == TEXTURE_C)
-        {
             return new ContainerTextureParticle((TileController) tile, player.inventory);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_A || ID == TEXTURE_DIALING_SAVE_A)
-        {
             return new ContainerDialingEditTexture((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_B || ID == TEXTURE_DIALING_SAVE_B)
-        {
             return new ContainerDialingEditPortal((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == TEXTURE_DIALING_EDIT_C || ID == TEXTURE_DIALING_SAVE_C)
-        {
             return new ContainerDialingEditParticle((TileDialingDevice) tile, player.inventory);
-        }
         else if (ID == TRANSFER_FLUID)
-        {
             return new ContainerTransferFluid((TileTransferFluid) tile, player.inventory);
-        }
         else if (ID == TRANSFER_ENERGY)
-        {
             return new ContainerTransferEnergy((TileTransferEnergy) tile, player.inventory);
-        }
         else if (ID == TRANSFER_ITEM)
-        {
             return new ContainerTransferItem((TileTransferItem) tile, player.inventory);
-        }
 
         return null;
     }

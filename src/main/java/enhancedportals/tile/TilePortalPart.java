@@ -1,6 +1,5 @@
 package enhancedportals.tile;
 
-import enhancedportals.utility.GeneralUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,36 +11,30 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import enhancedportals.utility.GeneralUtils;
 
-public abstract class TilePortalPart extends TileEP
-{
+public abstract class TilePortalPart extends TileEP {
     ChunkCoordinates portalController;
     TileController cachedController;
 
-    public boolean activate(EntityPlayer player, ItemStack stack)
-    {
+    public boolean activate(EntityPlayer player, ItemStack stack) {
         return false;
     }
 
     public abstract void addDataToPacket(NBTTagCompound tag);
 
-    public void breakBlock(Block b, int oldMeta)
-    {
+    public void breakBlock(Block b, int oldMeta) {
         TileController controller = getPortalController();
 
         if (controller != null)
-        {
             controller.connectionTerminate();
-        }
     }
 
     @Override
-    public Packet getDescriptionPacket()
-    {
+    public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
 
-        if (portalController != null)
-        {
+        if (portalController != null) {
             tag.setInteger("PortalControllerX", portalController.posX);
             tag.setInteger("PortalControllerY", portalController.posY);
             tag.setInteger("PortalControllerZ", portalController.posZ);
@@ -51,17 +44,13 @@ public abstract class TilePortalPart extends TileEP
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
-    public TileController getPortalController()
-    {
+    public TileController getPortalController() {
         if (cachedController != null)
-        {
             return cachedController;
-        }
 
         TileEntity tile = portalController == null ? null : worldObj.getTileEntity(portalController.posX, portalController.posY, portalController.posZ);
 
-        if (tile != null && tile instanceof TileController)
-        {
+        if (tile != null && tile instanceof TileController) {
             cachedController = (TileController) tile;
             return cachedController;
         }
@@ -71,38 +60,31 @@ public abstract class TilePortalPart extends TileEP
 
     /**
      * Called when this block is placed in the world.
-     * 
+     *
      * @param entity
      * @param stack
      */
-    public void onBlockPlaced(EntityLivingBase entity, ItemStack stack)
-    {
-        for (int i = 0; i < 6; i++)
-        {
+    public void onBlockPlaced(EntityLivingBase entity, ItemStack stack) {
+        for (int i = 0; i < 6; i++) {
             ChunkCoordinates c = GeneralUtils.offset(getChunkCoordinates(), ForgeDirection.getOrientation(i));
             TileEntity tile = worldObj.getTileEntity(c.posX, c.posY, c.posZ);
 
             if (tile != null && tile instanceof TilePortalPart)
-            {
                 ((TilePortalPart) tile).onNeighborPlaced(entity, xCoord, yCoord, zCoord);
-            }
         }
     }
 
     public abstract void onDataPacket(NBTTagCompound tag);
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-    {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         NBTTagCompound tag = pkt.func_148857_g();
 
         portalController = null;
         cachedController = null;
 
         if (tag.hasKey("PortalControllerX"))
-        {
             portalController = new ChunkCoordinates(tag.getInteger("PortalControllerX"), tag.getInteger("PortalControllerY"), tag.getInteger("PortalControllerZ"));
-        }
 
         onDataPacket(tag);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -110,28 +92,23 @@ public abstract class TilePortalPart extends TileEP
 
     /**
      * Called when a portal part gets placed next to this one. Is used to notify the Portal Controller to dismantle the structure.
-     * 
+     *
      * @param x
      * @param y
      * @param z
      */
-    public void onNeighborPlaced(EntityLivingBase entity, int x, int y, int z)
-    {
+    public void onNeighborPlaced(EntityLivingBase entity, int x, int y, int z) {
         TileController controller = getPortalController();
 
         if (controller != null)
-        {
             controller.deconstruct();
-        }
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        if (compound.hasKey("Controller"))
-        {
+        if (compound.hasKey("Controller")) {
             NBTTagCompound controller = compound.getCompoundTag("Controller");
             portalController = new ChunkCoordinates(controller.getInteger("X"), controller.getInteger("Y"), controller.getInteger("Z"));
         }
@@ -139,11 +116,10 @@ public abstract class TilePortalPart extends TileEP
 
     /**
      * Sets the Portal Controller to the specified coordinates, and sends an update packet.
-     * 
+     *
      * @param c
      */
-    public void setPortalController(ChunkCoordinates c)
-    {
+    public void setPortalController(ChunkCoordinates c) {
         portalController = c;
         cachedController = null;
         markDirty();
@@ -151,12 +127,10 @@ public abstract class TilePortalPart extends TileEP
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound)
-    {
+    public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
-        if (portalController != null)
-        {
+        if (portalController != null) {
             NBTTagCompound controller = new NBTTagCompound();
             controller.setInteger("X", portalController.posX);
             controller.setInteger("Y", portalController.posY);

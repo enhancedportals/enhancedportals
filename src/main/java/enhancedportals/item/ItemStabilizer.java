@@ -8,13 +8,11 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import enhancedportals.EnhancedPortals;
 import enhancedportals.block.BlockStabilizer;
+import enhancedportals.utility.Localization;
 
-public class ItemStabilizer extends ItemBlock
-{
-    public ItemStabilizer(Block b)
-    {
+public class ItemStabilizer extends ItemBlock {
+    public ItemStabilizer(Block b) {
         super(b);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -22,21 +20,18 @@ public class ItemStabilizer extends ItemBlock
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-    {
-        list.add(EnhancedPortals.localize("block.multiblockStructure"));
-        list.add(EnumChatFormatting.DARK_GRAY + EnhancedPortals.localize("block.dbsSize"));
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+        list.add(Localization.get("block.multiblockStructure"));
+        list.add(EnumChatFormatting.DARK_GRAY + Localization.get("block.dbsSize"));
     }
 
     @Override
-    public IIcon getIconFromDamage(int par1)
-    {
+    public IIcon getIconFromDamage(int par1) {
         return BlockStabilizer.instance.getBlockTextureFromSide(0);
     }
 
     @Override
-    public int getMetadata(int par1)
-    {
+    public int getMetadata(int par1) {
         return par1;
     }
 }

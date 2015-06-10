@@ -2,22 +2,18 @@ package enhancedportals.client.gui.tabs;
 
 import enhancedportals.client.gui.BaseGui;
 
-public class TabTexture extends BaseTab
-{
-    public TabTexture(BaseGui gui)
-    {
+public class TabTexture extends BaseTab {
+    public TabTexture(BaseGui gui) {
         super(gui);
     }
 
     @Override
-    public void drawFullyOpened()
-    {
+    public void drawFullyOpened() {
 
     }
 
     @Override
-    public void drawFullyClosed()
-    {
+    public void drawFullyClosed() {
 
     }
 }

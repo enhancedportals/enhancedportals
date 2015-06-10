@@ -2,8 +2,6 @@ package enhancedportals.client.gui;
 
 import java.awt.Color;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,9 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
+import org.lwjgl.opengl.GL11;
+
 import enhancedportals.EnhancedPortals;
 import enhancedportals.block.BlockFrame;
-import enhancedportals.block.BlockPortal;
 import enhancedportals.client.gui.button.GuiBetterSlider;
 import enhancedportals.client.gui.button.GuiRGBSlider;
 import enhancedportals.client.gui.elements.ElementFakeItemSlot;
@@ -30,9 +30,9 @@ import enhancedportals.network.packet.PacketRequestGui;
 import enhancedportals.portal.PortalTextureManager;
 import enhancedportals.tile.TileController;
 import enhancedportals.utility.IFakeSlotHandler;
+import enhancedportals.utility.Localization;
 
-public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
-{
+public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;
     protected TileController controller;
     protected GuiRGBSlider sliderR, sliderG, sliderB;
@@ -40,8 +40,7 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
     protected int particleFrameType = -1, particleFrame, particleFrameCycle;
     protected int[] particleFrames = new int[] { 0 };
 
-    public GuiTexturePortal(TileController c, EntityPlayer p)
-    {
+    public GuiTexturePortal(TileController c, EntityPlayer p) {
         super(new ContainerTexturePortal(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
@@ -52,9 +51,8 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-        String s = EnhancedPortals.localize("gui.facade");
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        String s = Localization.get("gui.facade");
         getFontRenderer().drawString(s, xSize - 30 - getFontRenderer().getStringWidth(s), containerSize - 12, 0x404040);
 
         itemRenderer.renderWithColor = false;
@@ -62,19 +60,15 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
         Color frameColour = new Color(getPTM().getFrameColour()), particleColour = new Color(0x0077D8);
         int particleType = 0;
 
-        if (getPTM() != null)
-        {
+        if (getPTM() != null) {
             frameColour = new Color(getPTM().getFrameColour());
             particleColour = new Color(getPTM().getParticleColour());
             particleType = getPTM().getParticleType();
 
             if (getPTM().getFrameItem() != null)
-            {
                 frame = getPTM().getFrameItem();
-            }
-            
-            if (particleFrameType != particleType)
-            {
+
+            if (particleFrameType != particleType) {
                 particleFrameType = particleType;
                 particleFrame = 0;
                 particleFrameCycle = 0;
@@ -85,34 +79,25 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
         GL11.glColor3f(frameColour.getRed() / 255F, frameColour.getGreen() / 255F, frameColour.getBlue() / 255F);
 
         if (getPTM().hasCustomFrameTexture())
-        {
             drawIconNoReset(ClientProxy.customFrameTextures.get(getPTM().getCustomFrameTexture()), 9, containerSize - 16, 0);
-        }
         else
-        {
             drawItemStack(frame, 9, containerSize - 16);
-        }
-        
+
         GL11.glColor3f(particleColour.getRed() / 255F, particleColour.getGreen() / 255F, particleColour.getBlue() / 255F);
         getTextureManager().bindTexture(new ResourceLocation("textures/particle/particles.png"));
         drawTexturedModalRect(30, containerSize - 16, particleFrames[particleFrame] % 16 * 16, particleFrames[particleFrame] / 16 * 16, 16, 16);
-        
+
         GL11.glColor3f(1f, 1f, 1f);
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
-    {
-        if (button.id == buttonSave.id || button.id == buttonReset.id)
-        {
-            if (button.id == buttonSave.id)
-            {
+    protected void actionPerformed(GuiButton button) {
+        if (button.id == buttonSave.id || button.id == buttonReset.id) {
+            if (button.id == buttonSave.id) {
                 int hex = Integer.parseInt(String.format("%02x%02x%02x", sliderR.getValue(), sliderG.getValue(), sliderB.getValue()), 16);
                 getPTM().setPortalColour(hex);
-            }
-            else if (button.id == buttonReset.id)
-            {
+            } else if (button.id == buttonReset.id) {
                 int colour = 0xffffff;
                 getPTM().setPortalColour(colour);
 
@@ -125,33 +110,27 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("colour", Integer.parseInt(String.format("%02x%02x%02x", sliderR.getValue(), sliderG.getValue(), sliderB.getValue()), 16));
             EnhancedPortals.packetPipeline.sendToServer(new PacketGuiData(tag));
-        }
-        else if (button.id == 500)
-        {
+        } else if (button.id == 500)
             EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_A));
-        }
         else if (button.id == 501)
-        {
             EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_C));
-        }
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
 
         Color c = new Color(getPTM().getPortalColour());
-        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, EnhancedPortals.localize("gui.red"), c.getRed() / 255f, 105);
-        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, EnhancedPortals.localize("gui.green"), c.getGreen() / 255f, 105);
-        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, EnhancedPortals.localize("gui.blue"), c.getBlue() / 255f, 105);
+        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, Localization.get("gui.red"), c.getRed() / 255f, 105);
+        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, Localization.get("gui.green"), c.getGreen() / 255f, 105);
+        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, Localization.get("gui.blue"), c.getBlue() / 255f, 105);
 
         buttonList.add(sliderR);
         buttonList.add(sliderG);
         buttonList.add(sliderB);
 
-        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, EnhancedPortals.localize("gui.save"));
-        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, EnhancedPortals.localize("gui.reset"));
+        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, Localization.get("gui.save"));
+        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, Localization.get("gui.reset"));
 
         buttonList.add(buttonSave);
         buttonList.add(buttonReset);
@@ -167,91 +146,67 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler
     }
 
     @Override
-    protected void mouseMovedOrUp(int par1, int par2, int par3)
-    {
+    protected void mouseMovedOrUp(int par1, int par2, int par3) {
         super.mouseMovedOrUp(par1, par2, par3);
 
         if (par3 == 0)
-        {
             for (Object o : buttonList)
-            {
-                if (o instanceof GuiBetterSlider)
-                {
+                if (o instanceof GuiBetterSlider) {
                     GuiBetterSlider slider = (GuiBetterSlider) o;
                     slider.mouseReleased(par1, par2);
                 }
-            }
-        }
     }
 
-    public void iconSelected(int icon)
-    {
+    public void iconSelected(int icon) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("custom", icon);
         EnhancedPortals.packetPipeline.sendToServer(new PacketGuiData(tag));
     }
 
     @Override
-    public void onItemChanged(ItemStack newItem)
-    {
+    public void onItemChanged(ItemStack newItem) {
         NBTTagCompound tag = new NBTTagCompound();
 
         if (newItem != null)
-        {
             newItem.writeToNBT(tag);
-        }
         else
-        {
             tag.setBoolean("removeItem", true);
-        }
 
         EnhancedPortals.packetPipeline.sendToServer(new PacketGuiData(tag));
     }
 
     @Override
-    public boolean isItemValid(ItemStack s)
-    {
+    public boolean isItemValid(ItemStack s) {
         if (s == null)
-        {
             return true;
-        }
 
         if (FluidContainerRegistry.isFilledContainer(s))
-        {
             return true;
-        }
 
         Block b = Block.getBlockFromItem(s.getItem());
 
         if (b == Blocks.air)
-        {
             return false;
-        }
 
         return true;
     }
 
     @Override
-    public void updateScreen()
-    {
+    public void updateScreen() {
         super.updateScreen();
-        
-        if (particleFrameCycle >= 20)
-        {
+
+        if (particleFrameCycle >= 20) {
             particleFrame++;
             particleFrameCycle = 0;
-            
+
             if (particleFrame >= particleFrames.length)
-            {
                 particleFrame = 0;
-            }
         }
-        
+
         particleFrameCycle++;
     }
-    
-    public PortalTextureManager getPTM()
-    {
+
+    public PortalTextureManager getPTM() {
         return controller.activeTextureData;
     }
 }

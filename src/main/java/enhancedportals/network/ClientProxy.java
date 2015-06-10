@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import enhancedportals.EnhancedPortals;
 import enhancedportals.block.BlockDecorBorderedQuartz;
 import enhancedportals.block.BlockDecorEnderInfusedMetal;
 import enhancedportals.block.BlockFrame;
@@ -36,16 +35,14 @@ import enhancedportals.item.ItemUpgrade;
 import enhancedportals.item.ItemWrench;
 import enhancedportals.portal.GlyphIdentifier;
 import enhancedportals.portal.PortalTextureManager;
+import enhancedportals.utility.Localization;
 
-public class ClientProxy extends CommonProxy
-{
-    public class ParticleSet
-    {
+public class ClientProxy extends CommonProxy {
+    public class ParticleSet {
         public int[] frames;
         public int type;
 
-        public ParticleSet(int t, int[] s)
-        {
+        public ParticleSet(int t, int[] s) {
             frames = s;
             type = t;
         }
@@ -76,109 +73,90 @@ public class ClientProxy extends CommonProxy
     public static HashMap<ChunkCoordinates, ArrayList<ChunkCoordinates>> waitingForController = new HashMap<ChunkCoordinates, ArrayList<ChunkCoordinates>>();
 
     @Override
-    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame)
-    {
-    	if (waitingForController.containsKey(controller)) {
-    		waitingForController.get(controller).add(frame);
-    	} else {
-    		waitingForController.put(controller, new ArrayList<ChunkCoordinates>());
-    		waitingForController.get(controller).add(frame);
-    	}
+    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame) {
+        if (waitingForController.containsKey(controller))
+            waitingForController.get(controller).add(frame);
+        else {
+            waitingForController.put(controller, new ArrayList<ChunkCoordinates>());
+            waitingForController.get(controller).add(frame);
+        }
     }
-    
+
     @Override
     public ArrayList<ChunkCoordinates> getControllerList(ChunkCoordinates controller) {
-    	return waitingForController.get(controller);
+        return waitingForController.get(controller);
     }
-    
+
     @Override
     public void clearControllerList(ChunkCoordinates controller) {
-    	waitingForController.remove(controller);
+        waitingForController.remove(controller);
     }
-    
-    public static ItemStack[] getCraftingRecipeForManualEntry()
-    {
+
+    public static ItemStack[] getCraftingRecipeForManualEntry() {
         return craftingRecipes.get(manualEntry);
     }
 
-    public static boolean manualChapterExists(int chapter_num){
-    	return locExists("manual.chapter."+chapter_num+".title");
+    public static boolean manualChapterExists(int chapter_num) {
+        return locExists("manual.chapter." + chapter_num + ".title");
     }
-    public static boolean manualChapterPageExists(int chapter_num,int chapter_page){
-    	return locExists("manual.chapter."+chapter_num+".page."+chapter_page);
+
+    public static boolean manualChapterPageExists(int chapter_num, int chapter_page) {
+        return locExists("manual.chapter." + chapter_num + ".page." + chapter_page);
     }
-    public static boolean locExists(String loc_string){
-    	// Check if there is such a localized string as loc_string.
-    	if(EnhancedPortals.localize(loc_string).equals("ep3."+loc_string)){
-    		return false;
-    	}else{
-    		return true;
-    	}
+
+    public static boolean locExists(String loc_string) {
+        // Check if there is such a localized string as loc_string.
+        if (Localization.get(loc_string).equals("ep3." + loc_string))
+            return false;
+        else
+            return true;
     }
-    public static int manualChapterLastPage(int chapter_num){
-    	int max_pages=10;
-    	for(int i=max_pages;i>0;i--){
-    		if(locExists("manual.chapter."+chapter_num+".page."+i)){
-    			return i;
-    		}
-    	}
-    	return -1;
+
+    public static int manualChapterLastPage(int chapter_num) {
+        int max_pages = 10;
+        for (int i = max_pages; i > 0; i--)
+            if (locExists("manual.chapter." + chapter_num + ".page." + i))
+                return i;
+        return -1;
     }
-    public static void manualChangeEntry(String entry)
-    {
+
+    public static void manualChangeEntry(String entry) {
         manualEntry = entry;
         manualPage = 0;
     }
 
-    public static boolean manualEntryHasPage(int page)
-    {
-        return !EnhancedPortals.localize("manual." + manualEntry + ".page." + page).contains(".page.");
+    public static boolean manualEntryHasPage(int page) {
+        return !Localization.get("manual." + manualEntry + ".page." + page).contains(".page.");
     }
 
-    public static boolean resourceExists(String file)
-    {
+    public static boolean resourceExists(String file) {
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) FMLClientHandler.instance().getClient().getResourceManager();
 
-        try
-        {
+        try {
             resourceManager.getResource(new ResourceLocation("enhancedportals", file));
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public static boolean setManualPageFromBlock(Block b, int meta)
-    {
-        if (b == BlockFrame.instance)
-        {
+    public static boolean setManualPageFromBlock(Block b, int meta) {
+        if (b == BlockFrame.instance) {
             manualChangeEntry("frame" + meta);
             return true;
-        }
-        else if (b == BlockPortal.instance)
-        {
+        } else if (b == BlockPortal.instance) {
             manualChangeEntry("portal");
             return true;
-        }
-        else if (b == BlockDecorEnderInfusedMetal.instance)
-        {
+        } else if (b == BlockDecorEnderInfusedMetal.instance) {
             manualChangeEntry("decorStabilizer");
             return true;
-        }
-        else if (b == BlockStabilizer.instance)
-        {
+        } else if (b == BlockStabilizer.instance) {
             manualChangeEntry("dbs");
             return true;
-        }
-        else if (b == BlockStabilizerEmpty.instance)
-        {
+        } else if (b == BlockStabilizerEmpty.instance) {
             manualChangeEntry("dbsEmpty");
             return true;
-        }
-        else if (b == BlockDecorBorderedQuartz.instance)
-        {
+        } else if (b == BlockDecorBorderedQuartz.instance) {
             manualChangeEntry("decorBorderedQuartz");
             return true;
         }
@@ -186,70 +164,47 @@ public class ClientProxy extends CommonProxy
         return false;
     }
 
-    public static boolean setManualPageFromItem(ItemStack s)
-    {
+    public static boolean setManualPageFromItem(ItemStack s) {
         Item i = s.getItem();
 
         if (i instanceof ItemBlock)
-        {
             return setManualPageFromBlock(Block.getBlockFromItem(i), s.getItemDamage());
-        }
-        else
-        {
-            if (i == ItemBlankPortalModule.instance)
-            {
-                manualChangeEntry("blank_module");
-                return true;
-            }
-            else if (i == ItemBlankUpgrade.instance)
-            {
-                manualChangeEntry("blank_upgrade");
-                return true;
-            }
-            else if (i == ItemGlasses.instance)
-            {
-                manualChangeEntry("glasses");
-                return true;
-            }
-            else if (i == ItemLocationCard.instance)
-            {
-                manualChangeEntry("location_card");
-                return true;
-            }
-            else if (i == ItemNanobrush.instance)
-            {
-                manualChangeEntry("nanobrush");
-                return true;
-            }
-            else if (i == ItemWrench.instance)
-            {
-                manualChangeEntry("wrench");
-                return true;
-            }
-            else if (i == ItemPortalModule.instance)
-            {
-                manualChangeEntry("module" + s.getItemDamage());
-                return true;
-            }
-            else if (i == ItemUpgrade.instance)
-            {
-                manualChangeEntry("upgrade" + s.getItemDamage());
-                return true;
-            }
+        else if (i == ItemBlankPortalModule.instance) {
+            manualChangeEntry("blank_module");
+            return true;
+        } else if (i == ItemBlankUpgrade.instance) {
+            manualChangeEntry("blank_upgrade");
+            return true;
+        } else if (i == ItemGlasses.instance) {
+            manualChangeEntry("glasses");
+            return true;
+        } else if (i == ItemLocationCard.instance) {
+            manualChangeEntry("location_card");
+            return true;
+        } else if (i == ItemNanobrush.instance) {
+            manualChangeEntry("nanobrush");
+            return true;
+        } else if (i == ItemWrench.instance) {
+            manualChangeEntry("wrench");
+            return true;
+        } else if (i == ItemPortalModule.instance) {
+            manualChangeEntry("module" + s.getItemDamage());
+            return true;
+        } else if (i == ItemUpgrade.instance) {
+            manualChangeEntry("upgrade" + s.getItemDamage());
+            return true;
         }
 
         return false;
     }
 
     @Override
-    public File getWorldDir()
-    {
+    public File getWorldDir() {
         return new File(getBaseDir(), "saves/" + DimensionManager.getWorld(0).getSaveHandler().getWorldDirectoryName());
     }
 
     @Override
-    public void miscSetup()
-    {
+    public void miscSetup() {
         super.miscSetup();
 
         // Randomly chooses a particle then spawns it, stays static
@@ -289,15 +244,13 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void registerItems()
-    {
+    public void registerItems() {
         gogglesRenderIndex = RenderingRegistry.addNewArmourRendererPrefix("epGoggles");
         super.registerItems();
     }
 
     @Override
-    public void setupCrafting()
-    {
+    public void setupCrafting() {
         super.setupCrafting();
 
         craftingRecipes.put("frame0", new ItemStack[] { new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.quartz_block), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(BlockFrame.instance, 4, 0) });

@@ -5,15 +5,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import enhancedportals.EnhancedPortals;
 
-public class LogOnHandler
-{
+public class LogOnHandler {
     @SubscribeEvent
-    public void onLogIn(PlayerEvent.PlayerLoggedInEvent login)
-    {
-        if (login.player != null && !CommonProxy.lateVers.equals(EnhancedPortals.VERSION))
-        {
+    public void onLogIn(PlayerEvent.PlayerLoggedInEvent login) {
+        if (login.player != null && !CommonProxy.UPDATE_LATEST_VER.equals(EnhancedPortals.MOD_VERSION)) {
             EntityPlayer player = login.player;
-            String lateVers = CommonProxy.lateVers;
+            String lateVers = CommonProxy.UPDATE_LATEST_VER;
             CommonProxy.Notify(player, lateVers);
         }
     }

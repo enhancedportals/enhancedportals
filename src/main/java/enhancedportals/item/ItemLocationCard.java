@@ -9,22 +9,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import enhancedportals.EnhancedPortals;
+import enhancedportals.network.CommonProxy;
 import enhancedportals.utility.DimensionCoordinates;
 
-public class ItemLocationCard extends Item
-{
+public class ItemLocationCard extends Item {
     public static ItemLocationCard instance;
 
-    public static void clearDBSLocation(ItemStack s)
-    {
+    public static void clearDBSLocation(ItemStack s) {
         s.setTagCompound(null);
     }
 
-    public static DimensionCoordinates getDBSLocation(ItemStack s)
-    {
-        if (hasDBSLocation(s))
-        {
+    public static DimensionCoordinates getDBSLocation(ItemStack s) {
+        if (hasDBSLocation(s)) {
             NBTTagCompound t = s.getTagCompound();
             return new DimensionCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z"), t.getInteger("D"));
         }
@@ -32,13 +28,11 @@ public class ItemLocationCard extends Item
         return null;
     }
 
-    public static boolean hasDBSLocation(ItemStack s)
-    {
+    public static boolean hasDBSLocation(ItemStack s) {
         return s.hasTagCompound();
     }
 
-    public static void setDBSLocation(ItemStack s, DimensionCoordinates w)
-    {
+    public static void setDBSLocation(ItemStack s, DimensionCoordinates w) {
         NBTTagCompound t = new NBTTagCompound();
         t.setInteger("X", w.posX);
         t.setInteger("Y", w.posY);
@@ -50,11 +44,10 @@ public class ItemLocationCard extends Item
 
     IIcon texture;
 
-    public ItemLocationCard(String n)
-    {
+    public ItemLocationCard(String n) {
         super();
         instance = this;
-        setCreativeTab(EnhancedPortals.creativeTab);
+        setCreativeTab(CommonProxy.creativeTab);
         setUnlocalizedName(n);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -62,27 +55,21 @@ public class ItemLocationCard extends Item
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-    {
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         DimensionCoordinates w = getDBSLocation(stack);
 
         if (w != null)
-        {
             list.add("Location set");
-        }
     }
 
     @Override
-    public IIcon getIconFromDamage(int par1)
-    {
+    public IIcon getIconFromDamage(int par1) {
         return texture;
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
-    {
-        if (player.isSneaking() && hasDBSLocation(stack))
-        {
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (player.isSneaking() && hasDBSLocation(stack)) {
             clearDBSLocation(stack);
             return stack;
         }
@@ -91,8 +78,7 @@ public class ItemLocationCard extends Item
     }
 
     @Override
-    public void registerIcons(IIconRegister register)
-    {
+    public void registerIcons(IIconRegister register) {
         texture = register.registerIcon("enhancedportals:location_card");
     }
 }

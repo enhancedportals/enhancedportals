@@ -15,28 +15,27 @@ import enhancedportals.network.GuiHandler;
 import enhancedportals.network.packet.PacketRequestGui;
 import enhancedportals.portal.GlyphIdentifier;
 import enhancedportals.tile.TileDialingDevice;
+import enhancedportals.utility.Localization;
 
 public class GuiDialingEditIdentifier extends BaseGui {
-	public static final int CONTAINER_SIZE = 135;
+    public static final int CONTAINER_SIZE = 135;
     TileDialingDevice dial;
-    GuiButton buttonCancel, buttonSave;	
+    GuiButton buttonCancel, buttonSave;
     ElementGlyphSelector selector;
-    
-    public GuiDialingEditIdentifier(TileDialingDevice d, EntityPlayer p)
-    {
+
+    public GuiDialingEditIdentifier(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingEditIdentifier(d, p.inventory), CONTAINER_SIZE);
         dial = d;
         name = "gui.dialDevice";
-        setHidePlayerInventory(	);
+        setHidePlayerInventory();
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
         int buttonWidth = 80;
-        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, EnhancedPortals.localize("gui.cancel"));
-        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, EnhancedPortals.localize("gui.save"));
+        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get("gui.cancel"));
+        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get("gui.save"));
         buttonList.add(buttonCancel);
         buttonList.add(buttonSave);
         addTab(new TabTip(this, "glyphs"));
@@ -47,62 +46,45 @@ public class GuiDialingEditIdentifier extends BaseGui {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
-    {
-        if (isShiftKeyDown())
-        {
-            if (button.id == buttonCancel.id) // Clear
-            {
+    protected void actionPerformed(GuiButton button) {
+        if (isShiftKeyDown()) {
+            if (button.id == buttonCancel.id)
                 selector.reset();
-            }
             else if (button.id == buttonSave.id) // Random
             {
                 Random random = new Random();
                 GlyphIdentifier iden = new GlyphIdentifier();
 
                 for (int i = 0; i < (isCtrlKeyDown() ? 9 : random.nextInt(8) + 1); i++)
-                {
                     iden.addGlyph(random.nextInt(27));
-                }
 
                 selector.setIdentifierTo(iden);
             }
-        }
-        else
+        } else if (button.id == buttonCancel.id)
+            EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
+        else if (button.id == buttonSave.id) // Save Changes
         {
-            if (button.id == buttonCancel.id) // Cancel
-            {
-            	EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
-            }
-            else if (button.id == buttonSave.id) // Save Changes
-            {
-            	ClientProxy.saveGlyph = selector.getGlyphIdentifier();
-            	EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
-            }
+            ClientProxy.saveGlyph = selector.getGlyphIdentifier();
+            EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
         }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        getFontRenderer().drawString(EnhancedPortals.localize("gui.uniqueIdentifier"), 7, 19, 0x404040);
+        getFontRenderer().drawString(Localization.get("gui.uniqueIdentifier"), 7, 19, 0x404040);
     }
-    
+
     @Override
-    public void updateScreen()
-    {
+    public void updateScreen() {
         super.updateScreen();
-        
-        if (isShiftKeyDown())
-        {
-            buttonCancel.displayString = EnumChatFormatting.AQUA + EnhancedPortals.localize("gui.clear");
-            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + EnhancedPortals.localize("gui.random");
-        }
-        else
-        {
-            buttonCancel.displayString = EnhancedPortals.localize("gui.cancel");
-            buttonSave.displayString = EnhancedPortals.localize("gui.save");
+
+        if (isShiftKeyDown()) {
+            buttonCancel.displayString = EnumChatFormatting.AQUA + Localization.get("gui.clear");
+            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + Localization.get("gui.random");
+        } else {
+            buttonCancel.displayString = Localization.get("gui.cancel");
+            buttonSave.displayString = Localization.get("gui.save");
         }
     }
 }

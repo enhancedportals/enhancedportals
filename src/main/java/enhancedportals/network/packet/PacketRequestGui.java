@@ -7,18 +7,15 @@ import net.minecraft.tileentity.TileEntity;
 import enhancedportals.EnhancedPortals;
 import enhancedportals.tile.TileEP;
 
-public class PacketRequestGui extends PacketEP
-{
+public class PacketRequestGui extends PacketEP {
     int x, y, z, g;
     TileEntity t;
 
-    public PacketRequestGui()
-    {
+    public PacketRequestGui() {
 
     }
 
-    public PacketRequestGui(TileEP tile, int gui)
-    {
+    public PacketRequestGui(TileEP tile, int gui) {
         x = tile.xCoord;
         y = tile.yCoord;
         z = tile.zCoord;
@@ -26,8 +23,7 @@ public class PacketRequestGui extends PacketEP
     }
 
     @Override
-    public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
-    {
+    public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
         x = buffer.readInt();
         y = buffer.readInt();
         z = buffer.readInt();
@@ -35,8 +31,7 @@ public class PacketRequestGui extends PacketEP
     }
 
     @Override
-    public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
-    {
+    public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
         buffer.writeInt(x);
         buffer.writeInt(y);
         buffer.writeInt(z);
@@ -44,19 +39,15 @@ public class PacketRequestGui extends PacketEP
     }
 
     @Override
-    public void handleClientSide(EntityPlayer player)
-    {
+    public void handleClientSide(EntityPlayer player) {
 
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
-    {
+    public void handleServerSide(EntityPlayer player) {
         t = player.worldObj.getTileEntity(x, y, z);
 
         if (t != null)
-        {
             player.openGui(EnhancedPortals.instance, g, t.getWorldObj(), x, y, z);
-        }
     }
 }

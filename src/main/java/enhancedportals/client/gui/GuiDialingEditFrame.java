@@ -12,26 +12,22 @@ import enhancedportals.network.packet.PacketRequestGui;
 import enhancedportals.portal.PortalTextureManager;
 import enhancedportals.tile.TileDialingDevice;
 
-public class GuiDialingEditFrame extends GuiTextureFrame
-{
+public class GuiDialingEditFrame extends GuiTextureFrame {
     TileDialingDevice dial;
     boolean didSave, returnToEdit;
 
-    public GuiDialingEditFrame(TileDialingDevice d, EntityPlayer p)
-    {
+    public GuiDialingEditFrame(TileDialingDevice d, EntityPlayer p) {
         this(d, p, false);
     }
-    
-    public GuiDialingEditFrame(TileDialingDevice d, EntityPlayer p, boolean r)
-    {
+
+    public GuiDialingEditFrame(TileDialingDevice d, EntityPlayer p, boolean r) {
         super(d.getPortalController(), p);
         dial = d;
         returnToEdit = r;
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
 
         buttonList.add(new GuiButton(1000, guiLeft + 7, guiTop + ySize + 3, xSize - 14, 20, "Save"));
@@ -43,14 +39,10 @@ public class GuiDialingEditFrame extends GuiTextureFrame
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
-    {
+    protected void actionPerformed(GuiButton button) {
         if (button.id == buttonSave.id)
-        {
             getPTM().setFrameColour(Integer.parseInt(String.format("%02x%02x%02x", sliderR.getValue(), sliderG.getValue(), sliderB.getValue()), 16));
-        }
-        else if (button.id == buttonReset.id)
-        {
+        else if (button.id == buttonReset.id) {
             int colour = 0xffffff;
             getPTM().setFrameColour(colour);
 
@@ -58,52 +50,41 @@ public class GuiDialingEditFrame extends GuiTextureFrame
             sliderR.sliderValue = c.getRed() / 255f;
             sliderG.sliderValue = c.getGreen() / 255f;
             sliderB.sliderValue = c.getBlue() / 255f;
-        }
-        else if (button.id == 1000)
-        {
+        } else if (button.id == 1000) {
             didSave = true;
             EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.DIALING_DEVICE_D : GuiHandler.DIALING_DEVICE_C));
-        }
-        else if (button.id == 500)
-        {
+        } else if (button.id == 500) {
             didSave = true;
             EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.TEXTURE_DIALING_EDIT_B : GuiHandler.TEXTURE_DIALING_SAVE_B));
-        }
-        else if (button.id == 501)
-        {
+        } else if (button.id == 501) {
             didSave = true;
             EnhancedPortals.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.TEXTURE_DIALING_EDIT_C : GuiHandler.TEXTURE_DIALING_SAVE_C));
         }
     }
-    
+
     @Override
-    public void onGuiClosed()
-    {
+    public void onGuiClosed() {
         super.onGuiClosed();
-        
-        if (!didSave)
-        {
+
+        if (!didSave) {
             ClientProxy.saveGlyph = null;
             ClientProxy.saveName = null;
             ClientProxy.saveTexture = null;
         }
     }
-    
+
     @Override
-    public void iconSelected(int icon)
-    {
+    public void iconSelected(int icon) {
         getPTM().setCustomFrameTexture(icon);
     }
-    
+
     @Override
-    public void onItemChanged(ItemStack newItem)
-    {
+    public void onItemChanged(ItemStack newItem) {
         getPTM().setFrameItem(newItem);
     }
-    
+
     @Override
-    public PortalTextureManager getPTM()
-    {
+    public PortalTextureManager getPTM() {
         return ClientProxy.saveTexture;
     }
 }

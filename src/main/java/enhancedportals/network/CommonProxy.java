@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -14,6 +15,10 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -56,56 +61,50 @@ import enhancedportals.tile.TileStabilizerMain;
 import enhancedportals.tile.TileTransferEnergy;
 import enhancedportals.tile.TileTransferFluid;
 import enhancedportals.tile.TileTransferItem;
+import enhancedportals.utility.CreativeTabEP3;
 
-public class CommonProxy
-{
-    public static final int REDSTONE_FLUX_COST = 10000, REDSTONE_FLUX_TIMER = 20;
+public class CommonProxy {
+    public static int CONFIG_REDSTONE_FLUX_COST = 10000, CONFIG_REDSTONE_FLUX_TIMER = 20;
+    public static boolean CONFIG_FORCE_FRAME_OVERLAY, CONFIG_DISABLE_SOUNDS, CONFIG_DISABLE_PARTICLES, CONFIG_PORTAL_DESTROYS_BLOCKS, CONFIG_FASTER_PORTAL_COOLDOWN, CONFIG_REQUIRE_POWER, CONFIG_UPDATE_NOTIFIER, CONFIG_RECIPES_VANILLA, CONFIG_RECIPES_TE;
+    public static double CONFIG_POWER_MULTIPLIER, CONFIG_POWER_STORAGE_MULTIPLIER;
+    public static int CONFIG_PORTAL_CONNECTIONS_PER_ROW = 2;
+
     public int gogglesRenderIndex = 0;
     public NetworkManager networkManager;
-    public static boolean forceShowFrameOverlays, disableSounds, disableParticles, portalsDestroyBlocks, fasterPortalCooldown, requirePower, updateNotifier, vanillaRecipes, teRecipes;
-    public static double powerMultiplier, powerStorageMultiplier;
-    public static int activePortalsPerRow = 2;
     static Configuration config;
-    static File craftingDir;
-    public static String lateVers;
+    public static String UPDATE_LATEST_VER;
+    public static final Logger logger = LogManager.getLogger("EnhancedPortals");
+    public static final CreativeTabs creativeTab = new CreativeTabEP3();
 
-    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame)
-    {
+    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame) {
 
     }
 
-    public ArrayList<ChunkCoordinates> getControllerList(ChunkCoordinates controller)
-    {
+    public ArrayList<ChunkCoordinates> getControllerList(ChunkCoordinates controller) {
         return null;
     }
 
-    public void clearControllerList(ChunkCoordinates controller)
-    {
+    public void clearControllerList(ChunkCoordinates controller) {
 
     }
 
-    public File getBaseDir()
-    {
+    public File getBaseDir() {
         return FMLCommonHandler.instance().getMinecraftServerInstance().getFile(".");
     }
 
-    public File getResourcePacksDir()
-    {
+    public File getResourcePacksDir() {
         return new File(getBaseDir(), "resourcepacks");
     }
 
-    public File getWorldDir()
-    {
+    public File getWorldDir() {
         return new File(getBaseDir(), DimensionManager.getWorld(0).getSaveHandler().getWorldDirectoryName());
     }
 
-    public void miscSetup()
-    {
+    public void miscSetup() {
         ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemPortalModule.instance, 1, 4), 1, 1, 2));
     }
 
-    public void registerBlocks()
-    {
+    public void registerBlocks() {
         GameRegistry.registerBlock(new BlockFrame("frame"), ItemFrame.class, "frame");
         GameRegistry.registerBlock(new BlockPortal("portal"), "portal");
         GameRegistry.registerBlock(new BlockStabilizer("dbs"), ItemStabilizer.class, "dbs");
@@ -114,8 +113,7 @@ public class CommonProxy
         GameRegistry.registerBlock(new BlockStabilizerEmpty("dbs_empty"), "dbs_empty");
     }
 
-    public void registerItems()
-    {
+    public void registerItems() {
         GameRegistry.registerItem(new ItemWrench("wrench"), "wrench");
         GameRegistry.registerItem(new ItemNanobrush("nanobrush"), "nanobrush");
         GameRegistry.registerItem(new ItemGlasses("glasses"), "glasses");
@@ -127,8 +125,7 @@ public class CommonProxy
         GameRegistry.registerItem(new ItemManual("manual"), "manual");
     }
 
-    public void registerPackets()
-    {
+    public void registerPackets() {
         EnhancedPortals.packetPipeline.registerPacket(PacketRequestGui.class);
         EnhancedPortals.packetPipeline.registerPacket(PacketTextureData.class);
         EnhancedPortals.packetPipeline.registerPacket(PacketRerender.class);
@@ -136,8 +133,7 @@ public class CommonProxy
         EnhancedPortals.packetPipeline.registerPacket(PacketGui.class);
     }
 
-    public void registerTileEntities()
-    {
+    public void registerTileEntities() {
         GameRegistry.registerTileEntity(TilePortal.class, "epP");
         GameRegistry.registerTileEntity(TileFrameBasic.class, "epF");
         GameRegistry.registerTileEntity(TileController.class, "epPC");
@@ -152,70 +148,56 @@ public class CommonProxy
         GameRegistry.registerTileEntity(TileTransferItem.class, "epTI");
     }
 
-    public void setupConfiguration(File c)
-    {
+    public void setupConfiguration(File c) {
         config = new Configuration(c);
-        craftingDir = new File(c.getParentFile(), "crafting");
-        forceShowFrameOverlays = config.get("Misc", "ForceShowFrameOverlays", false).getBoolean(false);
-        disableSounds = config.get("Overrides", "DisableSounds", false).getBoolean(false);
-        disableParticles = config.get("Overrides", "DisableParticles", false).getBoolean(false);
-        portalsDestroyBlocks = config.get("Portal", "PortalsDestroyBlocks", true).getBoolean(true);
-        fasterPortalCooldown = config.get("Portal", "FasterPortalCooldown", false).getBoolean(false);
-        requirePower = config.get("Power", "RequirePower", true).getBoolean(true);
-        powerMultiplier = config.get("Power", "PowerMultiplier", 1.0).getDouble(1.0);
-        powerStorageMultiplier = config.get("Power", "DBSPowerStorageMultiplier", 1.0).getDouble(1.0);
-        activePortalsPerRow = config.get("Portal", "ActivePortalsPerRow", 2).getInt(2);
-        updateNotifier = config.get("Misc", "NotifyOfUpdates", true).getBoolean(true);
-        vanillaRecipes = config.get("Crafting", "Vanilla", true).getBoolean(true);
-        teRecipes = config.get("Crafting", "ThermalExpansion", true).getBoolean(true);
+        CONFIG_FORCE_FRAME_OVERLAY = config.get("Misc", "ForceShowFrameOverlays", false).getBoolean(false);
+        CONFIG_DISABLE_SOUNDS = config.get("Overrides", "DisableSounds", false).getBoolean(false);
+        CONFIG_DISABLE_PARTICLES = config.get("Overrides", "DisableParticles", false).getBoolean(false);
+        CONFIG_PORTAL_DESTROYS_BLOCKS = config.get("Portal", "PortalsDestroyBlocks", true).getBoolean(true);
+        CONFIG_FASTER_PORTAL_COOLDOWN = config.get("Portal", "FasterPortalCooldown", false).getBoolean(false);
+        CONFIG_REQUIRE_POWER = config.get("Power", "RequirePower", true).getBoolean(true);
+        CONFIG_POWER_MULTIPLIER = config.get("Power", "PowerMultiplier", 1.0).getDouble(1.0);
+        CONFIG_POWER_STORAGE_MULTIPLIER = config.get("Power", "DBSPowerStorageMultiplier", 1.0).getDouble(1.0);
+        CONFIG_PORTAL_CONNECTIONS_PER_ROW = config.get("Portal", "ActivePortalsPerRow", 2).getInt(2);
+        CONFIG_UPDATE_NOTIFIER = config.get("Misc", "NotifyOfUpdates", true).getBoolean(true);
+        CONFIG_RECIPES_VANILLA = config.get("Crafting", "Vanilla", true).getBoolean(true);
+        CONFIG_RECIPES_TE = config.get("Crafting", "ThermalExpansion", true).getBoolean(true);
 
         config.save();
 
-        if (powerMultiplier < 0)
-        {
-            requirePower = false;
-        }
+        if (CONFIG_POWER_MULTIPLIER < 0)
+            CONFIG_REQUIRE_POWER = false;
 
-        if (powerStorageMultiplier < 0.01)
-        {
-            powerStorageMultiplier = 0.01;
-        }
+        if (CONFIG_POWER_STORAGE_MULTIPLIER < 0.01)
+            CONFIG_POWER_STORAGE_MULTIPLIER = 0.01;
 
-        try
-        {
+        try {
             URL versionIn = new URL(EnhancedPortals.UPDATE_URL);
             BufferedReader in = new BufferedReader(new InputStreamReader(versionIn.openStream()));
-            lateVers = in.readLine();
+            UPDATE_LATEST_VER = in.readLine();
 
-            if (FMLCommonHandler.instance().getSide() == Side.SERVER && !lateVers.equals(EnhancedPortals.VERSION))
-            {
-                EnhancedPortals.logger.info("You're using an outdated version (v" + EnhancedPortals.VERSION + "). The newest version is: " + lateVers);
-            }
-        }
-        catch (Exception e)
-        {
-            EnhancedPortals.logger.warn("Unable to get the latest version information");
-            lateVers = EnhancedPortals.VERSION;
+            if (FMLCommonHandler.instance().getSide() == Side.SERVER && !UPDATE_LATEST_VER.equals(EnhancedPortals.MOD_VERSION))
+                logger.info("You're using an outdated version (v" + EnhancedPortals.MOD_VERSION + "). The newest version is: " + UPDATE_LATEST_VER);
+        } catch (Exception e) {
+            logger.warn("Unable to get the latest version information");
+            UPDATE_LATEST_VER = EnhancedPortals.MOD_VERSION;
         }
     }
 
-    public static boolean Notify(EntityPlayer player, String lateVers)
-    {
-        if (updateNotifier == true)
-        {
-            player.addChatMessage(new ChatComponentText("Enhanced Portals has been updated to v" + lateVers + " :: You are running v" + EnhancedPortals.VERSION));
+    public static boolean Notify(EntityPlayer player, String lateVers) {
+        if (CONFIG_UPDATE_NOTIFIER == true) {
+            player.addChatMessage(new ChatComponentText("Enhanced Portals has been updated to v" + lateVers + " :: You are running v" + EnhancedPortals.MOD_VERSION));
             return true;
-        }
-        else
-        {
-            EnhancedPortals.logger.info("You're using an outdated version (v" + EnhancedPortals.VERSION + ")");
+        } else {
+            logger.info("You're using an outdated version (v" + EnhancedPortals.MOD_VERSION + ")");
             return false;
         }
     }
 
-    public void setupCrafting()
-    {
-        if (vanillaRecipes) Vanilla.registerRecipes();
-        if (teRecipes && Loader.isModLoaded(EnhancedPortals.MODID_THERMALEXPANSION)) ThermalExpansion.registerRecipes();
+    public void setupCrafting() {
+        if (CONFIG_RECIPES_VANILLA)
+            Vanilla.registerRecipes();
+        if (CONFIG_RECIPES_TE && Loader.isModLoaded(EnhancedPortals.MODID_THERMALEXPANSION))
+            ThermalExpansion.registerRecipes();
     }
 }

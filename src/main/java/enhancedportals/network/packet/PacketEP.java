@@ -4,11 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 
-public abstract class PacketEP
-{
+public abstract class PacketEP {
     /**
      * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
-     * 
+     *
      * @param ctx
      *            channel context
      * @param buffer
@@ -18,7 +17,7 @@ public abstract class PacketEP
 
     /**
      * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
-     * 
+     *
      * @param ctx
      *            channel context
      * @param buffer
@@ -28,7 +27,7 @@ public abstract class PacketEP
 
     /**
      * Handle a packet on the client side. Note this occurs after decoding has completed.
-     * 
+     *
      * @param player
      *            the player reference
      */
@@ -36,7 +35,7 @@ public abstract class PacketEP
 
     /**
      * Handle a packet on the server side. Note this occurs after decoding has completed.
-     * 
+     *
      * @param player
      *            the player reference
      */

@@ -5,11 +5,10 @@ import net.minecraft.item.ItemStack;
 import enhancedportals.client.PortalParticleFX;
 import enhancedportals.tile.TilePortalManipulator;
 
-public interface IPortalModule
-{
+public interface IPortalModule {
     /***
      * Gets whether or not the upgrade can be installed into this module manipulator.
-     * 
+     *
      * @param moduleManipulator
      * @param installedUpgrades
      *            All the upgrades currently installed.
@@ -20,7 +19,7 @@ public interface IPortalModule
 
     /***
      * Gets whether or not the upgrade can be removed from this module manipulator.
-     * 
+     *
      * @param moduleManipulator
      * @param installedUpgrades
      *            All the upgrades currently installed. Includes the upgrade calling this.
@@ -31,7 +30,7 @@ public interface IPortalModule
 
     /***
      * Return true to disable particles from being created.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      * @return True to disable particles.
@@ -40,7 +39,7 @@ public interface IPortalModule
 
     /***
      * Return true to stop the portal from being renderered.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      * @return True to disable rendering.
@@ -49,7 +48,7 @@ public interface IPortalModule
 
     /***
      * Gets the ID for this upgrade. There is no validation for this -- Multiple upgrades can have the same ID, but may cause issues.
-     * 
+     *
      * @param upgrade
      *            The upgrade itself.
      * @return Identifier
@@ -60,7 +59,7 @@ public interface IPortalModule
 
     /***
      * Gets called when the entity has successfully teleported. This will only be called from the portal that the entity gets teleported to.
-     * 
+     *
      * @param entity
      * @param moduleManipulator
      * @param upgrade
@@ -69,7 +68,7 @@ public interface IPortalModule
 
     /***
      * Gets called as soon as the entity enters the portal. This will only be called from the portal that the entity gets teleported from.
-     * 
+     *
      * @param entity
      * @param moduleManipulator
      * @param upgrade
@@ -79,7 +78,7 @@ public interface IPortalModule
 
     /***
      * Called when a single particle gets created.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      */
@@ -87,7 +86,7 @@ public interface IPortalModule
 
     /***
      * Called when a portal gets created.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      */
@@ -95,7 +94,7 @@ public interface IPortalModule
 
     /***
      * Called when a portal gets removed.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      */
@@ -103,7 +102,7 @@ public interface IPortalModule
 
     /***
      * Called when this upgrade gets installed.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      */
@@ -111,7 +110,7 @@ public interface IPortalModule
 
     /***
      * Called when this upgrade gets removed.
-     * 
+     *
      * @param moduleManipulator
      * @param upgrade
      */

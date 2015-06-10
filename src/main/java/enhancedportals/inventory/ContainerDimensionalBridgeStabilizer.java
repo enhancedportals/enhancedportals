@@ -13,13 +13,11 @@ import enhancedportals.network.packet.PacketGuiData;
 import enhancedportals.tile.TileStabilizerMain;
 import enhancedportals.utility.GeneralUtils;
 
-public class ContainerDimensionalBridgeStabilizer extends BaseContainer
-{
+public class ContainerDimensionalBridgeStabilizer extends BaseContainer {
     int lastPower = 0, lastMaxPower = 0, lastPortals = -1, lastInstability = 0, lastPowerState = -1;
     TileStabilizerMain stabilizer;
 
-    public ContainerDimensionalBridgeStabilizer(TileStabilizerMain s, InventoryPlayer p)
-    {
+    public ContainerDimensionalBridgeStabilizer(TileStabilizerMain s, InventoryPlayer p) {
         super(s, p, (GeneralUtils.hasEnergyCost() ? GuiDimensionalBridgeStabilizer.CONTAINER_SIZE : GuiDimensionalBridgeStabilizer.CONTAINER_SIZE_SMALL) + BaseGui.bufferSpace + BaseGui.playerInventorySize);
         stabilizer = s;
 
@@ -28,8 +26,7 @@ public class ContainerDimensionalBridgeStabilizer extends BaseContainer
     }
 
     @Override
-    public void detectAndSendChanges()
-    {
+    public void detectAndSendChanges() {
         super.detectAndSendChanges();
         int currentPower = stabilizer.getEnergyStorage().getEnergyStored();
         int currentMaxPower = stabilizer.getEnergyStorage().getMaxEnergyStored();
@@ -37,12 +34,10 @@ public class ContainerDimensionalBridgeStabilizer extends BaseContainer
         int currentInstability = stabilizer.instability;
         int currentPowerState = stabilizer.powerState;
 
-        for (int i = 0; i < crafters.size(); i++)
-        {
+        for (int i = 0; i < crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) crafters.get(i);
 
-            if (lastPower != currentPower || lastMaxPower != currentMaxPower)
-            {
+            if (lastPower != currentPower || lastMaxPower != currentMaxPower) {
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setInteger("energy", currentPower);
                 tag.setInteger("max", currentMaxPower);
@@ -50,19 +45,13 @@ public class ContainerDimensionalBridgeStabilizer extends BaseContainer
             }
 
             if (lastPortals != currentPortals)
-            {
                 icrafting.sendProgressBarUpdate(this, 2, currentPortals);
-            }
 
             if (lastInstability != currentInstability)
-            {
                 icrafting.sendProgressBarUpdate(this, 3, currentInstability);
-            }
 
             if (lastPowerState != currentPowerState)
-            {
                 icrafting.sendProgressBarUpdate(this, 4, currentPowerState);
-            }
         }
 
         lastPower = currentPower;
@@ -73,36 +62,26 @@ public class ContainerDimensionalBridgeStabilizer extends BaseContainer
     }
 
     @Override
-    public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player)
-    {
-        if(tag.hasKey("increase_powerState")){
-            if(stabilizer.powerState<3){
-            	stabilizer.powerState++;
-            }
-        }else if(tag.hasKey("decrease_powerState")){
-            if(stabilizer.powerState>0){
-            	stabilizer.powerState--;
-            }
-        }else if(tag.hasKey("energy")&&tag.hasKey("max")){
+    public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
+        if (tag.hasKey("increase_powerState")) {
+            if (stabilizer.powerState < 3)
+                stabilizer.powerState++;
+        } else if (tag.hasKey("decrease_powerState")) {
+            if (stabilizer.powerState > 0)
+                stabilizer.powerState--;
+        } else if (tag.hasKey("energy") && tag.hasKey("max")) {
             stabilizer.getEnergyStorage().setCapacity(tag.getInteger("max"));
             stabilizer.getEnergyStorage().setEnergyStored(tag.getInteger("energy"));
         }
     }
 
     @Override
-    public void updateProgressBar(int par1, int par2)
-    {
+    public void updateProgressBar(int par1, int par2) {
         if (par1 == 2)
-        {
             stabilizer.intActiveConnections = par2;
-        }
         else if (par1 == 3)
-        {
             stabilizer.instability = par2;
-        }
         else if (par1 == 4)
-        {
             stabilizer.powerState = par2;
-        }
     }
 }

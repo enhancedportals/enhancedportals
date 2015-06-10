@@ -14,17 +14,14 @@ import enhancedportals.block.BlockStabilizerEmpty;
 import enhancedportals.item.ItemBlankUpgrade;
 import enhancedportals.item.ItemUpgrade;
 
-public class ThermalExpansion
-{
-    static ItemStack getItemStack(String ID)
-    {
+public class ThermalExpansion {
+    static ItemStack getItemStack(String ID) {
         return GameRegistry.findItemStack(EnhancedPortals.MODID_THERMALEXPANSION, ID, 1);
     }
 
     // TODO this is a direct update from the old version. a lot of stuff needs tweaking as it wasn't finished back then
-    
-    public static void registerMachineRecipes()
-    {
+
+    public static void registerMachineRecipes() {
         ThermalExpansionHelper.addTransposerFill(10000, new ItemStack(BlockFrame.instance, 1, 0), new ItemStack(BlockFrame.instance, 1, BlockFrame.REDSTONE_INTERFACE), new FluidStack(FluidRegistry.getFluidID("redstone"), 200), false);
         ThermalExpansionHelper.addTransposerFill(10000, new ItemStack(ItemBlankUpgrade.instance, 1, 0), new ItemStack(ItemUpgrade.instance, 1, 0), new FluidStack(FluidRegistry.getFluidID("redstone"), 200), false);
 
@@ -34,8 +31,7 @@ public class ThermalExpansion
         ThermalExpansionHelper.addTransposerFill(25000, new ItemStack(BlockStabilizerEmpty.instance, 1, 0), new ItemStack(BlockStabilizer.instance, 1, 0), new FluidStack(FluidRegistry.getFluidID("ender"), 150), false);
     }
 
-    public static void registerRecipes()
-    {
+    public static void registerRecipes() {
         ItemStack machineFrame = getItemStack("machineFrame"), coilGold = getItemStack("powerCoilGold"), electrum = getItemStack("ingotElectrum");
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockFrame.instance, 4, 0), "SQS", "QMQ", "SQS", 'S', new ItemStack(Blocks.stone), 'Q', new ItemStack(Items.quartz), 'M', machineFrame));

@@ -10,22 +10,18 @@ import enhancedportals.portal.GlyphIdentifier;
 import enhancedportals.portal.PortalTextureManager;
 import enhancedportals.tile.TileDialingDevice;
 
-public class ContainerDialingAdd extends BaseContainer
-{
+public class ContainerDialingAdd extends BaseContainer {
     TileDialingDevice dial;
 
-    public ContainerDialingAdd(TileDialingDevice d, InventoryPlayer p)
-    {
+    public ContainerDialingAdd(TileDialingDevice d, InventoryPlayer p) {
         super(null, p);
         dial = d;
         hideInventorySlots();
     }
 
     @Override
-    public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player)
-    {
-        if (tag.hasKey("uid") && tag.hasKey("texture") && tag.hasKey("name"))
-        {
+    public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
+        if (tag.hasKey("uid") && tag.hasKey("texture") && tag.hasKey("name")) {
             PortalTextureManager ptm = new PortalTextureManager();
             ptm.readFromNBT(tag, "texture");
             dial.glyphList.add(new GlyphElement(tag.getString("name"), new GlyphIdentifier(tag.getString("uid")), ptm));
