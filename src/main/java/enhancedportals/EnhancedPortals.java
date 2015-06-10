@@ -76,6 +76,7 @@ public class EnhancedPortals {
         packetPipeline.postInitialise();
         initializeComputerCraft();
         proxy.setupCrafting();
+        
         if (event.getSide() == Side.CLIENT)
             FMLCommonHandler.instance().bus().register(new enhancedportals.network.LogOnHandler());
     }

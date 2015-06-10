@@ -2,6 +2,7 @@ package enhancedportals.client.gui.elements;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -106,6 +107,8 @@ public class ElementManualCraftingGrid extends BaseElement {
             parent.drawItemStack(items[9], posX + 18 + offset, posY + 69 + offset);
             parent.drawItemStackOverlay(items[9], posX + 18 + offset, posY + 69 + offset);
         }
+        
+        RenderHelper.disableStandardItemLighting();
     }
 
     @Override

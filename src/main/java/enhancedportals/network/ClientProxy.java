@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import enhancedportals.EnhancedPortals;
 import enhancedportals.block.BlockDecorBorderedQuartz;
 import enhancedportals.block.BlockDecorEnderInfusedMetal;
 import enhancedportals.block.BlockFrame;
@@ -106,7 +107,7 @@ public class ClientProxy extends CommonProxy {
 
     public static boolean locExists(String loc_string) {
         // Check if there is such a localized string as loc_string.
-        if (Localization.get(loc_string).equals("ep3." + loc_string))
+        if (Localization.get(loc_string).equals(EnhancedPortals.MOD_ID + "." + loc_string))
             return false;
         else
             return true;

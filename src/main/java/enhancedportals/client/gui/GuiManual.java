@@ -3,9 +3,13 @@ package enhancedportals.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import enhancedportals.EnhancedPortals;
 import enhancedportals.client.gui.elements.ElementManualCraftingGrid;
 import enhancedportals.client.gui.elements.ElementManualTextButton;
 import enhancedportals.inventory.ContainerManual;
@@ -18,10 +22,10 @@ public class GuiManual extends BaseGui {
     ElementManualCraftingGrid craftingGrid;
     ArrayList<ElementManualTextButton> text_buttons = new ArrayList<ElementManualTextButton>();
     // Pages assigned to be triggered on next or prev.
-    String next_page;
-    String prev_page;
+    String NEXT_PAGE;
+    String PREV_PAGE;
     // The page to go to by default (localization line).
-    String start_page = "ep3.manual.subject";
+    String START_PAGE = EnhancedPortals.MOD_ID + ".manual.subject";
     // Text Format.
     int RED = 0xFF0000;
     int DARK_GREY = 0x222222;
@@ -29,17 +33,17 @@ public class GuiManual extends BaseGui {
     int GREY = 0x444444;
     int BLACK = 0x000000;
     // Char dimensions of a page.
-    int chars_per_row = 21;
-    int rows_per_page = 12;
-    int header_rows = 2;
+    int CHARS_PER_ROW = 21;
+    int ROWS_PER_PAGE = 12;
+    int HEADER_ROWS = 2;
     // Page margins.
-    int page_margin = 130; // The amt of space a page spans.
-    int content_margin = 100; // The amt of space the content can take up.
-    int line_height = 12; // The height of each line.
+    int PAGE_MARGIN = 130; // The amt of space a page spans.
+    int CONTENT_MARGIN = 100; // The amt of space the content can take up.
+    int LINE_HEIGHT = 12; // The height of each line.
     // String constants.
-    String hr = "_____________________";
-    String loc_manual_string = "manual.chapter";
-
+    String HR = "_____________________";
+    String LOC_MANUAL_STRING = "manual.chapter";
+    
     public GuiManual(EntityPlayer p) {
         super(new ContainerManual(p.inventory), CONTAINER_SIZE);
         xSize = CONTAINER_WIDTH;
@@ -76,15 +80,15 @@ public class GuiManual extends BaseGui {
     }
 
     protected void writeChapterHeader(int chapter_num) {
-        String title = Localization.get(loc_manual_string + "." + chapter_num + ".title").trim().toUpperCase();
+        String title = Localization.get(LOC_MANUAL_STRING + "." + chapter_num + ".title").trim().toUpperCase();
         getFontRenderer().drawString(title, 15, 15, RED);
-        drawSplitString(10, 17, page_margin, hr, LIGHT_GREY);
+        drawSplitString(10, 17, PAGE_MARGIN, HR, LIGHT_GREY);
     }
 
     // Use if you want all the pages.
     protected void drawChapterPages(int chapter_num, int chapter_page) {
         ArrayList<ArrayList<String>> pages = getChapterPages(chapter_num);
-        int left_margin = (page_margin - content_margin) / 2;
+        int left_margin = (PAGE_MARGIN - CONTENT_MARGIN) / 2;
         // We display 2 pages at a time (called a spread) so we only need to get 1 number. We'll make it the even (left) side.
         if (chapter_page % 2 == 1)
             chapter_page--;
@@ -97,14 +101,14 @@ public class GuiManual extends BaseGui {
         // Left page.
         for (String line : pages.get(chapter_page)) {
             getFontRenderer().drawString(line.trim(), left_margin, top_margin, DARK_GREY);
-            top_margin += line_height;
+            top_margin += LINE_HEIGHT;
         }
         top_margin = 15;
         // Right page. Check if we have one first.
         if ((pages.size() - 1) > chapter_page)
             for (String line : pages.get(chapter_page + 1)) {
-                getFontRenderer().drawString(line.trim(), (page_margin + left_margin), top_margin, DARK_GREY);
-                top_margin += line_height;
+                getFontRenderer().drawString(line.trim(), (PAGE_MARGIN + left_margin), top_margin, DARK_GREY);
+                top_margin += LINE_HEIGHT;
             }
     }
 
@@ -143,7 +147,7 @@ public class GuiManual extends BaseGui {
         // Gather all paragraphs for this Chapter and put them in 'paragraphs'.
         do {
             // Set up some localization things.
-            loc = loc_manual_string + "." + chapter_num + ".p.";
+            loc = LOC_MANUAL_STRING + "." + chapter_num + ".p.";
             String paragraph = Localization.get(loc + iterator);
             iterator++;
             // Add to our array.
@@ -154,11 +158,11 @@ public class GuiManual extends BaseGui {
         while (!paragraphs.isEmpty()) {
             ArrayList<String> page = new ArrayList<String>();
             // Determine the amount of rows we need to grab per page.
-            int page_rows = (pages.size() == 0 ? (rows_per_page - header_rows) : rows_per_page);
+            int page_rows = (pages.size() == 0 ? (ROWS_PER_PAGE - HEADER_ROWS) : ROWS_PER_PAGE);
             // Fill up the page array as long as the page array isn't full and we still have paragraphs left.
             while ((page.size() < page_rows) && !paragraphs.isEmpty()) {
                 ArrayList<String> paragraph_lines = new ArrayList<String>();
-                paragraph_lines.addAll(parseStringByWidth(paragraphs.get(0), chars_per_row));
+                paragraph_lines.addAll(parseStringByWidth(paragraphs.get(0), CHARS_PER_ROW));
                 // We need more lines to fill this page.
                 if (paragraph_lines.size() <= (page_rows - page.size())) {
                     page = addListToArrayList(page, paragraph_lines);
@@ -211,27 +215,29 @@ public class GuiManual extends BaseGui {
         if (ClientProxy.manualEntry.equals("subject")) {
             hideCraftingTable();
             // drawSplitString(<right>,<down>,<width>,<text>,<color>)
-            drawSplitString(160, 70, page_margin, "ENHANCED", RED);
-            drawSplitString(210, 70, page_margin, "PORTALS", DARK_GREY);
-            getFontRenderer().drawSplitString(Localization.get("manual.subject.sub").toLowerCase(), 160, 80, page_margin, LIGHT_GREY);
+            getFontRenderer().drawString("ENHANCED", 160, 70, RED);
+            getFontRenderer().drawString("PORTALS", 210, 70, DARK_GREY);
+            getFontRenderer().drawSplitString(Localization.get("manual.subject.sub").toLowerCase(), 160, 80, PAGE_MARGIN, LIGHT_GREY);
             // Table of Contents.
         } else if (ClientProxy.manualEntry.equals("contents")) {
             hideCraftingTable();
-            drawSplitString(15, 20, page_margin, "> " + Localization.get("manual.table_of_contents.title").toUpperCase() + " <", RED);
-            drawSplitString(17, 35, page_margin, ":", RED);
-            drawSplitString(20, 35, page_margin, Localization.get("manual.chapter.0.title"), GREY);
-            drawSplitString(17, 50, page_margin, ":", RED);
-            drawSplitString(20, 50, page_margin, Localization.get("manual.chapter.1.title"), GREY);
-            drawSplitString(17, 65, page_margin, ":", RED);
-            drawSplitString(20, 65, 120, Localization.get("manual.chapter.2.title"), GREY);
-            drawSplitString(17, 80, page_margin, ":", RED);
-            drawSplitString(20, 80, 120, Localization.get("manual.chapter.3.title"), GREY);
-            drawSplitString(17, 95, page_margin, ":", RED);
-            drawSplitString(20, 95, 120, Localization.get("manual.chapter.4.title"), GREY);
-            drawSplitString(17, 110, page_margin, ":", RED);
-            drawSplitString(20, 110, page_margin, Localization.get("manual.chapter.5.title"), GREY);
-            drawSplitString(17, 125, page_margin, ":", RED);
-            drawSplitString(20, 125, page_margin, Localization.get("manual.chapter.6.title"), GREY);
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            getFontRenderer().drawSplitString("> " + Localization.get("manual.table_of_contents.title").toUpperCase() + " <", 15, 20, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(":", 17, 35, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.0.title"), 20, 35, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(":", 17, 50, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.1.title"), 20, 50, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(":", 17, 65, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.2.title"), 20, 65, 120, GREY);
+            getFontRenderer().drawSplitString(":", 17, 80, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.3.title"), 20, 80, 120, GREY);
+            getFontRenderer().drawSplitString(":", 17, 95, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.4.title"), 20, 95, 120, GREY);
+            getFontRenderer().drawSplitString(":", 17, 110, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.5.title"), 20, 110, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(":", 17, 125, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString(Localization.get("manual.chapter.6.title"), 20, 125, PAGE_MARGIN, GREY);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
             // Chapters.
         } else if (ClientProxy.manualEntry.equals("chapter")) {
             hideCraftingTable();
@@ -245,6 +251,7 @@ public class GuiManual extends BaseGui {
             getFontRenderer().drawString(title.toUpperCase(), 40, 15, LIGHT_GREY);
             getFontRenderer().drawString("==========", 45, 25, DARK_GREY);
             switch (ClientProxy.chapterNum) {
+                default:
                 case 2:
                     items.add("dbs");
                     items.add("wrench");
@@ -274,6 +281,7 @@ public class GuiManual extends BaseGui {
             drawItemLinks(items);
             // Otherwise we are viewing an Item page.
         } else {
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
             ItemStack[] stacks = ClientProxy.getCraftingRecipeForManualEntry();
             craftingGrid.setVisible(stacks != null);
             craftingGrid.setItems(stacks);
@@ -282,13 +290,14 @@ public class GuiManual extends BaseGui {
             int left_margin = 15;
             int top_margin = 15;
             String loc_entry = "manual." + ClientProxy.manualEntry;
-            top_margin += drawSplitString(left_margin, top_margin, content_margin, Localization.get(loc_entry + ".title").toUpperCase(), RED);
+            top_margin += drawSplitString(left_margin, top_margin, CONTENT_MARGIN, Localization.get(loc_entry + ".title").toUpperCase(), RED);
             // Check if subtitles exist.
             if (ClientProxy.locExists(loc_entry + ".subtitle"))
-                getFontRenderer().drawSplitString(Localization.get(loc_entry + ".subtitle"), left_margin, (top_margin), content_margin, LIGHT_GREY);
+                getFontRenderer().drawSplitString(Localization.get(loc_entry + ".subtitle"), left_margin, (top_margin), CONTENT_MARGIN, LIGHT_GREY);
             // Right page.
             top_margin = 15;
-            getFontRenderer().drawSplitString(Localization.get(loc_entry + ".info"), (page_margin + left_margin), top_margin, content_margin, DARK_GREY);
+            getFontRenderer().drawSplitString(Localization.get(loc_entry + ".info"), (PAGE_MARGIN + left_margin), top_margin, CONTENT_MARGIN, DARK_GREY);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
@@ -318,7 +327,7 @@ public class GuiManual extends BaseGui {
                 addElement(link);
                 text_buttons.add(link);
             }
-            top_margin += line_height;
+            top_margin += LINE_HEIGHT;
         }
     }
 

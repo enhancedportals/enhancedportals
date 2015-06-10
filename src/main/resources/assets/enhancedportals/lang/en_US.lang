@@ -3,9 +3,9 @@ tile.frame.frame.name=Portal Frame
 tile.frame.controller.name=Portal Controller
 tile.frame.redstone.name=Redstone Interface
 tile.frame.network_interface.name=Network Interface
-tile.frame.dial_device.name=Dialing Device
+tile.frame.dial_device.name=Dialling Device
 tile.frame.program_interface.name=Programmable Interface
-tile.frame.upgrade.name=Module Manipulator
+tile.frame.upgrade.name=Portal Manipulator
 tile.frame.fluid.name=Fluid Transportation Module
 tile.frame.item.name=Item Transportation Module
 tile.frame.energy.name=Energy Transportation Module
@@ -33,9 +33,9 @@ item.manual.name=ENHANCED PORTALS: wormhole tunneling.
 # In-place upgrades
 item.upgrade.redstone.name=Redstone Interface Upgrade
 item.upgrade.network_interface.name=Network Interface Upgrade
-item.upgrade.dial_device.name=Dialing Device Upgrade
+item.upgrade.dial_device.name=Dialling Device Upgrade
 item.upgrade.program_interface.name=Programmable Interface Upgrade
-item.upgrade.upgrade.name=Module Manipulator Upgrade
+item.upgrade.upgrade.name=Portal Manipulator Upgrade
 item.upgrade.fluid.name=Fluid Transportation Upgrade
 item.upgrade.item.name=Item Transportation Upgrade
 item.upgrade.energy.name=Energy Transportation Upgrade
@@ -97,7 +97,7 @@ enhancedportals.tab.glyphs=Glyphs
 enhancedportals.tab.glyphs.info=// TODO
 
 # GUI Dialler
-enhancedportals.gui.dialDevice=Dialing Device
+enhancedportals.gui.dialDevice=Dialling Device
 enhancedportals.gui.storedIdentifiers=Stored Identifiers
 enhancedportals.gui.terminate=Terminate
 enhancedportals.gui.dial=Dial
@@ -109,7 +109,7 @@ enhancedportals.gui.delete=Delete
 enhancedportals.gui.edit=Edit
 
 # GUI Dial Tab
-enhancedportals.tab.dialling=Dialing Device
+enhancedportals.tab.dialling=Dialling Device
 enhancedportals.tab.dialling.info=// TODO
 
 # GUI Texture
@@ -137,7 +137,7 @@ enhancedportals.tab.portalCustomTexture=Custom Texture
 enhancedportals.tab.portalCustomTexture.info=You can place custom portal textures in a resource pack to be usable here.
 
 # GUI Module Manipulator
-enhancedportals.gui.moduleManipulator=Module Manipulator
+enhancedportals.gui.moduleManipulator=Portal Manipulator
 enhancedportals.gui.modules=Portal Modules
 
 # GUI Network Interface
@@ -208,17 +208,17 @@ enhancedportals.error.voidLinkCard=This card no longer links to a valid Dimensio
 enhancedportals.error.receivingPortalNotInitialized=The receiving portal has not been initialized
 enhancedportals.error.sendingPortalNotInitialized=The sending portal has not been initialized
 enhancedportals.error.stabilizerNotFound=The DBS could not be found. Insert a new valid Location Card to continue
-enhancedportals.error.receivingPortalNoDialler=You cannot dial a portal that does not have a Dialing Device
-enhancedportals.error.sendingPortalNoDialler=You cannot dial from a portal that does not have a Dialing Device
+enhancedportals.error.receivingPortalNoDialler=You cannot dial a portal that does not have a Dialling Device
+enhancedportals.error.sendingPortalNoDialler=You cannot dial from a portal that does not have a Dialling Device
 enhancedportals.error.uniqueIdentifierNotSet=You cannot dial without setting a unique identifier
 enhancedportals.error.networkIdentifierNotSet=You cannot dial without setting a network identifier
-enhancedportals.error.dialDeviceNotFound=You cannot dial without a Dialing Device
+enhancedportals.error.dialDeviceNotFound=You cannot dial without a Dialling Device
 enhancedportals.error.diallingPortalAlreadyActive=You cannot dial from a portal that already has an active connection
 enhancedportals.error.receivingPortalAlreadyActive=You cannot dial to a portal that is already active
 enhancedportals.error.notEnoughPowerToStart=There is not enough power in the DBS to create a connection
 enhancedportals.error.maxedConnectionLimit=The DBS has too many active connections
-enhancedportals.error.cannotDialDiallingPortal=You cannot dial the same portal you're dialing from
-enhancedportals.error.diallingPortalNotFound=Failed to locate the portal that you are dialing from
+enhancedportals.error.cannotDialDiallingPortal=You cannot dial the same portal you're dialling from
+enhancedportals.error.diallingPortalNotFound=Failed to locate the portal that you are dialling from
 enhancedportals.error.receivingPortalNotFound=Failed to locate the receiving portal
 enhancedportals.error.notOnSameStabilizer=The portals are not connected to the same DBS
 enhancedportals.error.sendingPortalFailedToCreatePortal=The sending Portal Controller failed to create a portal
@@ -228,8 +228,8 @@ enhancedportals.error.noPortalWithThatIdentifierSending=Could not find a sending
 enhancedportals.error.failedToTransfer=The receiving portal is too small
 enhancedportals.error.multiplePortalControllers=You cannot have multiple Portal Controllers
 enhancedportals.error.multipleProgram=You cannot have multiple Programmable Interfaces
-enhancedportals.error.multipleMod=You cannot have multiple Module Manipulators
-enhancedportals.error.dialAndNetwork=You cannot have a Dialing Device and a Network Interface in the same portal structure
+enhancedportals.error.multipleMod=You cannot have multiple Portal Manipulators
+enhancedportals.error.dialAndNetwork=You cannot have a Dialling Device and a Network Interface in the same portal structure
 enhancedportals.error.portalCouldNotBeCreatedHere=A portal could not be created at this location
 enhancedportals.error.failedToCreatePortal=A portal could not be created at this location
 enhancedportals.error.couldNotCreatePortalHere=A portal could not be created at this location
@@ -268,7 +268,7 @@ enhancedportals.manual.chapter.0.p.0=The subatomic particles of life and space a
 enhancedportals.manual.chapter.1.title=The Basics
 enhancedportals.manual.chapter.1.p.0=The principals behind channeling a wormhole starts with constructing a Dimensional Bridge Stabilizer. This device will allow you to maintain and transport Bio Information across great distances.
 enhancedportals.manual.chapter.1.p.1=To sustain a wormhole you will need to create a frame which can withstand and encapsulate a wormhole formation. These are known as portal frames.
-enhancedportals.manual.chapter.1.p.2=Finally you will need a method that will being the portal. This can be anything from a simple button to a Dialing Device.
+enhancedportals.manual.chapter.1.p.2=Finally you will need a method that will being the portal. This can be anything from a simple button to a Dialling Device.
 
 ## Chapter 3:
 enhancedportals.manual.chapter.2.title=Stabilizing Dimensions
@@ -290,13 +290,13 @@ enhancedportals.manual.chapter.4.p.1=The simplest way to intiate a portal is to 
 
 ## Chapter 6:
 enhancedportals.manual.chapter.5.title=Phone Home
-enhancedportals.manual.chapter.5.p.0=Portals have a second way to communicate with eachother, and that's through a Dialing Device. A Dialing Device is a portal frame block that allows you to input the UID of another portal and establish a wormhole with it. By means of this, you can also dial portals outside of your DBS network if the portal that you are trying to connect to is set to "Public" in it's Portal Controller. Otherwise only portals networked through the same DBS may access them. Keep in mind that you can only link 2 portals this way, and unless you terminate the connection, other portals cannot dial that portal, not to mention the drain on the DBS. I'm sure you can think of a Redstone circuit that could automatically terminate them for you.
+enhancedportals.manual.chapter.5.p.0=Portals have a second way to communicate with eachother, and that's through a Dialling Device. A Dialling Device is a portal frame block that allows you to input the UID of another portal and establish a wormhole with it. By means of this, you can also dial portals outside of your DBS network if the portal that you are trying to connect to is set to "Public" in it's Portal Controller. Otherwise only portals networked through the same DBS may access them. Keep in mind that you can only link 2 portals this way, and unless you terminate the connection, other portals cannot dial that portal, not to mention the drain on the DBS. I'm sure you can think of a Redstone circuit that could automatically terminate them for you.
 
 ## Chapter 7:
 enhancedportals.manual.chapter.6.title=Accessorizing
 enhancedportals.manual.chapter.6.p.0=Integration is a key factor when setting up your evil lair, complete with a multiportal black hole room, and so there are a few ways to customize your Portals, and what you can transport with them.
 enhancedportals.manual.chapter.6.p.1=Right-clicking on a portal with a Nanobrush will allow you to access the Frame and Portal's customization screen. Here you can adjust the portal color, change the look of the portal blocks, and choose what particle your portal displays.
-enhancedportals.manual.chapter.6.p.2=Further advancing on customization, a Module Manipulator block is craftable. Integrated with a Portal Frame, the portal is now ready to accept special modules that are crafted out of Blank Modules. These special modules do things ranging from making your portals invisible to managing what direction you face once exiting a wormhole.
+enhancedportals.manual.chapter.6.p.2=Further advancing on customization, a Portal Manipulator block is craftable. Integrated with a Portal Frame, the portal is now ready to accept special modules that are crafted out of Blank Modules. These special modules do things ranging from making your portals invisible to managing what direction you face once exiting a wormhole.
 enhancedportals.manual.chapter.6.p.3=Integration with other forms of technology was required, so we've allowed some special blocks to be crafted, the Energy, Fluid, and Item Transportation Module portal frame blocks. These allow the portals to be much more flexible with transportating things other than players, mobs, and animals.
 
 
@@ -304,18 +304,33 @@ enhancedportals.manual.chapter.6.p.3=Integration with other forms of technology 
 ## ITEM INFORMATION ##
 ######################
 
+enhancedportals.manual.wrench.title=Wrench
 enhancedportals.manual.wrench.info=Right-click on a DBS array to turn into a DBS. Can also disassemble blocks when sneak-right-clicking portal objects. Use on portal module blocks to access their GUI. A Buildcraft or TE wrench may also be substituted.
+enhancedportals.manual.nanobrush.title=Nanobrush
 enhancedportals.manual.nanobrush.info=A very dangerous object. Use on a portal frame to activate the customization GUI. Don't get any in your hair.
+enhancedportals.manual.glasses.title=Glasses
 enhancedportals.manual.glasses.info=When worn, reveals portal frame modules for easier configuring.
+enhancedportals.manual.location_card.title=Location Card
 enhancedportals.manual.location_card.info=Used to link a portal's Controller with a DBS. Simply place a card into a DBS and right-click on a portal Controller. Can be saved and reused to link many portals to the same DBS.
+enhancedportals.manual.dbs.title=Dimensional Bridge Stabilizer
 enhancedportals.manual.dbs.info=Stabilizes a fixed point in a dimension so that wormhole creation and data transfer can happen. Uses RF to stabilize. Create a DBS by placing the DBS blocks in arrays of 2x3x2 or 3x3x2 and right-clicking with a wrench.
+enhancedportals.manual.frame0.title=Portal Frame
 enhancedportals.manual.frame0.info=The fundamental frame block, capable of forming and capsulating a wormhole.
+enhancedportals.manual.frame1.title=Portal Controller
 enhancedportals.manual.frame1.info=The Frame Controller is used to establish a link to the DBS. Once linked via a Location Card, the Controller should not be moved. If it's disassembled, you will need to relink. You can choose to keep a portal private, where only those on the same DBS can access it, or public.
+enhancedportals.manual.frame2.title=Redstone Interface
 enhancedportals.manual.frame2.info=A Redstone Interface will allow access to automate certain tasks via redstone. Simply craft and place somewhere along the frame. Several can be placed in a frame to give more options.
+enhancedportals.manual.frame3.title=Network Interface
 enhancedportals.manual.frame3.info=Network interfaces allow 2 or more portals to connect through a network to eachother. Simply enter a Network ID on one portal and the same NID in another, and they will link. Portals set to private will not be able to access portals not on their DBS.
-enhancedportals.manual.frame4.info=The Dialing Device module allows you to establish a link to another portal without the need of a Network. You can also save UIDs from other Portals as a Dialing pad (hold shift to delete). Portals set to private will not be able to access portals not on their DBS.
-enhancedportals.manual.frame6.info=A Module Manipulator is a frame that will allow a portal to interact with Module chips. These chips can be crafted and placed in the Module Manipulator to do a range of things from silencing a portal to making the portal itself invisible.
+enhancedportals.manual.frame4.title=Dialling Device
+enhancedportals.manual.frame4.info=The Dialling Device module allows you to establish a link to another portal without the need of a Network. You can also save UIDs from other Portals as a Dialling pad (hold shift to delete). Portals set to private will not be able to access portals not on their DBS.
+enhancedportals.manual.frame6.title=Portal Manipulator
+enhancedportals.manual.frame6.info=A Portal Manipulator is a frame that will allow a portal to interact with Module chips. These chips can be crafted and placed in the Portal Manipulator to do a range of things from silencing a portal to making the portal itself invisible.
+enhancedportals.manual.frame7.title=Fluid Transportation Module
 enhancedportals.manual.frame7.info=This module allows you to teleport Fluid to a destination with another Fluid Transportation module.
+enhancedportals.manual.frame8.title=Item Transportation Module
 enhancedportals.manual.frame8.info=This module allows you to teleport Items to a destination with another Item Transportation module.
+enhancedportals.manual.frame9.title=Energy Transportation Module
 enhancedportals.manual.frame9.info=This module allows you to teleport Energy to a destination with another Energy Transportation module.
-enhancedportals.manual.blank_module.info=The foundation circuit module. This item is required to craft the other modules and the Module Manipulator.
+enhancedportals.manual.blank_module.title=Blank Portal Module
+enhancedportals.manual.blank_module.info=The foundation circuit module. This item is required to craft the other modules and the Portal Manipulator.
