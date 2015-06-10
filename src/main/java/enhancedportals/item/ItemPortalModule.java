@@ -5,11 +5,13 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -126,14 +128,22 @@ public class ItemPortalModule extends Item implements IPortalModule {
 
     @Override
     public void onEntityTeleportEnd(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
-            entity.fallDistance = 0f; // For if it's installed on the exit portal
+        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal()) {
+            if (entity instanceof EntityPlayer)
+                ((EntityPlayer) entity).addPotionEffect(new PotionEffect(CommonProxy.featherfallPotion.id, 200, 0));
+            else if (entity instanceof EntityLiving)
+                ((EntityLiving) entity).addPotionEffect(new PotionEffect(CommonProxy.featherfallPotion.id, 200, 0));
+        }
     }
 
     @Override
     public boolean onEntityTeleportStart(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
-            entity.fallDistance = 0f; // For if it's installed on the entry portal
+        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal()) {
+            if (entity instanceof EntityPlayer)
+                ((EntityPlayer) entity).addPotionEffect(new PotionEffect(CommonProxy.featherfallPotion.id, 200, 0));
+            else if (entity instanceof EntityLiving)
+                ((EntityLiving) entity).addPotionEffect(new PotionEffect(CommonProxy.featherfallPotion.id, 200, 0));
+        }
 
         return false;
     }

@@ -3,13 +3,12 @@ package enhancedportals;
 import java.io.File;
 import java.lang.reflect.Method;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -30,7 +29,6 @@ import enhancedportals.network.CommonProxy;
 import enhancedportals.network.GuiHandler;
 import enhancedportals.network.PacketPipeline;
 import enhancedportals.portal.NetworkManager;
-import enhancedportals.utility.CreativeTabEP3;
 
 @Mod(name = EnhancedPortals.MOD_NAME, modid = EnhancedPortals.MOD_ID, version = EnhancedPortals.MOD_VERSION, dependencies = EnhancedPortals.MOD_DEPENDENCIES)
 public class EnhancedPortals {
@@ -89,11 +87,24 @@ public class EnhancedPortals {
         proxy.registerTileEntities();
         proxy.registerItems();
         proxy.registerPackets();
+        proxy.registerPotions();
     }
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.networkManager = new NetworkManager(event);
+    }
+    
+    @SubscribeEvent
+    public void onEntityUpdate(LivingUpdateEvent event) {
+        PotionEffect effect = event.entityLiving.getActivePotionEffect(CommonProxy.featherfallPotion);
+
+        if (effect != null) {
+            event.entityLiving.fallDistance = 0f;
+
+            if (event.entityLiving.getActivePotionEffect(CommonProxy.featherfallPotion).getDuration() <= 0)
+                event.entityLiving.removePotionEffect(CommonProxy.featherfallPotion.id);
+        }
     }
 
     @SubscribeEvent

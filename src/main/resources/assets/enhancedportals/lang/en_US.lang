@@ -62,6 +62,9 @@ enhancedportals.gui.facing.1=East
 enhancedportals.gui.facing.2=South
 enhancedportals.gui.facing.3=West
 
+# Potions
+potion.featherfall=Featherfall
+
 # Creative Tab
 itemGroup.enhancedportals=EnhancedPortals 3
 

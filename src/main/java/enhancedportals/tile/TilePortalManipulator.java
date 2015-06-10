@@ -200,6 +200,14 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
         for (int i = 0; i < items.tagCount(); i++)
             setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(i)));
     }
+    
+    public boolean onEntityTeleport(Entity entity) {
+        for (ItemStack i : getModules())
+            if (((IPortalModule) i.getItem()).onEntityTeleportStart(entity, this, i))
+                return true;
+        
+        return false;
+    }
 
     public void onEntityTeleported(Entity entity) {
         for (ItemStack i : getModules())

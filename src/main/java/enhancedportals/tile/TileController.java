@@ -742,6 +742,13 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
         if (tile != null && tile instanceof TileController) {
             TileController control = (TileController) tile;
+            
+            TilePortalManipulator manip = getModuleManipulator();
+            
+            if (manip != null)
+                if (manip.onEntityTeleport(entity)) {
+                    EntityManager.setEntityPortalCooldown(entity);
+                }
 
             try {
                 EntityManager.transferEntity(entity, this, control);
