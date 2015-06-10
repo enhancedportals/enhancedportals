@@ -285,7 +285,6 @@ public class GuiManual extends BaseGui {
             ItemStack[] stacks = ClientProxy.getCraftingRecipeForManualEntry();
             craftingGrid.setVisible(stacks != null);
             craftingGrid.setItems(stacks);
-            addElement(craftingGrid);
             // Setup some variables to output the item info.
             int left_margin = 15;
             int top_margin = 15;
@@ -299,6 +298,7 @@ public class GuiManual extends BaseGui {
             getFontRenderer().drawSplitString(Localization.get(loc_entry + ".info"), (PAGE_MARGIN + left_margin), top_margin, CONTENT_MARGIN, DARK_GREY);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
+        
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
@@ -475,6 +475,11 @@ public class GuiManual extends BaseGui {
 
         // Initiate the crafting grid for the item pages.
         craftingGrid = new ElementManualCraftingGrid(this, (70 - 33), (90 - 33), null);
+        
+        if (ClientProxy.manualEntry.equals("subject") || ClientProxy.manualEntry.equals("gallery") || ClientProxy.manualEntry.equals("chapter") || ClientProxy.manualEntry.equals("contents"))
+            craftingGrid.setVisible(false);
+        
+        addElement(craftingGrid);
     }
 
     public void pageChanged() {

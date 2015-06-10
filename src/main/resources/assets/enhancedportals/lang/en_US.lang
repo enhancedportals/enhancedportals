@@ -28,7 +28,7 @@ item.glasses.name=Glasses
 item.location_card.name=Location Card
 item.blank_portal_module.name=Blank Portal Module
 item.blank_upgrade.name=Blank Upgrade
-item.manual.name=ENHANCED PORTALS: wormhole tunneling.
+item.manual.name=ENHANCED PORTALS: wormhole tunneling
 
 # In-place upgrades
 item.upgrade.redstone.name=Redstone Interface Upgrade
@@ -202,42 +202,42 @@ enhancedportals.gui.sending=Sending
 enhancedportals.gui.receiving=Receiving
 
 # Errors
-enhancedportals.error=[Error] 
-enhancedportals.error.noUidSet=You must set a Unique Identifier before doing this
-enhancedportals.error.voidLinkCard=This card no longer links to a valid Dimensional Bridge Stabilizer
-enhancedportals.error.receivingPortalNotInitialized=The receiving portal has not been initialized
-enhancedportals.error.sendingPortalNotInitialized=The sending portal has not been initialized
-enhancedportals.error.stabilizerNotFound=The DBS could not be found. Insert a new valid Location Card to continue
-enhancedportals.error.receivingPortalNoDialler=You cannot dial a portal that does not have a Dialling Device
-enhancedportals.error.sendingPortalNoDialler=You cannot dial from a portal that does not have a Dialling Device
-enhancedportals.error.uniqueIdentifierNotSet=You cannot dial without setting a unique identifier
-enhancedportals.error.networkIdentifierNotSet=You cannot dial without setting a network identifier
-enhancedportals.error.dialDeviceNotFound=You cannot dial without a Dialling Device
-enhancedportals.error.diallingPortalAlreadyActive=You cannot dial from a portal that already has an active connection
-enhancedportals.error.receivingPortalAlreadyActive=You cannot dial to a portal that is already active
-enhancedportals.error.notEnoughPowerToStart=There is not enough power in the DBS to create a connection
-enhancedportals.error.maxedConnectionLimit=The DBS has too many active connections
-enhancedportals.error.cannotDialDiallingPortal=You cannot dial the same portal you're dialling from
-enhancedportals.error.diallingPortalNotFound=Failed to locate the portal that you are dialling from
-enhancedportals.error.receivingPortalNotFound=Failed to locate the receiving portal
-enhancedportals.error.notOnSameStabilizer=The portals are not connected to the same DBS
-enhancedportals.error.sendingPortalFailedToCreatePortal=The sending Portal Controller failed to create a portal
-enhancedportals.error.receivingPortalFailedToCreatePortal=The receiving Portal Controller failed to create a portal
-enhancedportals.error.noPortalWithThatIdentifierReceiving=Could not find an exit portal with that UID
-enhancedportals.error.noPortalWithThatIdentifierSending=Could not find a sending portal with that UID (How did you dial...? o_O)
-enhancedportals.error.failedToTransfer=The receiving portal is too small
-enhancedportals.error.multiplePortalControllers=You cannot have multiple Portal Controllers
-enhancedportals.error.multipleProgram=You cannot have multiple Programmable Interfaces
-enhancedportals.error.multipleMod=You cannot have multiple Portal Manipulators
-enhancedportals.error.dialAndNetwork=You cannot have a Dialling Device and a Network Interface in the same portal structure
-enhancedportals.error.portalCouldNotBeCreatedHere=A portal could not be created at this location
-enhancedportals.error.failedToCreatePortal=A portal could not be created at this location
-enhancedportals.error.couldNotCreatePortalHere=A portal could not be created at this location
+enhancedportals.error=[Error]
+enhancedportals.error.noUidSet=%s You must set a Unique Identifier before doing this
+enhancedportals.error.voidLinkCard=%s This card no longer links to a valid Dimensional Bridge Stabilizer
+enhancedportals.error.receivingPortalNotInitialized=%s The receiving portal has not been initialized
+enhancedportals.error.sendingPortalNotInitialized=%s The sending portal has not been initialized
+enhancedportals.error.stabilizerNotFound=%s The DBS could not be found. Insert a new valid Location Card to continue
+enhancedportals.error.receivingPortalNoDialler=%s You cannot dial a portal that does not have a Dialling Device
+enhancedportals.error.sendingPortalNoDialler=%s You cannot dial from a portal that does not have a Dialling Device
+enhancedportals.error.uniqueIdentifierNotSet=%s You cannot dial without setting a unique identifier
+enhancedportals.error.networkIdentifierNotSet=%s You cannot dial without setting a network identifier
+enhancedportals.error.dialDeviceNotFound=%s You cannot dial without a Dialling Device
+enhancedportals.error.diallingPortalAlreadyActive=%s You cannot dial from a portal that already has an active connection
+enhancedportals.error.receivingPortalAlreadyActive=%s You cannot dial to a portal that is already active
+enhancedportals.error.notEnoughPowerToStart=%s There is not enough power in the DBS to create a connection
+enhancedportals.error.maxedConnectionLimit=%s The DBS has too many active connections
+enhancedportals.error.cannotDialDiallingPortal=%s You cannot dial the same portal you're dialling from
+enhancedportals.error.diallingPortalNotFound=%s Failed to locate the portal that you are dialling from
+enhancedportals.error.receivingPortalNotFound=%s Failed to locate the receiving portal
+enhancedportals.error.notOnSameStabilizer=%s The portals are not connected to the same DBS
+enhancedportals.error.sendingPortalFailedToCreatePortal=%s The sending Portal Controller failed to create a portal
+enhancedportals.error.receivingPortalFailedToCreatePortal=%s The receiving Portal Controller failed to create a portal
+enhancedportals.error.noPortalWithThatIdentifierReceiving=%s Could not find an exit portal with that UID
+enhancedportals.error.noPortalWithThatIdentifierSending=%s Could not find a sending portal with that UID
+enhancedportals.error.failedToTransfer=%s The receiving portal is too small
+enhancedportals.error.multiplePortalControllers=%s You cannot have multiple Portal Controllers
+enhancedportals.error.multipleProgram=%s You cannot have multiple Programmable Interfaces
+enhancedportals.error.multipleMod=%s You cannot have multiple Portal Manipulators
+enhancedportals.error.dialAndNetwork=%s You cannot have a Dialling Device and a Network Interface in the same portal structure
+enhancedportals.error.portalCouldNotBeCreatedHere=%s A portal could not be created at this location
+enhancedportals.error.failedToCreatePortal=%s A portal could not be created at this location
+enhancedportals.error.couldNotCreatePortalHere=%s A portal could not be created at this location
 
 # Success
-enhancedportals.success=[Success] 
-enhancedportals.success.create=Portal initialized
-enhancedportals.success.reconfigure=Portal reconfigured
+enhancedportals.success=[Success]
+enhancedportals.success.create=%s Portal initialized
+enhancedportals.success.reconfigure=%s Portal reconfigured
 
 
 ############
