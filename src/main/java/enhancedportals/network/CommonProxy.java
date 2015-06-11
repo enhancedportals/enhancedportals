@@ -130,7 +130,7 @@ public class CommonProxy {
         GameRegistry.registerItem(new ItemBlankUpgrade("blank_upgrade"), "blank_upgrade");
         GameRegistry.registerItem(new ItemManual("manual"), "manual");
         
-        if (CONFIG_RECIPES_TE) {
+        if (CONFIG_RECIPES_TE && Loader.isModLoaded(EnhancedPortals.MODID_THERMALEXPANSION)) {
             ThermalExpansion.registerItems();
             ThermalExpansion.registerMachineRecipes();
         }

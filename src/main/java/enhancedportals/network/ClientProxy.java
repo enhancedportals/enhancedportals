@@ -236,9 +236,6 @@ public class ClientProxy extends CommonProxy {
         particleSets.add(new ParticleSet(2, new int[] { 82 }));
         particleSets.add(new ParticleSet(2, new int[] { 83 }));
 
-        // Will play through their animation until they die
-        // particleSets.add(new ParticleSet(3, new int[] { 164, 165 }));
-
         // Rendering
         PortalRenderer.ID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(PortalRenderer.ID, new PortalRenderer());
