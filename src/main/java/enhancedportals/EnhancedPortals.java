@@ -32,8 +32,14 @@ import enhancedportals.portal.NetworkManager;
 
 @Mod(name = EnhancedPortals.MOD_NAME, modid = EnhancedPortals.MOD_ID, version = EnhancedPortals.MOD_VERSION, dependencies = EnhancedPortals.MOD_DEPENDENCIES)
 public class EnhancedPortals {
-    public static final String MOD_NAME = "EnhancedPortals", MOD_ID = "enhancedportals", MOD_VERSION = "3.0.11", MOD_DEPENDENCIES = "after:ThermalExpansion", UPDATE_URL = "https://raw.githubusercontent.com/enhancedportals/enhancedportals/master/docs/VERSION";
-    public static final String MODID_OPENCOMPUTERS = "OpenComputers", MODID_COMPUTERCRAFT = "ComputerCraft", MODID_THERMALEXPANSION = "ThermalExpansion";
+    public static final String MOD_NAME = "EnhancedPortals",
+                               MOD_ID = "enhancedportals",
+                               MOD_VERSION = "3.0.12",
+                               MOD_DEPENDENCIES = "after:ThermalExpansion",
+                               UPDATE_URL = "https://raw.githubusercontent.com/enhancedportals/enhancedportals/master/docs/VERSION";
+    public static final String MODID_OPENCOMPUTERS = "OpenComputers",
+                               MODID_COMPUTERCRAFT = "ComputerCraft",
+                               MODID_THERMALEXPANSION = "ThermalExpansion";
     public static final PacketPipeline packetPipeline = new PacketPipeline();
 
     @Instance(MOD_ID)

@@ -29,6 +29,7 @@ item.location_card.name=Location Card
 item.blank_portal_module.name=Blank Portal Module
 item.blank_upgrade.name=Blank Upgrade
 item.manual.name=ENHANCED PORTALS: wormhole tunneling
+item.diamondNugget.name=Diamond Nugget
 
 # In-place upgrades
 item.upgrade.redstone.name=Redstone Interface Upgrade

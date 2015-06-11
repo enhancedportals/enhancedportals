@@ -129,6 +129,11 @@ public class CommonProxy {
         GameRegistry.registerItem(new ItemBlankPortalModule("blank_portal_module"), "blank_portal_module");
         GameRegistry.registerItem(new ItemBlankUpgrade("blank_upgrade"), "blank_upgrade");
         GameRegistry.registerItem(new ItemManual("manual"), "manual");
+        
+        if (CONFIG_RECIPES_TE) {
+            ThermalExpansion.registerItems();
+            ThermalExpansion.registerMachineRecipes();
+        }
     }
     
     public void registerPotions() {
