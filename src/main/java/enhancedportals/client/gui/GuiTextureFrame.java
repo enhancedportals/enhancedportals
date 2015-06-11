@@ -181,7 +181,7 @@ public class GuiTextureFrame extends BaseGui implements IFakeSlotHandler {
 
         Block b = Block.getBlockFromItem(s.getItem());
 
-        if (b == Blocks.air)
+        if (b == Blocks.air || !b.isBlockNormalCube())
             return false;
 
         return true;
