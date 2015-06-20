@@ -378,6 +378,7 @@ public class EntityManager {
         if (rider != null)
             rider.mountEntity(entity);
 
+        setEntityPortalCooldown(entity);
         return entity;
     }
 
