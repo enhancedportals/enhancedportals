@@ -67,23 +67,13 @@ enhancedportals.gui.facing.3=West
 potion.featherfall=Featherfall
 
 # Creative Tab
-itemGroup.enhancedportals=EnhancedPortals 3
+itemGroup.enhancedportals=Enhanced Portals 3
 
 # GUI DBS
 enhancedportals.gui.dimensionalBridgeStabilizer=Dimensional Bridge Stabilizer
 enhancedportals.gui.information=Information
 enhancedportals.gui.activePortals=Active Portals
 enhancedportals.gui.instability=Instability
-enhancedportals.gui.powerModeNormal=Mode: Normal
-enhancedportals.gui.powerModeRisky=Mode: Risky
-enhancedportals.gui.powerModeUnstable=Mode: Unstable
-enhancedportals.gui.powerModeUnpredictable=Mode: Unpredictable
-
-# RF Tab
-enhancedportals.tab.redstoneFlux=Energy
-enhancedportals.tab.redstoneFlux.maxPower=Maximum Energy:
-enhancedportals.tab.redstoneFlux.storedPower=Stored Energy:
-enhancedportals.tab.redstoneFlux.powerUsage=Power Usage:
 
 # GUI Portal Controller
 enhancedportals.gui.portalController=Portal Controller
@@ -243,6 +233,7 @@ enhancedportals.success=[Success]
 enhancedportals.success.create=%s Portal initialized
 enhancedportals.success.reconfigure=%s Portal reconfigured
 
+enhancedportals.chat.updateMessage=There is an update available for Enhanced Portals (%1$s)
 
 ############
 ## Manual ##

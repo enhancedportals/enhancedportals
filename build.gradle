@@ -57,10 +57,12 @@ processResources {
 
 repositories {
     maven { url = "http://maven.cil.li/" }
+    flatDir { dirs 'libs' }
 }
 
 dependencies {
     compile "li.cil.oc:OpenComputers:MC1.7.10-1.4.0.11:api"
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 jar {

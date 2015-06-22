@@ -1,6 +1,6 @@
 [{
   "modid": "${mod_id}",
-  "name": "EnhancedPortals",
+  "name": "Enhanced Portals",
   "version": "${mod_version}",
   "mcversion": "${mc_version}",
   "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1292751",
