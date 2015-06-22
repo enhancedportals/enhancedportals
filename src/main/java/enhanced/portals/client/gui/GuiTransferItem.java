@@ -19,13 +19,13 @@ public class GuiTransferItem extends BaseGui {
 
     public GuiTransferItem(TileTransferItem i, EntityPlayer p) {
         super(new ContainerTransferItem(i, p.inventory), CONTAINER_SIZE);
-        name = "gui.transferItem";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.transferItem");
         item = i;
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    	drawGuiBackgroundLayer(f, i, j);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(playerInventoryTexture);
         drawTexturedModalRect(guiLeft + xSize - 18 - 7, guiTop + 22, 7, 7, 18, 18);

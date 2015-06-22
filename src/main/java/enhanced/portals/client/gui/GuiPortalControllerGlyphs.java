@@ -30,7 +30,7 @@ public class GuiPortalControllerGlyphs extends BaseGui {
     public GuiPortalControllerGlyphs(TileController c, EntityPlayer p) {
         super(new ContainerPortalControllerGlyphs(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = "gui.portalController";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.portalController");
         setHidePlayerInventory();
     }
 

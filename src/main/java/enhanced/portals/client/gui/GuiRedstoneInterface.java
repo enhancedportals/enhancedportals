@@ -16,7 +16,7 @@ public class GuiRedstoneInterface extends BaseGui {
 
     public GuiRedstoneInterface(TileRedstoneInterface ri, EntityPlayer p) {
         super(new ContainerRedstoneInterface(ri, p.inventory), CONTAINER_SIZE);
-        name = "gui.redstoneInterface";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.redstoneInterface");
         redstone = ri;
         setHidePlayerInventory();
     }

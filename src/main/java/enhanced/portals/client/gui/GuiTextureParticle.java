@@ -38,7 +38,7 @@ public class GuiTextureParticle extends BaseGui {
         super(new ContainerTextureParticle(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
-        name = "gui.particle";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.particle");
         texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/textures_particles.png");
         leftNudge = 7;
         hasSingleTexture = true;

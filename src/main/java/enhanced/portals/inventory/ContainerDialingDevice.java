@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.packet.PacketGui;

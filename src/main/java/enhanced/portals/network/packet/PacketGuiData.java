@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.PacketBase;
-import enhanced.portals.inventory.BaseContainer;
 
 public class PacketGuiData extends PacketBase {
     NBTTagCompound tag;

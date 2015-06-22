@@ -20,7 +20,7 @@ public class GuiNetworkInterface extends BaseGui {
     public GuiNetworkInterface(TileController c, EntityPlayer p) {
         super(new ContainerNetworkInterface(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = "gui.networkInterface";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.networkInterface");
         setHidePlayerInventory();
     }
 

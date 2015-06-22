@@ -28,7 +28,7 @@ public class GuiDialingManual extends BaseGui {
     public GuiDialingManual(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingManual(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = "gui.dialDevice";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
         controller = dial.getPortalController();
         setHidePlayerInventory();
     }

@@ -14,7 +14,7 @@ public class GuiModuleManipulator extends BaseGui {
     public GuiModuleManipulator(TilePortalManipulator m, EntityPlayer p) {
         super(new ContainerModuleManipulator(m, p.inventory), CONTAINER_SIZE);
         module = m;
-        name = "gui.moduleManipulator";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.moduleManipulator");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GuiModuleManipulator extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    	drawGuiBackgroundLayer(f, i, j);
 
         mc.renderEngine.bindTexture(playerInventoryTexture);
         drawTexturedModalRect(guiLeft + 7, guiTop + containerSize - 25, 7, 7, 162, 18);

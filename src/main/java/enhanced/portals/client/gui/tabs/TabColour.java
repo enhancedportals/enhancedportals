@@ -5,6 +5,8 @@ import net.minecraft.client.gui.GuiButton;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.button.GuiRGBSlider;
 import enhanced.base.client.gui.tabs.BaseTab;
+import enhanced.base.utilities.Localization;
+import enhanced.portals.EnhancedPortals;
 import enhanced.portals.item.ItemNanobrush;
 
 public class TabColour extends BaseTab {
@@ -16,7 +18,7 @@ public class TabColour extends BaseTab {
         backgroundColor = 0x5396da;
         maxHeight += 89;
         maxWidth = 116;
-        name = "gui.colour";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.colour");
         icon = ItemNanobrush.texture;
         sliderR = r;
         sliderG = g;

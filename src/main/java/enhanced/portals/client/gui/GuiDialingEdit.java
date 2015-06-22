@@ -25,7 +25,7 @@ public class GuiDialingEdit extends GuiDialingAdd {
     public GuiDialingEdit(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingEdit(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = "gui.dialDevice";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
         setHidePlayerInventory();
         allowUserInput = true;
         Keyboard.enableRepeatEvents(true);

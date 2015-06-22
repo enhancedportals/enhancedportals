@@ -6,6 +6,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiTransferFluid;
 import enhanced.portals.tile.TileTransferFluid;
 

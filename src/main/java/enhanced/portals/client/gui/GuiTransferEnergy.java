@@ -17,7 +17,7 @@ public class GuiTransferEnergy extends BaseGui {
 
     public GuiTransferEnergy(TileTransferEnergy e, EntityPlayer p) {
         super(new ContainerTransferEnergy(e, p.inventory), CONTAINER_SIZE);
-        name = "gui.transferEnergy";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.transferEnergy");
         energy = e;
     }
 

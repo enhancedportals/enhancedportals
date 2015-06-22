@@ -1,5 +1,6 @@
 package enhanced.portals.inventory;
 
+import enhanced.base.inventory.BaseContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;

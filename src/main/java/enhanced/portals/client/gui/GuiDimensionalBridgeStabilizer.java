@@ -23,7 +23,7 @@ public class GuiDimensionalBridgeStabilizer extends BaseGui {
     public GuiDimensionalBridgeStabilizer(TileStabilizerMain s, EntityPlayer p) {
         super(new ContainerDimensionalBridgeStabilizer(s, p.inventory), CONTAINER_SIZE);
         stabilizer = s;
-        name = "gui.dimensionalBridgeStabilizer";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dimensionalBridgeStabilizer");
         setCombinedInventory();
     }
 
@@ -57,7 +57,7 @@ public class GuiDimensionalBridgeStabilizer extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    	drawGuiBackgroundLayer(f, i, j);
 
         mc.renderEngine.bindTexture(playerInventoryTexture);
         drawTexturedModalRect(guiLeft + xSize - 25, guiTop + containerSize - 26, 7, 7, 18, 18);

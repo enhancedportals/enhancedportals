@@ -13,12 +13,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.base.utilities.Localization;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.block.BlockFrame;
 import enhanced.portals.block.BlockPortal;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
-import enhanced.portals.inventory.BaseContainer;
 import enhanced.portals.inventory.ContainerDialingAdd;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.GuiHandler;
@@ -39,7 +39,7 @@ public class GuiDialingAdd extends BaseGui {
     public GuiDialingAdd(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingAdd(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = "gui.dialDevice";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
         setHidePlayerInventory();
         allowUserInput = true;
         Keyboard.enableRepeatEvents(true);
@@ -101,7 +101,7 @@ public class GuiDialingAdd extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        super.drawGuiContainerBackgroundLayer(f, i, j);
+    	drawGuiBackgroundLayer(f, i, j);
         text.drawTextBox();
     }
 

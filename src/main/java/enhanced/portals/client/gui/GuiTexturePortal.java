@@ -45,7 +45,7 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
         super(new ContainerTexturePortal(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
-        name = "gui.portal";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.portal");
         texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/textures.png");
         leftNudge = 7;
         hasSingleTexture = true;

@@ -44,7 +44,7 @@ public class GuiTextureFrame extends BaseGui implements IFakeSlotHandler {
         super(new ContainerTextureFrame(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
-        name = "gui.frame";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.frame");
         texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/textures.png");
         leftNudge = 7;
         hasSingleTexture = true;

@@ -28,7 +28,7 @@ public class GuiNetworkInterfaceGlyphs extends BaseGui {
     public GuiNetworkInterfaceGlyphs(TileController c, EntityPlayer p) {
         super(new ContainerNetworkInterfaceGlyphs(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = "gui.networkInterface";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.networkInterface");
         setHidePlayerInventory();
     }
 

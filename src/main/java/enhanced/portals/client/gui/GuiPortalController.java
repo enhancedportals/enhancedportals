@@ -25,7 +25,7 @@ public class GuiPortalController extends BaseGui {
     public GuiPortalController(TileController c, EntityPlayer p) {
         super(new ContainerPortalController(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = "gui.portalController";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.portalController");
         setHidePlayerInventory();
     }
 

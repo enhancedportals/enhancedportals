@@ -17,7 +17,7 @@ public class GuiTransferFluid extends BaseGui {
 
     public GuiTransferFluid(TileTransferFluid f, EntityPlayer p) {
         super(new ContainerTransferFluid(f, p.inventory), CONTAINER_SIZE);
-        name = "gui.transferFluid";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.transferFluid");
         fluid = f;
     }
 

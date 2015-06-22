@@ -27,7 +27,7 @@ public class GuiDialingEditIdentifier extends BaseGui {
     public GuiDialingEditIdentifier(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingEditIdentifier(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = "gui.dialDevice";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
         setHidePlayerInventory();
     }
 

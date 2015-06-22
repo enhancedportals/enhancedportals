@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiTransferEnergy;
 import enhanced.portals.tile.TileTransferEnergy;
 

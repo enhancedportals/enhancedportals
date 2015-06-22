@@ -30,7 +30,7 @@ public class GuiDialingDevice extends BaseGui {
         xSize = CONTAINER_WIDTH;
         dial = d;
         controller = dial.getPortalController();
-        name = "gui.dialDevice";
+        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
         setHidePlayerInventory();
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiTransferItem;
 import enhanced.portals.tile.TileTransferItem;
 

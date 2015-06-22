@@ -7,6 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.FMLCommonHandler;
 import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
 import enhanced.portals.network.GuiHandler;
