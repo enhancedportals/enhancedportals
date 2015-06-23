@@ -102,14 +102,14 @@ public class ElementManualCraftingGrid extends BaseElement {
             else if (items[i] == null)
                 continue;
 
-            parent.drawItemStack(items[i], posX + offset + (i % 3 * 18), posY + offset + (i / 3 * 18));
+            parent.drawItemStack(items[i], posX + offset + i % 3 * 18, posY + offset + i / 3 * 18);
         }
 
         if (items.length == 10) {
             parent.drawItemStack(items[9], posX + 18 + offset, posY + 69 + offset);
             parent.drawItemStackOverlay(items[9], posX + 18 + offset, posY + 69 + offset);
         }
-        
+
         RenderHelper.disableStandardItemLighting();
     }
 

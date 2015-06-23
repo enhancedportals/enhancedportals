@@ -77,7 +77,7 @@ public class ElementManualTextButton extends BaseElement {
     protected void drawContent() {
         if (entry != null) {
             boolean isHovering = intersectsWith(parent.getMouseX(), parent.getMouseY());
-            parent.getFontRenderer().drawString(displayStr, posX, posY, (isHovering ? 0xFF0000 : 0x991100));
+            parent.getFontRenderer().drawString(displayStr, posX, posY, isHovering ? 0xFF0000 : 0x991100);
         }
     }
 

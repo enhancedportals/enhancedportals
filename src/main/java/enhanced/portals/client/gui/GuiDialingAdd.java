@@ -20,8 +20,8 @@ import enhanced.portals.block.BlockFrame;
 import enhanced.portals.block.BlockPortal;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerDialingAdd;
-import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
@@ -89,7 +89,7 @@ public class GuiDialingAdd extends BaseGui {
         buttonList.add(new GuiButton(1, guiLeft + xSize - 87, guiTop + ySize - 27, 80, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save")));
 
         buttonList.add(new GuiButton(100, guiLeft + 57, guiTop + 83, 20, 20, ""));
-        buttonList.add(new GuiButton(101, guiLeft + (xSize / 2 - 10), guiTop + 83, 20, 20, ""));
+        buttonList.add(new GuiButton(101, guiLeft + xSize / 2 - 10, guiTop + 83, 20, 20, ""));
         buttonList.add(new GuiButton(102, guiLeft + 99, guiTop + 83, 20, 20, ""));
     }
 
@@ -101,7 +101,7 @@ public class GuiDialingAdd extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-    	drawGuiBackgroundLayer(f, i, j);
+        drawGuiBackgroundLayer(f, i, j);
         text.drawTextBox();
     }
 

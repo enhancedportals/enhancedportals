@@ -173,7 +173,7 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
     public boolean isBlockNormalCube() {
         return false;
     }
-    
+
     @Override
     public boolean isOpaqueCube() {
         return false;
@@ -236,8 +236,6 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
         else if (tile instanceof TileFrameTransfer)
             ((TileFrameTransfer) tile).onNeighborChanged();
     }
-    
-    
 
     @Override
     public void registerBlockIcons(IIconRegister register) {
@@ -254,15 +252,16 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
         ProxyClient.customFrameTextures.clear();
 
         while (ProxyClient.resourceExists("textures/blocks/customFrame/" + String.format("%02d", counter) + ".png")) {
-        	EnhancedPortals.instance.getLogger().debug("Registered custom frame Icon: " + String.format("%02d", counter) + ".png");
+            EnhancedPortals.instance.getLogger().debug("Registered custom frame Icon: " + String.format("%02d", counter) + ".png");
             ProxyClient.customFrameTextures.add(register.registerIcon("enhancedportals:customFrame/" + String.format("%02d", counter)));
             counter++;
         }
     }
-    
-     @Override
+
+    @Override
     public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int s) {
-        if (blockAccess.getBlock(x, y, z) == this) return false;
+        if (blockAccess.getBlock(x, y, z) == this)
+            return false;
         return super.shouldSideBeRendered(blockAccess, x, y, z, s);
     }
 }

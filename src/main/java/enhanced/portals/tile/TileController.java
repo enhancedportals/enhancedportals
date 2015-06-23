@@ -33,8 +33,8 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.block.BlockPortal;
 import enhanced.portals.item.ItemLocationCard;
 import enhanced.portals.item.ItemNanobrush;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.network.packet.PacketRerender;
 import enhanced.portals.portal.EntityManager;
 import enhanced.portals.portal.GlyphIdentifier;
@@ -390,7 +390,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
             dbs.terminateExistingConnection(getIdentifierUnique());
         } catch (PortalException e) {
-        	EnhancedPortals.instance.getLogger().catching(e);
+            EnhancedPortals.instance.getLogger().catching(e);
         }
 
         temporaryDBS = null;

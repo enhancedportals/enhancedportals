@@ -215,7 +215,7 @@ public class BlockPortal extends BlockContainer {
         ProxyClient.customPortalTextures.clear();
 
         while (ProxyClient.resourceExists("textures/blocks/customPortal/" + String.format("%02d", counter) + ".png")) {
-        	EnhancedPortals.instance.getLogger().debug("Registered custom portal Icon: " + String.format("%02d", counter) + ".png");
+            EnhancedPortals.instance.getLogger().debug("Registered custom portal Icon: " + String.format("%02d", counter) + ".png");
             ProxyClient.customPortalTextures.add(iconRegister.registerIcon("enhancedportals:customPortal/" + String.format("%02d", counter)));
             counter++;
         }

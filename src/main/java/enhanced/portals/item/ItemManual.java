@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyClient;
 
 public class ItemManual extends Item {
     public static ItemManual instance;

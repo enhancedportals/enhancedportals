@@ -71,7 +71,7 @@ public class ProxyCommon extends BaseProxy {
     public int gogglesRenderIndex = 0;
     public NetworkManager networkManager;
     public static String UPDATE_LATEST_VER;
-    
+
     public static Potion featherfallPotion;
 
     public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame) {
@@ -119,9 +119,9 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerItem(new ItemBlankPortalModule("blank_portal_module"), "blank_portal_module");
         GameRegistry.registerItem(new ItemBlankUpgrade("blank_upgrade"), "blank_upgrade");
         GameRegistry.registerItem(new ItemManual("manual"), "manual");
-        
+
         if (CONFIG_RECIPES_TE && Loader.isModLoaded(ThermalExpansion.MOD_ID)) {
-        	GameRegistry.registerItem(new ItemDiamondNugget("diamondNugget"), "nuggetDiamond");
+            GameRegistry.registerItem(new ItemDiamondNugget("diamondNugget"), "nuggetDiamond");
             OreDictionary.registerOre("nuggetDiamond", ItemDiamondNugget.instance);
             GameRegistry.addShapelessRecipe(new ItemStack(ItemDiamondNugget.instance, 9), Items.diamond);
             GameRegistry.addShapelessRecipe(new ItemStack(Items.diamond, 1), ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance, ItemDiamondNugget.instance);
@@ -133,7 +133,7 @@ public class ProxyCommon extends BaseProxy {
             ThermalExpansion.addTransposerFill(15000, new ItemStack(BlockStabilizerEmpty.instance, 1, 0), new ItemStack(BlockStabilizer.instance, 1, 0), new FluidStack(FluidRegistry.getFluidID("ender"), 125), false);
         }
     }
-    
+
     @Override
     public void registerPotions() {
         Potion[] potionTypes = null;
@@ -146,7 +146,7 @@ public class ProxyCommon extends BaseProxy {
                     modfield.setAccessible(true);
                     modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 
-                    potionTypes = (Potion[])f.get(null);
+                    potionTypes = (Potion[]) f.get(null);
                     final Potion[] newPotionTypes = new Potion[256];
                     System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
                     f.set(null, newPotionTypes);
@@ -156,7 +156,7 @@ public class ProxyCommon extends BaseProxy {
                 System.err.println(e);
             }
         }
-        
+
         featherfallPotion = new PotionFeatherfall(40, false, 0);
     }
 
@@ -185,20 +185,20 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerTileEntity(TileTransferItem.class, "epTI");
     }
 
-	@Override
-	public void init() {
-		
-	}
+    @Override
+    public void init() {
 
-	@Override
-	public void postInit() {
-		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemPortalModule.instance, 1, 4), 1, 1, 2));
-	}
+    }
 
-	@Override
-	public void registerRecipes() {
-		if (CONFIG_RECIPES_VANILLA) {
-        	GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockFrame.instance, 4, 0), new Object[] { "SIS", "IQI", "SIS", 'S', Blocks.stone, 'Q', Blocks.quartz_block, 'I', Items.iron_ingot }));
+    @Override
+    public void postInit() {
+        ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(ItemPortalModule.instance, 1, 4), 1, 1, 2));
+    }
+
+    @Override
+    public void registerRecipes() {
+        if (CONFIG_RECIPES_VANILLA) {
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockFrame.instance, 4, 0), new Object[] { "SIS", "IQI", "SIS", 'S', Blocks.stone, 'Q', Blocks.quartz_block, 'I', Items.iron_ingot }));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockFrame.instance, 1, BlockFrame.REDSTONE_INTERFACE), new Object[] { " R ", "RFR", " R ", 'F', new ItemStack(BlockFrame.instance, 1, 0), 'R', Items.redstone }));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BlockFrame.instance, 1, BlockFrame.NETWORK_INTERFACE), new ItemStack(BlockFrame.instance, 1, 0), Items.ender_pearl));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemUpgrade.instance, 1, 0), new Object[] { " R ", "RFR", " R ", 'F', new ItemStack(ItemBlankUpgrade.instance), 'R', Items.redstone }));
@@ -233,23 +233,21 @@ public class ProxyCommon extends BaseProxy {
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemWrench.instance), new Object[] { "I I", " Q ", " I ", 'I', Items.iron_ingot, 'Q', Items.quartz }));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ItemGlasses.instance), true, new Object[] { "R B", "GLG", "L L", 'R', "dyeRed", 'B', "dyeCyan", 'G', Blocks.glass_pane, 'L', Items.leather }));
         }
-        
+
         if (CONFIG_RECIPES_TE && Loader.isModLoaded(ThermalExpansion.MOD_ID)) {
             String diamondNugget = "nuggetDiamond";
-            
-            ItemStack machineFrameBasic = ThermalExpansion.getItemStack("Frame"),
-                      machineFrameHardened = ThermalExpansion.getItemStack("Frame", 1),
-                      powerCoilGold = ThermalExpansion.getItemStack("powerCoilGold");
+
+            ItemStack machineFrameBasic = ThermalExpansion.getItemStack("Frame"), machineFrameHardened = ThermalExpansion.getItemStack("Frame", 1), powerCoilGold = ThermalExpansion.getItemStack("powerCoilGold");
 
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockFrame.instance, 4, 0), "SQS", "QFQ", "SQS", 'S', Blocks.stone, 'Q', Items.quartz, 'F', machineFrameBasic));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BlockStabilizerEmpty.instance, 3, 0), "INI", "NFN", "ICI", 'F', machineFrameHardened, 'C', powerCoilGold, 'I', Items.iron_ingot, 'N', diamondNugget));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(BlockFrame.instance, 1, BlockFrame.TRANSFER_ENERGY), BlockFrame.instance, Items.ender_pearl, Items.diamond, powerCoilGold));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ItemUpgrade.instance, 1, 7), ItemBlankUpgrade.instance, Items.ender_pearl, Items.diamond, powerCoilGold));
         }
-	}
+    }
 
-	@Override
-	protected void registerConfiguration() {
+    @Override
+    protected void registerConfiguration() {
         CONFIG_FORCE_FRAME_OVERLAY = config.get("General", "ForceShowFrameOverlays", false, "Forces the frame overlays to be shown instead of having to wear the Glasses").getBoolean();
         CONFIG_DISABLE_SOUNDS = config.get("General", "DisableSounds", false, "Disables all portal sounds").getBoolean();
         CONFIG_DISABLE_PARTICLES = config.get("General", "DisableParticles", false, "Disables all portal particles").getBoolean();
@@ -268,5 +266,5 @@ public class ProxyCommon extends BaseProxy {
 
         if (CONFIG_POWER_STORAGE_MULTIPLIER < 0.01)
             CONFIG_POWER_STORAGE_MULTIPLIER = 0.01;
-	}
+    }
 }

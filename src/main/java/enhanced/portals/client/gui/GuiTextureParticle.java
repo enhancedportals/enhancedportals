@@ -21,8 +21,8 @@ import enhanced.portals.block.BlockPortal;
 import enhanced.portals.client.gui.elements.ElementScrollParticles;
 import enhanced.portals.client.gui.tabs.TabColour;
 import enhanced.portals.inventory.ContainerTextureParticle;
-import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
@@ -116,7 +116,7 @@ public class GuiTextureParticle extends BaseGui {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	getItemRenderer().renderWithColor = false;
+        getItemRenderer().renderWithColor = false;
         ItemStack frame = new ItemStack(BlockFrame.instance, 0, 0), portal = new ItemStack(BlockPortal.instance, 0, 0);
         Color frameColour = new Color(getPTM().getFrameColour()), portalColour = new Color(getPTM().getPortalColour());
         int particleType = 0;

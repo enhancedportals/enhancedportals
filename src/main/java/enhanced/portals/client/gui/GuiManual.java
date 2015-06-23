@@ -44,7 +44,7 @@ public class GuiManual extends BaseGui {
     // String constants.
     String HR = "_____________________";
     String LOC_MANUAL_STRING = "manual.chapter";
-    
+
     public GuiManual(EntityPlayer p) {
         super(new ContainerManual(p.inventory), CONTAINER_SIZE);
         xSize = CONTAINER_WIDTH;
@@ -63,7 +63,7 @@ public class GuiManual extends BaseGui {
         boolean mouseHeight = guiTop + mouseY >= guiTop + CONTAINER_SIZE + 3 && guiTop + mouseY < guiTop + CONTAINER_SIZE + 13;
         boolean rightButton = mouseHeight && guiLeft + mouseX >= guiLeft + CONTAINER_WIDTH - 23 && guiLeft + mouseX < guiLeft + CONTAINER_WIDTH - 5;
         boolean leftButton = mouseHeight && guiLeft + mouseX >= guiLeft + 5 && guiLeft + mouseX < guiLeft + 23;
-        boolean middleButton = mouseHeight && guiLeft + mouseX >= guiLeft + (xSize / 2 - 10) && guiLeft + mouseX < guiLeft + (xSize / 2 - 10) + 21;
+        boolean middleButton = mouseHeight && guiLeft + mouseX >= guiLeft + xSize / 2 - 10 && guiLeft + mouseX < guiLeft + xSize / 2 - 10 + 21;
 
         // Draw "next page" button.
         if (nextPage(true))
@@ -73,7 +73,7 @@ public class GuiManual extends BaseGui {
             drawTexturedModalRect(guiLeft + 5, guiTop + CONTAINER_SIZE + 3, leftButton ? 23 : 0, 246, 18, 10);
         // Draw "back to" button.
         if (!(ProxyClient.manualEntry.equals("subject") || ProxyClient.manualEntry.equals("contents")))
-            drawTexturedModalRect(guiLeft + (xSize / 2 - 10), guiTop + CONTAINER_SIZE + 3, middleButton ? 21 : 0, 222, 21, 10);
+            drawTexturedModalRect(guiLeft + xSize / 2 - 10, guiTop + CONTAINER_SIZE + 3, middleButton ? 21 : 0, 222, 21, 10);
     }
 
     protected void writeChapterHeader() {
@@ -106,9 +106,9 @@ public class GuiManual extends BaseGui {
         }
         top_margin = 15;
         // Right page. Check if we have one first.
-        if ((pages.size() - 1) > chapter_page)
+        if (pages.size() - 1 > chapter_page)
             for (String line : pages.get(chapter_page + 1)) {
-                getFontRenderer().drawString(line.trim(), (PAGE_MARGIN + left_margin), top_margin, DARK_GREY);
+                getFontRenderer().drawString(line.trim(), PAGE_MARGIN + left_margin, top_margin, DARK_GREY);
                 top_margin += LINE_HEIGHT;
             }
     }
@@ -130,7 +130,7 @@ public class GuiManual extends BaseGui {
                 sub = string.substring(0, line_char_count);
                 // Check if we just cut through a word.
                 if (string.length() > line_char_count + 1)
-                    if ((string.charAt(line_char_count - 1) != ' ') && (string.charAt(line_char_count) != ' ')) // Check if the whole line is one large word.
+                    if (string.charAt(line_char_count - 1) != ' ' && string.charAt(line_char_count) != ' ') // Check if the whole line is one large word.
                         if (!(sub.lastIndexOf(' ') < 0))
                             sub = sub.substring(0, sub.lastIndexOf(' '));
             }
@@ -159,21 +159,21 @@ public class GuiManual extends BaseGui {
         while (!paragraphs.isEmpty()) {
             ArrayList<String> page = new ArrayList<String>();
             // Determine the amount of rows we need to grab per page.
-            int page_rows = (pages.size() == 0 ? (ROWS_PER_PAGE - HEADER_ROWS) : ROWS_PER_PAGE);
+            int page_rows = pages.size() == 0 ? ROWS_PER_PAGE - HEADER_ROWS : ROWS_PER_PAGE;
             // Fill up the page array as long as the page array isn't full and we still have paragraphs left.
-            while ((page.size() < page_rows) && !paragraphs.isEmpty()) {
+            while (page.size() < page_rows && !paragraphs.isEmpty()) {
                 ArrayList<String> paragraph_lines = new ArrayList<String>();
                 paragraph_lines.addAll(parseStringByWidth(paragraphs.get(0), CHARS_PER_ROW));
                 // We need more lines to fill this page.
-                if (paragraph_lines.size() <= (page_rows - page.size())) {
+                if (paragraph_lines.size() <= page_rows - page.size()) {
                     page = addListToArrayList(page, paragraph_lines);
                     // Check if we need to include a separator line between paragraphs.
-                    if (paragraph_lines.size() != (page_rows - page.size()))
+                    if (paragraph_lines.size() != page_rows - page.size())
                         page.add("");
                     paragraphs.remove(0);
                     // Otherwise we are over.
                 } else {
-                    int remove_amt_of_lines = (page_rows - page.size());
+                    int remove_amt_of_lines = page_rows - page.size();
                     // Add the lines to 'page' that we need to fill it up.
                     page = addListToArrayList(page, paragraph_lines.subList(0, remove_amt_of_lines));
                     // Then delete them from our paragraph_lines.
@@ -293,13 +293,13 @@ public class GuiManual extends BaseGui {
             top_margin += drawSplitString(left_margin, top_margin, CONTENT_MARGIN, Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".title").toUpperCase(), RED);
             // Check if subtitles exist.
             if (ProxyClient.locExists(loc_entry + ".subtitle"))
-                getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".subtitle"), left_margin, (top_margin), CONTENT_MARGIN, LIGHT_GREY);
+                getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".subtitle"), left_margin, top_margin, CONTENT_MARGIN, LIGHT_GREY);
             // Right page.
             top_margin = 15;
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".info"), (PAGE_MARGIN + left_margin), top_margin, CONTENT_MARGIN, DARK_GREY);
+            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".info"), PAGE_MARGIN + left_margin, top_margin, CONTENT_MARGIN, DARK_GREY);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }
-        
+
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
@@ -336,20 +336,20 @@ public class GuiManual extends BaseGui {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if ((mouseButton == 4) && nextPage(true)) {
+        if (mouseButton == 4 && nextPage(true)) {
             nextPage();
             return;
-        } else if ((mouseButton == 3) && prevPage(true)) {
+        } else if (mouseButton == 3 && prevPage(true)) {
             prevPage();
             return;
         } else if (mouseY >= guiTop + CONTAINER_SIZE + 3 && mouseY < guiTop + CONTAINER_SIZE + 13)
-            if ((mouseX >= guiLeft + CONTAINER_WIDTH - 23 && mouseX < guiLeft + CONTAINER_WIDTH - 5) && nextPage(true)) {
+            if (mouseX >= guiLeft + CONTAINER_WIDTH - 23 && mouseX < guiLeft + CONTAINER_WIDTH - 5 && nextPage(true)) {
                 nextPage();
                 return;
-            } else if ((mouseX >= guiLeft + 5 && mouseX < guiLeft + 23) && prevPage(true)) {
+            } else if (mouseX >= guiLeft + 5 && mouseX < guiLeft + 23 && prevPage(true)) {
                 prevPage();
                 return;
-            } else if (mouseX >= guiLeft + (xSize / 2 - 10) && mouseX < guiLeft + (xSize / 2 - 10) + 21) {
+            } else if (mouseX >= guiLeft + xSize / 2 - 10 && mouseX < guiLeft + xSize / 2 - 10 + 21) {
                 // Check if we need to link back to the Table of Contents or the last page we were viewing.
                 if (ProxyClient.manualEntry.equals("chapter") || ProxyClient.manualEntry.equals("gallery"))
                     changeEntry("contents");
@@ -386,7 +386,7 @@ public class GuiManual extends BaseGui {
         } else if (ProxyClient.manualEntry.equals("chapter")) {
             int total_chapter_pages = countChapterPages(ProxyClient.chapterNum);
             // Check if the current page is not the last page.
-            if (total_chapter_pages > (ProxyClient.chapterPage + 2)) {
+            if (total_chapter_pages > ProxyClient.chapterPage + 2) {
                 if (is_next)
                     return true;
                 else {
@@ -394,19 +394,19 @@ public class GuiManual extends BaseGui {
                     changeEntry("chapter");
                 }
             } else // Check if this chapter has a term Gallery.
-            if (ProxyClient.chapterNum > 1) {
-                if (is_next)
-                    return true;
-                else
-                    changeEntry("gallery");
-            } else if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1))
-                if (is_next)
-                    return true;
-                else {
-                    ProxyClient.chapterNum++;
-                    ProxyClient.chapterPage = 0;
-                    changeEntry("chapter");
-                }
+                if (ProxyClient.chapterNum > 1) {
+                    if (is_next)
+                        return true;
+                    else
+                        changeEntry("gallery");
+                } else if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1))
+                    if (is_next)
+                        return true;
+                    else {
+                        ProxyClient.chapterNum++;
+                        ProxyClient.chapterPage = 0;
+                        changeEntry("chapter");
+                    }
         } else if (ProxyClient.manualEntry.equals("gallery")) // Check if there is a next chapter.
             if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1))
                 if (is_next)
@@ -436,25 +436,25 @@ public class GuiManual extends BaseGui {
                     changeEntry("chapter");
                 }
             } else // Check if there is a next chapter.
-            if (ProxyClient.manualChapterExists(ProxyClient.chapterNum - 1)) {
-                if (is_prev)
+                if (ProxyClient.manualChapterExists(ProxyClient.chapterNum - 1)) {
+                    if (is_prev)
+                        return true;
+                    else {
+                        ProxyClient.chapterNum--;
+                        ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
+                        // Check if the previous chapter has a Gallery.
+                        if (ProxyClient.chapterNum > 1)
+                            changeEntry("gallery");
+                        else
+                            changeEntry("chapter");
+                    }
+                } else if (is_prev)
                     return true;
                 else {
-                    ProxyClient.chapterNum--;
-                    ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
-                    // Check if the previous chapter has a Gallery.
-                    if (ProxyClient.chapterNum > 1)
-                        changeEntry("gallery");
-                    else
-                        changeEntry("chapter");
+                    ProxyClient.chapterNum = 0;
+                    ProxyClient.chapterPage = 0;
+                    changeEntry("contents");
                 }
-            } else if (is_prev)
-                return true;
-            else {
-                ProxyClient.chapterNum = 0;
-                ProxyClient.chapterPage = 0;
-                changeEntry("contents");
-            }
         } else if (ProxyClient.manualEntry.equals("gallery"))
             if (is_prev)
                 return true;
@@ -475,11 +475,11 @@ public class GuiManual extends BaseGui {
         super.initGui();
 
         // Initiate the crafting grid for the item pages.
-        craftingGrid = new ElementManualCraftingGrid(this, (70 - 33), (90 - 33), null);
-        
+        craftingGrid = new ElementManualCraftingGrid(this, 70 - 33, 90 - 33, null);
+
         if (ProxyClient.manualEntry.equals("subject") || ProxyClient.manualEntry.equals("gallery") || ProxyClient.manualEntry.equals("chapter") || ProxyClient.manualEntry.equals("contents"))
             craftingGrid.setVisible(false);
-        
+
         addElement(craftingGrid);
     }
 

@@ -42,7 +42,7 @@ public class ElementScrollParticles extends BaseElement {
             if (scrollAmount + i >= ProxyClient.particleSets.size())
                 break;
 
-            int x2 = posX + (i % 9 * 18) + 1, y2 = posY + (i / 9 * 18) + 1;
+            int x2 = posX + i % 9 * 18 + 1, y2 = posY + i / 9 * 18 + 1;
 
             if (x >= x2 && x < x2 + 16 && y >= y2 && y < y2 + 16) {
                 ((GuiTextureParticle) parent).particleSelected(scrollAmount + i);
@@ -85,7 +85,7 @@ public class ElementScrollParticles extends BaseElement {
 
         if (isScrolling) {
             if (!ignoreScroll)
-                currentScroll = ((mouseY - scrollbarY) - 7.5F) / ((scrollbarY2 - scrollbarY) - 15f);
+                currentScroll = (mouseY - scrollbarY - 7.5F) / (scrollbarY2 - scrollbarY - 15f);
 
             if (currentScroll < 0f)
                 currentScroll = 0f;
@@ -93,7 +93,7 @@ public class ElementScrollParticles extends BaseElement {
                 currentScroll = 1f;
 
             int items = ProxyClient.customFrameTextures.size() - 27 + 1;
-            scrollAmount = (int) ((currentScroll * items) + 0.5D);
+            scrollAmount = (int) (currentScroll * items + 0.5D);
 
             if (scrollAmount < 0)
                 scrollAmount = 0;
@@ -124,7 +124,7 @@ public class ElementScrollParticles extends BaseElement {
             if (scrollAmount + i >= ProxyClient.particleSets.size())
                 break;
 
-            int x = posX + (i % 9 * 18) + 1, y = posY + (i / 9 * 18) + 1;
+            int x = posX + i % 9 * 18 + 1, y = posY + i / 9 * 18 + 1;
 
             if (scrollAmount + i == selectedIcon) {
                 Gui.drawRect(x - 1, y - 1, x + 17, y, 0xFF00FF00);

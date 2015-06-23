@@ -11,8 +11,8 @@ import net.minecraft.util.IIcon;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.block.BlockPortal;
 import enhanced.portals.item.ItemNanobrush;
-import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyClient;
 import enhanced.portals.utility.GeneralUtils;
 
 public class TilePortal extends TilePortalPart {

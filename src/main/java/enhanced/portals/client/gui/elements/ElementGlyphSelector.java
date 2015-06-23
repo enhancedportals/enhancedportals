@@ -37,7 +37,7 @@ public class ElementGlyphSelector extends BaseElement {
             return false;
 
         for (int i = 0; i < 27; i++) {
-            int X = posX - parent.getGuiLeft() + ((i % 9) * 18), Y = posY - parent.getGuiTop() + ((i / 9) * 18);
+            int X = posX - parent.getGuiLeft() + i % 9 * 18, Y = posY - parent.getGuiTop() + i / 9 * 18;
 
             if (x >= X && x < X + 18 && y >= Y && y < Y + 18) {
                 if (mouseButton == 0) {

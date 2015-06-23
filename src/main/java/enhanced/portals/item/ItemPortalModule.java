@@ -129,22 +129,20 @@ public class ItemPortalModule extends Item implements IPortalModule {
 
     @Override
     public void onEntityTeleportEnd(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal()) {
+        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
             if (entity instanceof EntityPlayer)
                 ((EntityPlayer) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
             else if (entity instanceof EntityLiving)
                 ((EntityLiving) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-        }
     }
 
     @Override
     public boolean onEntityTeleportStart(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal()) {
+        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
             if (entity instanceof EntityPlayer)
                 ((EntityPlayer) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
             else if (entity instanceof EntityLiving)
                 ((EntityLiving) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-        }
 
         return false;
     }

@@ -250,10 +250,10 @@ public class ProxyClient extends ProxyCommon {
         craftingRecipes.put("upgrade6", new ItemStack[] { new ItemStack(ItemBlankUpgrade.instance), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.chest), null, null, null, null, null, new ItemStack(ItemUpgrade.instance, 1, 6) });
         craftingRecipes.put("upgrade7", new ItemStack[] { new ItemStack(ItemBlankUpgrade.instance), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.redstone_block), null, null, null, null, null, new ItemStack(ItemUpgrade.instance, 1, 7) });
     }
-    
+
     @Override
     public void postInit() {
-    	super.postInit();
+        super.postInit();
 
         // Randomly chooses a particle then spawns it, stays static
         particleSets.add(new ParticleSet(0, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }));

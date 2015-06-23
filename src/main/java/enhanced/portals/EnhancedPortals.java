@@ -25,12 +25,7 @@ import enhanced.portals.portal.NetworkManager;
 
 @Mod(name = EnhancedPortals.MOD_NAME, modid = EnhancedPortals.MOD_ID, version = EnhancedPortals.MOD_VERSION, dependencies = EnhancedPortals.MOD_DEPENDENCIES)
 public class EnhancedPortals extends BaseMod {
-    public static final String MOD_NAME = "Enhanced Portals",
-                               MOD_ID = "enhancedportals",
-                               MOD_ID_SHORT = "ep3",
-                               MOD_VERSION = "3.0.12",
-                               MOD_DEPENDENCIES = "required-after:enhancedcore",
-                               MOD_URL = "https://raw.githubusercontent.com/enhancedportals/VERSION/master/VERSION%20-%20Enhanced%20Portals";
+    public static final String MOD_NAME = "Enhanced Portals", MOD_ID = "enhancedportals", MOD_ID_SHORT = "ep3", MOD_VERSION = "3.0.12", MOD_DEPENDENCIES = "required-after:enhancedcore", MOD_URL = "https://raw.githubusercontent.com/enhancedportals/VERSION/master/VERSION%20-%20Enhanced%20Portals";
     public static final String MODID_OPENCOMPUTERS = "OpenComputers";
 
     @Instance(MOD_ID)
@@ -40,17 +35,17 @@ public class EnhancedPortals extends BaseMod {
     public static ProxyCommon proxy;
 
     public EnhancedPortals() {
-    	super(MOD_URL, MOD_ID, MOD_ID_SHORT, MOD_NAME, MOD_VERSION);
+        super(MOD_URL, MOD_ID, MOD_ID_SHORT, MOD_NAME, MOD_VERSION);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     // Startup
-    
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-    	super.preInit(event, proxy);
+        super.preInit(event, proxy);
     }
-    
+
     @EventHandler
     @Override
     public void init(FMLInitializationEvent event) {
@@ -61,18 +56,18 @@ public class EnhancedPortals extends BaseMod {
     @EventHandler
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-    	super.postInit(event);
+        super.postInit(event);
         ComputerCraft.registerPeripheralProvider(BlockFrame.instance);
         creativeTab.setItem(new ItemStack(BlockPortal.instance, 1));
     }
-    
+
     // World Events
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.networkManager = new NetworkManager(event);
     }
-    
+
     @SubscribeEvent
     public void onEntityUpdate(LivingUpdateEvent event) {
         PotionEffect effect = event.entityLiving.getActivePotionEffect(ProxyCommon.featherfallPotion);

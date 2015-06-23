@@ -52,7 +52,7 @@ public class ElementGlyphViewer extends BaseElement {
     @Override
     public boolean handleMouseClicked(int x, int y, int mouseButton) {
         for (int i = 0; i < selector.selectedGlyphs.size(); i++) {
-            int X = posX - parent.getGuiLeft() + ((i % 9) * 18);
+            int X = posX - parent.getGuiLeft() + i % 9 * 18;
 
             if (x >= X && x < X + 18)
                 selector.removeGlyphAt(i);

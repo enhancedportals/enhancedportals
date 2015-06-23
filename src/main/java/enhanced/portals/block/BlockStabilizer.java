@@ -58,7 +58,7 @@ public class BlockStabilizer extends BlockContainer {
         if (tile instanceof TileStabilizer)
             return ((TileStabilizer) tile).isFormed ? connectedTextures.getIconForSide(blockAccess, x, y, z, side) : connectedTextures.getBaseIcon();
 
-        return connectedTextures.getIconForSide(blockAccess, x, y, z, side);
+            return connectedTextures.getIconForSide(blockAccess, x, y, z, side);
     }
 
     @Override

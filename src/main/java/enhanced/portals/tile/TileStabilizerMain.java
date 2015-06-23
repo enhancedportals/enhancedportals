@@ -25,8 +25,8 @@ import enhanced.base.xmod.RedstoneFlux;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.block.BlockStabilizer;
 import enhanced.portals.item.ItemLocationCard;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalException;
 import enhanced.portals.portal.PortalTextureManager;
@@ -493,7 +493,7 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
                     try {
                         terminateExistingConnection(new GlyphIdentifier(activeConnections.values().toArray(new String[activeConnections.size()])[i]));
                     } catch (PortalException e) {
-                    	EnhancedPortals.instance.getLogger().warn(e.getMessage());
+                        EnhancedPortals.instance.getLogger().warn(e.getMessage());
                     }
 
                 setInstability(0);

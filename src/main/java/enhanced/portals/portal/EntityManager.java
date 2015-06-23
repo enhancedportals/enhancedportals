@@ -45,16 +45,16 @@ public class EntityManager {
         boolean horizontal = controller.portalType == 3;
 
         forloop:
-        for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.getPortals())) {
-            for (int i = 0; i < entityHeight; i++)
-                if (world.getBlock(c.posX, c.posY + i, c.posZ) != BlockPortal.instance && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
-                    continue forloop;
+            for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.getPortals())) {
+                for (int i = 0; i < entityHeight; i++)
+                    if (world.getBlock(c.posX, c.posY + i, c.posZ) != BlockPortal.instance && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
+                        continue forloop;
 
-            if (horizontal && !world.isAirBlock(c.posX, c.posY + 1, c.posZ))
-                return new ChunkCoordinates(c.posX, c.posY - 1, c.posZ);
-            else
-                return new ChunkCoordinates(c.posX, c.posY, c.posZ);
-        }
+                if (horizontal && !world.isAirBlock(c.posX, c.posY + 1, c.posZ))
+                    return new ChunkCoordinates(c.posX, c.posY - 1, c.posZ);
+                else
+                    return new ChunkCoordinates(c.posX, c.posY, c.posZ);
+            }
 
         return null;
     }

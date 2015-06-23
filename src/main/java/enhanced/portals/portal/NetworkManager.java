@@ -54,7 +54,7 @@ public class NetworkManager {
         try {
             loadAllData();
         } catch (Exception e) {
-        	EnhancedPortals.instance.getLogger().catching(e);
+            EnhancedPortals.instance.getLogger().catching(e);
             e.printStackTrace();
         }
     }
@@ -286,7 +286,7 @@ public class NetworkManager {
             portalWriter.close();
             networkWriter.close();
         } catch (Exception e) {
-        	EnhancedPortals.instance.getLogger().catching(e);
+            EnhancedPortals.instance.getLogger().catching(e);
         }
     }
 }

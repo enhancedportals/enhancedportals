@@ -100,7 +100,7 @@ public class ElementScrollStabilizer extends BaseElement {
 
         if (isScrolling) {
             if (!ignoreScroll)
-                currentScroll = ((mouseY - scrollbarY) - 7.5F) / ((scrollbarY2 - scrollbarY) - 15f);
+                currentScroll = (mouseY - scrollbarY - 7.5F) / (scrollbarY2 - scrollbarY - 15f);
 
             if (currentScroll < 0f)
                 currentScroll = 0f;
@@ -108,7 +108,7 @@ public class ElementScrollStabilizer extends BaseElement {
                 currentScroll = 1f;
 
             int items = stabilizer.connectedPortals.size() - 5 + 1;
-            scrollAmount = (int) ((currentScroll * items) + 0.5D);
+            scrollAmount = (int) (currentScroll * items + 0.5D);
 
             if (scrollAmount < 0)
                 scrollAmount = 0;
@@ -150,11 +150,11 @@ public class ElementScrollStabilizer extends BaseElement {
 
             /*
              * if (dial.getPortalController().isPortalActive()) { state = 0; }
-             * 
+             *
              * if (state == 1 && mouseOverMain) { state = 2; }
-             * 
+             *
              * parent.getTextureManager().bindTexture(texture); parent.drawTexturedModalRect(posX + offsetX, posY + entryOffset + offsetY, 0, 196 + (state * 20), sizeMButton, 20); parent.drawTexturedModalRect(posX + offsetX + sizeMButton + buttonSpacing, posY + entryOffset + offsetY, 196 + (delete ? 20 : 0), 216 + (mouseOverSmall ? 20 : 0), sizeSButton, 20);
-             * 
+             *
              * parent.getFontRenderer().drawStringWithShadow(e.name, posX + offsetX + 5, posY + offsetY + 6 + entryOffset, fontColour);
              */
         }

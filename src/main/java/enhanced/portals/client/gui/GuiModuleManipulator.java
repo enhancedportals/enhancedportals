@@ -25,7 +25,7 @@ public class GuiModuleManipulator extends BaseGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-    	drawGuiBackgroundLayer(f, i, j);
+        drawGuiBackgroundLayer(f, i, j);
 
         mc.renderEngine.bindTexture(playerInventoryTexture);
         drawTexturedModalRect(guiLeft + 7, guiTop + containerSize - 25, 7, 7, 162, 18);
