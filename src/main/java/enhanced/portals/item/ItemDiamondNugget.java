@@ -1,16 +1,11 @@
 package enhanced.portals.item;
 
-import net.minecraft.item.Item;
+import enhanced.base.item.ItemBase;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.utility.Reference.EPMod;
 
-public class ItemDiamondNugget extends Item {
-    public static ItemDiamondNugget instance;
-
+public class ItemDiamondNugget extends ItemBase {
     public ItemDiamondNugget(String n) {
-        setTextureName(EnhancedPortals.MOD_ID + ":" + n);
-        setUnlocalizedName(n);
-        setMaxStackSize(64);
-        setCreativeTab(EnhancedPortals.instance.creativeTab);
-        instance = this;
+        super(EPMod.ID, n, EnhancedPortals.instance.creativeTab);
     }
 }

@@ -13,11 +13,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import enhanced.base.tile.TileBase;
 import enhanced.base.utilities.DimensionCoordinates;
-import enhanced.portals.block.BlockStabilizer;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPBlocks;
 
-public class TileStabilizer extends TileEP implements IEnergyHandler {
+public class TileStabilizer extends TileBase implements IEnergyHandler {
     ChunkCoordinates mainBlock;
     int rows;
     boolean is3x3 = false;
@@ -40,13 +41,13 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
         else if (GeneralUtils.isWrench(player.inventory.getCurrentItem())) {
             DimensionCoordinates topLeft = getDimensionCoordinates();
             // Get the Top-Northwest-most block in the DBS block group.
-            while (topLeft.offset(ForgeDirection.WEST).getBlock() == BlockStabilizer.instance)
+            while (topLeft.offset(ForgeDirection.WEST).getBlock() == EPBlocks.dimensionalBridgeStabilizer)
                 topLeft = topLeft.offset(ForgeDirection.WEST);
 
-            while (topLeft.offset(ForgeDirection.NORTH).getBlock() == BlockStabilizer.instance)
+            while (topLeft.offset(ForgeDirection.NORTH).getBlock() == EPBlocks.dimensionalBridgeStabilizer)
                 topLeft = topLeft.offset(ForgeDirection.NORTH);
 
-            while (topLeft.offset(ForgeDirection.UP).getBlock() == BlockStabilizer.instance)
+            while (topLeft.offset(ForgeDirection.UP).getBlock() == EPBlocks.dimensionalBridgeStabilizer)
                 topLeft = topLeft.offset(ForgeDirection.UP);
 
             // Check for valid DBS configurations (3x3, 2x3, 3x2):
@@ -73,7 +74,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
 
                 // Otherwise start marking the blocks for the DBS block.
                 for (ChunkCoordinates c : blocks) {
-                    worldObj.setBlock(c.posX, c.posY, c.posZ, BlockStabilizer.instance, 0, 2);
+                    worldObj.setBlock(c.posX, c.posY, c.posZ, EPBlocks.dimensionalBridgeStabilizer, 0, 2);
 
                     TileEntity tile = worldObj.getTileEntity(c.posX, c.posY, c.posZ);
 
@@ -85,7 +86,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
                 }
 
                 // Create a BlockStabilizer.
-                worldObj.setBlock(topLeft.posX, topLeft.posY, topLeft.posZ, BlockStabilizer.instance, 1, 3);
+                worldObj.setBlock(topLeft.posX, topLeft.posY, topLeft.posZ, EPBlocks.dimensionalBridgeStabilizer, 1, 3);
 
                 TileEntity tile = topLeft.getTileEntity();
 
@@ -118,7 +119,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
         ChunkCoordinates heightChecker = new ChunkCoordinates(topLeft);
         rows = 0;
 
-        while (worldObj.getBlock(heightChecker.posX, heightChecker.posY, heightChecker.posZ) == BlockStabilizer.instance) {
+        while (worldObj.getBlock(heightChecker.posX, heightChecker.posY, heightChecker.posZ) == EPBlocks.dimensionalBridgeStabilizer) {
             heightChecker.posY--;
             rows++;
         }
@@ -131,7 +132,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 for (int k = 0; k < rows; k++) {
-                    if (worldObj.getBlock(topLeft.posX + i, topLeft.posY - k, topLeft.posZ + j) != BlockStabilizer.instance)
+                    if (worldObj.getBlock(topLeft.posX + i, topLeft.posY - k, topLeft.posZ + j) != EPBlocks.dimensionalBridgeStabilizer)
                         return new ArrayList<ChunkCoordinates>();
 
                     blocks.add(new ChunkCoordinates(topLeft.posX + i, topLeft.posY - k, topLeft.posZ + j));
@@ -146,7 +147,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
         ChunkCoordinates heightChecker = new ChunkCoordinates(topLeft);
         rows = 0;
 
-        while (worldObj.getBlock(heightChecker.posX, heightChecker.posY, heightChecker.posZ) == BlockStabilizer.instance) {
+        while (worldObj.getBlock(heightChecker.posX, heightChecker.posY, heightChecker.posZ) == EPBlocks.dimensionalBridgeStabilizer) {
             heightChecker.posY--;
             rows++;
         }
@@ -159,7 +160,7 @@ public class TileStabilizer extends TileEP implements IEnergyHandler {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 2; j++)
                 for (int k = 0; k < rows; k++) {
-                    if (worldObj.getBlock(topLeft.posX + (isX ? i : j), topLeft.posY - k, topLeft.posZ + (!isX ? i : j)) != BlockStabilizer.instance)
+                    if (worldObj.getBlock(topLeft.posX + (isX ? i : j), topLeft.posY - k, topLeft.posZ + (!isX ? i : j)) != EPBlocks.dimensionalBridgeStabilizer)
                         return new ArrayList<ChunkCoordinates>();
 
                     blocks.add(new ChunkCoordinates(topLeft.posX + (isX ? i : j), topLeft.posY - k, topLeft.posZ + (!isX ? i : j)));

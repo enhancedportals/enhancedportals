@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.ProxyClient.ParticleSet;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPRenderers;
 
 public class PortalParticleFX extends EntityFX {
     private float portalParticleScale;
@@ -38,7 +39,7 @@ public class PortalParticleFX extends EntityFX {
             particleBlue = c.getBlue() / 255f;
 
             particle = ProxyClient.particleSets.get(controller.activeTextureData.getParticleType());
-            setParticleTextureIndex(particle.type == 0 ? particle.frames[ProxyClient.random.nextInt(particle.frames.length)] : particle.frames[0]);
+            setParticleTextureIndex(particle.type == 0 ? particle.frames[EPRenderers.random.nextInt(particle.frames.length)] : particle.frames[0]);
         }
     }
 

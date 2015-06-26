@@ -29,11 +29,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
 import cpw.mods.fml.common.FMLCommonHandler;
-import enhanced.portals.block.BlockPortal;
-import enhanced.portals.item.ItemPortalModule;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortalManipulator;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.PortalModules;
 
 public class EntityManager {
     static Random rand = new Random();
@@ -47,13 +46,13 @@ public class EntityManager {
         forloop:
             for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.getPortals())) {
                 for (int i = 0; i < entityHeight; i++)
-                    if (world.getBlock(c.posX, c.posY + i, c.posZ) != BlockPortal.instance && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
+                    if (world.getBlock(c.posX, c.posY + i, c.posZ) != EPBlocks.portal && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
                         continue forloop;
 
                 if (horizontal && !world.isAirBlock(c.posX, c.posY + 1, c.posZ))
                     return new ChunkCoordinates(c.posX, c.posY - 1, c.posZ);
-                else
-                    return new ChunkCoordinates(c.posX, c.posY, c.posZ);
+
+                return new ChunkCoordinates(c.posX, c.posY, c.posZ);
             }
 
         return null;
@@ -64,7 +63,7 @@ public class EntityManager {
         TilePortalManipulator module = controller.getModuleManipulator();
 
         if (module != null) {
-            ItemStack s = module.getModule("ep3." + ItemPortalModule.PortalModules.FACING.ordinal());
+            ItemStack s = module.getModule(PortalModules.FACING);
 
             if (s != null) {
                 NBTTagCompound tag = s.getTagCompound();
@@ -157,7 +156,7 @@ public class EntityManager {
         if (entity == null)
             return;
 
-        if (ProxyCommon.CONFIG_FASTER_PORTAL_COOLDOWN || entity instanceof EntityPlayer || entity instanceof EntityMinecart || entity instanceof EntityBoat || entity instanceof EntityHorse)
+        if (entity instanceof EntityPlayer || entity instanceof EntityMinecart || entity instanceof EntityBoat || entity instanceof EntityHorse)
             entity.timeUntilPortal = entity.timeUntilPortal == -1 ? 0 : PLAYER_COOLDOWN_RATE;
         else
             entity.timeUntilPortal = entity.timeUntilPortal == -1 ? 0 : 300; // Reduced to 300 ticks from 900.
@@ -178,8 +177,8 @@ public class EntityManager {
         // If entity is going to the same dimension...
         if (entity.worldObj.provider.dimensionId == world.provider.dimensionId)
             return transferEntityWithinDimension(entity, x, y, z, yaw, touchedPortalType, exitPortalType, keepMomentum, instability);
-        else
-            return transferEntityToDimension(entity, x, y, z, yaw, (WorldServer) entity.worldObj, world, touchedPortalType, exitPortalType, keepMomentum, instability);
+
+        return transferEntityToDimension(entity, x, y, z, yaw, (WorldServer) entity.worldObj, world, touchedPortalType, exitPortalType, keepMomentum, instability);
     }
 
     public static void transferEntity(Entity entity, TileController entry, TileController exit) throws PortalException {
@@ -187,20 +186,19 @@ public class EntityManager {
 
         if (exitLoc == null)
             throw new PortalException("failedToTransfer");
-        else {
-            boolean keepMomentum = false;
-            TilePortalManipulator manip = exit.getModuleManipulator();
 
-            if (manip != null)
-                keepMomentum = manip.shouldKeepMomentumOnTeleport();
+        boolean keepMomentum = false;
+        TilePortalManipulator manip = exit.getModuleManipulator();
 
-            while (entity.ridingEntity != null)
-                entity = entity.ridingEntity;
+        if (manip != null)
+            keepMomentum = manip.hasModule(PortalModules.MOMENTUM);
 
-            int instability = exit.getDimensionalBridgeStabilizer().instability;
+        while (entity.ridingEntity != null)
+            entity = entity.ridingEntity;
 
-            transferEntityWithRider(entity, exitLoc.posX + 0.5, exitLoc.posY, exitLoc.posZ + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, instability);
-        }
+        int instability = exit.getDimensionalBridgeStabilizer().instability;
+
+        transferEntityWithRider(entity, exitLoc.posX + 0.5, exitLoc.posY, exitLoc.posZ + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, instability);
     }
 
     static Entity transferEntityToDimension(Entity entity, double x, double y, double z, float yaw, WorldServer exitingWorld, WorldServer enteringWorld, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {

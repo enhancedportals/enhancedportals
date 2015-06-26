@@ -14,18 +14,19 @@ import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockFrame;
-import enhanced.portals.block.BlockPortal;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerDialingAdd;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketGuiData;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingAdd extends BaseGui {
     public static final int CONTAINER_SIZE = 131;
@@ -39,7 +40,7 @@ public class GuiDialingAdd extends BaseGui {
     public GuiDialingAdd(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingAdd(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
+        name = Localisation.get(EPMod.ID, Locale.GUI_DIALLING_DEVICE);
         setHidePlayerInventory();
         allowUserInput = true;
         Keyboard.enableRepeatEvents(true);
@@ -85,8 +86,8 @@ public class GuiDialingAdd extends BaseGui {
         display = new ElementGlyphDisplay(this, 7, 52, ProxyClient.saveGlyph);
         addElement(display);
 
-        buttonList.add(new GuiButton(0, guiLeft + 7, guiTop + ySize - 27, 80, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.cancel")));
-        buttonList.add(new GuiButton(1, guiLeft + xSize - 87, guiTop + ySize - 27, 80, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save")));
+        buttonList.add(new GuiButton(0, guiLeft + 7, guiTop + ySize - 27, 80, 20, Localisation.get(EPMod.ID, Locale.GUI_CANCEL)));
+        buttonList.add(new GuiButton(1, guiLeft + xSize - 87, guiTop + ySize - 27, 80, 20, Localisation.get(EPMod.ID, Locale.GUI_SAVE)));
 
         buttonList.add(new GuiButton(100, guiLeft + 57, guiTop + 83, 20, 20, ""));
         buttonList.add(new GuiButton(101, guiLeft + xSize / 2 - 10, guiTop + 83, 20, 20, ""));
@@ -100,21 +101,21 @@ public class GuiDialingAdd extends BaseGui {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        drawGuiBackgroundLayer(f, i, j);
+    protected void drawBackgroundTexture() {
+        super.drawBackgroundTexture();
         text.drawTextBox();
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.uniqueIdentifier"), 7, 43, 0x404040);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.textures"), 7, 73, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_UNIQUE_IDENTIFIER), 7, 43, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_TEXTURES), 7, 73, 0x404040);
 
         GL11.glColor3f(1f, 1f, 1f);
 
         getItemRenderer().renderWithColor = false;
-        ItemStack frame = new ItemStack(BlockFrame.instance, 0, 0), portal = new ItemStack(BlockPortal.instance, 0, 0);
+        ItemStack frame = new ItemStack(EPBlocks.frame, 0, 0), portal = new ItemStack(EPBlocks.portal, 0, 0);
         Color frameColour = new Color(0xFFFFFF), portalColour = new Color(0xFFFFFF), particleColour = new Color(0x0077D8);
         int particleType = 0;
 
@@ -175,7 +176,7 @@ public class GuiDialingAdd extends BaseGui {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_B));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.DIALING_DEVICE_B));
         else if (button.id == 1) // save
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -185,13 +186,13 @@ public class GuiDialingAdd extends BaseGui {
             EnhancedPortals.instance.packetPipeline.sendToServer(new PacketGuiData(tag));
         } else if (button.id == 100) {
             isEditing = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.TEXTURE_DIALING_SAVE_A));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.TEXTURE_DIALING_SAVE_A));
         } else if (button.id == 101) {
             isEditing = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.TEXTURE_DIALING_SAVE_B));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.TEXTURE_DIALING_SAVE_B));
         } else if (button.id == 102) {
             isEditing = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.TEXTURE_DIALING_SAVE_C));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.TEXTURE_DIALING_SAVE_C));
         }
     }
 }

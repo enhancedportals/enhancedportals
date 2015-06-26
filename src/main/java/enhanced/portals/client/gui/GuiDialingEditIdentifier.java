@@ -7,16 +7,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.elements.ElementGlyphSelector;
 import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerDialingEditIdentifier;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingEditIdentifier extends BaseGui {
     public static final int CONTAINER_SIZE = 135;
@@ -27,7 +29,7 @@ public class GuiDialingEditIdentifier extends BaseGui {
     public GuiDialingEditIdentifier(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingEditIdentifier(d, p.inventory), CONTAINER_SIZE);
         dial = d;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
+        name = Localisation.get(EPMod.ID, Locale.GUI_DIALLING_DEVICE);
         setHidePlayerInventory();
     }
 
@@ -35,11 +37,11 @@ public class GuiDialingEditIdentifier extends BaseGui {
     public void initGui() {
         super.initGui();
         int buttonWidth = 80;
-        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.cancel"));
-        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save"));
+        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, Localisation.get(EPMod.ID, Locale.GUI_CANCEL));
+        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, Localisation.get(EPMod.ID, Locale.GUI_SAVE));
         buttonList.add(buttonCancel);
         buttonList.add(buttonSave);
-        addTab(new TabTip(this, "glyphs", EnhancedPortals.MOD_ID));
+        addTab(new TabTip(this, "glyphs", EPMod.ID));
         selector = new ElementGlyphSelector(this, 7, 52);
         selector.setIdentifierTo(ProxyClient.saveGlyph);
         addElement(selector);
@@ -62,18 +64,18 @@ public class GuiDialingEditIdentifier extends BaseGui {
                 selector.setIdentifierTo(iden);
             }
         } else if (button.id == buttonCancel.id)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.DIALING_DEVICE_D));
         else if (button.id == buttonSave.id) // Save Changes
         {
             ProxyClient.saveGlyph = selector.getGlyphIdentifier();
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_D));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.DIALING_DEVICE_D));
         }
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.uniqueIdentifier"), 7, 19, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_UNIQUE_IDENTIFIER), 7, 19, 0x404040);
     }
 
     @Override
@@ -81,11 +83,11 @@ public class GuiDialingEditIdentifier extends BaseGui {
         super.updateScreen();
 
         if (isShiftKeyDown()) {
-            buttonCancel.displayString = EnumChatFormatting.AQUA + Localization.get(EnhancedPortals.MOD_ID, "gui.clear");
-            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + Localization.get(EnhancedPortals.MOD_ID, "gui.random");
+            buttonCancel.displayString = EnumChatFormatting.AQUA + Localisation.get(EPMod.ID, Locale.GUI_CLEAR);
+            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + Localisation.get(EPMod.ID, Locale.GUI_RANDOM);
         } else {
-            buttonCancel.displayString = Localization.get(EnhancedPortals.MOD_ID, "gui.cancel");
-            buttonSave.displayString = Localization.get(EnhancedPortals.MOD_ID, "gui.save");
+            buttonCancel.displayString = Localisation.get(EPMod.ID, Locale.GUI_CANCEL);
+            buttonSave.displayString = Localisation.get(EPMod.ID, Locale.GUI_SAVE);
         }
     }
 }

@@ -19,12 +19,13 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemNanobrush;
+import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHandler, IPeripheral, SimpleComponent {
     public final EnergyStorage storage = new EnergyStorage(16000);
     // public final PowerHandler mjHandler;
@@ -46,10 +47,10 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, this, GuiHandler.TRANSFER_ENERGY);
+                GuiHandler.openGui(player, this, EPGuis.TRANSFER_ENERGY);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 
@@ -100,13 +101,13 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_transfer_energy";
     }
 
     @Callback(direct = true, doc = "function():number -- Returns the amount of energy stored inside the module.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getEnergy(Context context, Arguments args) {
         return new Object[] { storage.getEnergyStored() };
     }
@@ -117,7 +118,7 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
     }
 
     @Callback(direct = true, doc = "function():number -- Get the maximum amount of energy stored inside the module.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getMaxEnergy(Context context, Arguments args) {
         return new Object[] { storage.getMaxEnergyStored() };
     }
@@ -140,7 +141,7 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
     }
 
     @Callback(direct = true, doc = "function():boolean -- Returns true if the module is set to send energy.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] isSending(Context context, Arguments args) {
         return new Object[] { isSending };
     }

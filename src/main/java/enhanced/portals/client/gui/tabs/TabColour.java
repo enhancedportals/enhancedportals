@@ -2,12 +2,14 @@ package enhanced.portals.client.gui.tabs;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.button.GuiRGBSlider;
 import enhanced.base.client.gui.tabs.BaseTab;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemNanobrush;
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.utility.Reference.EPItems;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class TabColour extends BaseTab {
     GuiRGBSlider sliderR, sliderG, sliderB;
@@ -18,8 +20,8 @@ public class TabColour extends BaseTab {
         backgroundColor = 0x5396da;
         maxHeight += 89;
         maxWidth = 116;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.colour");
-        icon = ItemNanobrush.texture;
+        name = Localisation.get(EPMod.ID, Locale.GUI_COLOUR);
+        icon = new ItemStack(EPItems.nanobrush).getIconIndex();
         sliderR = r;
         sliderG = g;
         sliderB = b;

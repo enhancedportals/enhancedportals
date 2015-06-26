@@ -8,12 +8,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
+import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.packet.PacketGui;
 import enhanced.portals.network.packet.PacketTextureData;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerDialingDevice extends BaseContainer {
     TileDialingDevice dial;
@@ -60,7 +60,7 @@ public class ContainerDialingDevice extends BaseContainer {
 
             if (dial.glyphList.size() > id) {
                 GlyphElement e = dial.glyphList.get(id);
-                player.openGui(EnhancedPortals.instance, GuiHandler.DIALING_DEVICE_D, dial.getWorldObj(), dial.xCoord, dial.yCoord, dial.zCoord);
+                player.openGui(EnhancedPortals.instance, EPGuis.DIALING_DEVICE_D, dial.getWorldObj(), dial.xCoord, dial.yCoord, dial.zCoord);
                 EnhancedPortals.instance.packetPipeline.sendTo(new PacketTextureData(e.name, e.identifier.getGlyphString(), e.texture), (EntityPlayerMP) player);
             }
         } else if (tag.hasKey("delete")) {

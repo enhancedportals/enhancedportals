@@ -8,13 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.FMLCommonHandler;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
+import enhanced.base.network.packet.PacketGuiData;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalException;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerPortalControllerGlyphs extends BaseContainer {
     TileController controller;
@@ -30,7 +30,7 @@ public class ContainerPortalControllerGlyphs extends BaseContainer {
         if (tag.hasKey("uid"))
             try {
                 controller.setIdentifierUnique(new GlyphIdentifier(tag.getString("uid")));
-                player.openGui(EnhancedPortals.instance, GuiHandler.PORTAL_CONTROLLER_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
+                player.openGui(EnhancedPortals.instance, EPGuis.PORTAL_CONTROLLER_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
             } catch (PortalException e) {
                 NBTTagCompound errorTag = new NBTTagCompound();
                 errorTag.setInteger("error", 0);

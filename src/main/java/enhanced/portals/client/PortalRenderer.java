@@ -9,25 +9,24 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import enhanced.portals.block.BlockPortal;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortal;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPRenderers;
 
 public class PortalRenderer implements ISimpleBlockRenderingHandler {
-    public static int ID = 0;
-
     public PortalRenderer() {
 
     }
 
     @Override
     public int getRenderId() {
-        return ID;
+        return EPRenderers.portal;
     }
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-        renderer.setOverrideBlockTexture(BlockPortal.instance.getBlockTextureFromSide(0));
+        renderer.setOverrideBlockTexture(EPBlocks.portal.getBlockTextureFromSide(0));
         renderer.renderBlockAsItem(Blocks.portal, 0, 0xFFFFFF);
         renderer.clearOverrideBlockTexture();
     }
@@ -37,7 +36,7 @@ public class PortalRenderer implements ISimpleBlockRenderingHandler {
         TilePortal portal = (TilePortal) world.getTileEntity(x, y, z);
         TileController controller = portal.getPortalController();
         Tessellator tessellator = Tessellator.instance;
-        int meta = world.getBlockMetadata(x, y, z), light = 230, colour = BlockPortal.instance.colorMultiplier(world, x, y, z);
+        int meta = world.getBlockMetadata(x, y, z), light = 230, colour = EPBlocks.portal.colorMultiplier(world, x, y, z);
 
         if (controller != null) {
             if (controller.instability > 0)
@@ -62,40 +61,40 @@ public class PortalRenderer implements ISimpleBlockRenderingHandler {
         f17 = f5 * ((colour & 255) / 255F);
 
         if (meta < 4) {
-            if (BlockPortal.instance.shouldSideBeRendered(world, x, y - 1, z, 0)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x, y - 1, z, 0)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceYNeg(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 0));
+                renderer.renderFaceYNeg(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 0));
             }
 
-            if (BlockPortal.instance.shouldSideBeRendered(world, x, y + 1, z, 1)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x, y + 1, z, 1)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceYPos(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 1));
+                renderer.renderFaceYPos(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 1));
             }
 
-            if (BlockPortal.instance.shouldSideBeRendered(world, x, y, z - 1, 2)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x, y, z - 1, 2)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceZNeg(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 2));
+                renderer.renderFaceZNeg(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 2));
             }
 
-            if (BlockPortal.instance.shouldSideBeRendered(world, x, y, z + 1, 3)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x, y, z + 1, 3)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceZPos(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 3));
+                renderer.renderFaceZPos(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 3));
             }
 
-            if (BlockPortal.instance.shouldSideBeRendered(world, x - 1, y, z, 4)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x - 1, y, z, 4)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceXNeg(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 4));
+                renderer.renderFaceXNeg(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 4));
             }
 
-            if (BlockPortal.instance.shouldSideBeRendered(world, x + 1, y, z, 5)) {
+            if (EPBlocks.portal.shouldSideBeRendered(world, x + 1, y, z, 5)) {
                 tessellator.setBrightness(light);
                 tessellator.setColorOpaque_F(f11, f14, f17);
-                renderer.renderFaceXPos(BlockPortal.instance, x, y, z, renderer.getBlockIcon(BlockPortal.instance, world, x, y, z, 5));
+                renderer.renderFaceXPos(EPBlocks.portal, x, y, z, renderer.getBlockIcon(EPBlocks.portal, world, x, y, z, 5));
             }
         } else if (meta > 3) {
             tessellator.addTranslation(x, y, z);

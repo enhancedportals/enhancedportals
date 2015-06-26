@@ -95,8 +95,8 @@ public class NetworkManager {
 
         if (index == network.size() - 1)
             return new GlyphIdentifier(network.get(0));
-        else
-            return new GlyphIdentifier(network.get(index + 1));
+
+        return new GlyphIdentifier(network.get(index + 1));
     }
 
     /***

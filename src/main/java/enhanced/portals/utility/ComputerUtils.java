@@ -1,12 +1,9 @@
 package enhanced.portals.utility;
 
 import li.cil.oc.api.machine.Arguments;
-import cpw.mods.fml.common.Optional.Method;
-import enhanced.portals.EnhancedPortals;
 import enhanced.portals.portal.GlyphIdentifier;
 
 public class ComputerUtils {
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
     public static Object[] argsToArray(Arguments args) {
         Object[] data = new Object[args.count()];
 

@@ -20,11 +20,12 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPGuis;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferItem extends TileFrameTransfer implements IInventory, IPeripheral, SimpleComponent {
     ItemStack stack;
 
@@ -38,7 +39,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
         TileController controller = getPortalController();
 
         if (GeneralUtils.isWrench(stack) && controller != null && controller.isFinalized()) {
-            GuiHandler.openGui(player, this, GuiHandler.TRANSFER_ITEM);
+            GuiHandler.openGui(player, this, EPGuis.TRANSFER_ITEM);
             return true;
         }
 
@@ -101,7 +102,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_transfer_item";
     }
@@ -128,7 +129,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
     }
 
     @Callback(direct = true, doc = "function():table -- Returns a description of the item stored in this module.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getStack(Context context, Arguments args) {
         return new Object[] { stack.copy() };
     }
@@ -155,7 +156,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
     }
 
     @Callback(direct = true, doc = "function():boolean -- Return whether there is an item stored in this module.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] hasStack(Context context, Arguments args) {
         return new Object[] { stack != null };
     }
@@ -166,7 +167,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
     }
 
     @Callback(direct = true, doc = "function():boolean -- Returns true if the module is set to send items.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] isSending(Context context, Arguments args) {
         return new Object[] { isSending };
     }

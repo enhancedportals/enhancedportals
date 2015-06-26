@@ -5,12 +5,12 @@ import java.awt.Color;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import enhanced.base.network.packet.PacketRequestGui;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPGuis;
 
 public class GuiDialingEditPortal extends GuiTexturePortal {
     TileDialingDevice dial;
@@ -52,13 +52,13 @@ public class GuiDialingEditPortal extends GuiTexturePortal {
             sliderB.sliderValue = c.getBlue() / 255f;
         } else if (button.id == 1000) {
             didSave = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.DIALING_DEVICE_D : GuiHandler.DIALING_DEVICE_C));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? EPGuis.DIALING_DEVICE_D : EPGuis.DIALING_DEVICE_C));
         } else if (button.id == 500) {
             didSave = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.TEXTURE_DIALING_EDIT_A : GuiHandler.TEXTURE_DIALING_SAVE_A));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? EPGuis.TEXTURE_DIALING_EDIT_A : EPGuis.TEXTURE_DIALING_SAVE_A));
         } else if (button.id == 501) {
             didSave = true;
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? GuiHandler.TEXTURE_DIALING_EDIT_C : GuiHandler.TEXTURE_DIALING_SAVE_C));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, returnToEdit ? EPGuis.TEXTURE_DIALING_EDIT_C : EPGuis.TEXTURE_DIALING_SAVE_C));
         }
     }
 

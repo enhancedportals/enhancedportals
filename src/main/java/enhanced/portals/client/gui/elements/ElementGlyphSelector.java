@@ -11,11 +11,11 @@ import org.lwjgl.opengl.GL11;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.core.EnhancedCore;
-import enhanced.portals.EnhancedPortals;
 import enhanced.portals.portal.GlyphIdentifier;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementGlyphSelector extends BaseElement {
-    public static final ResourceLocation glyphs = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/glyphs.png");
+    public static final ResourceLocation glyphs = new ResourceLocation(EPMod.ID, "textures/gui/glyphs.png");
     ArrayList<Integer> selectedGlyphs = new ArrayList<Integer>();
     int[] glyphCount = new int[27];
 

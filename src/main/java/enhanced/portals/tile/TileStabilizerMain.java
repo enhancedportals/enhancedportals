@@ -21,19 +21,22 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import enhanced.base.tile.TileBase;
 import enhanced.base.xmod.RedstoneFlux;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockStabilizer;
 import enhanced.portals.item.ItemLocationCard;
 import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalException;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPConfiguration;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
-public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHandler {
-    static final int ENERGY_STORAGE_PER_ROW = ProxyCommon.CONFIG_REDSTONE_FLUX_COST + ProxyCommon.CONFIG_REDSTONE_FLUX_COST / 2;
+public class TileStabilizerMain extends TileBase implements IInventory, IEnergyHandler {
+    static final int ENERGY_STORAGE_PER_ROW = EPConfiguration.redstoneFluxCost + EPConfiguration.redstoneFluxCost / 2;
 
     ArrayList<ChunkCoordinates> blockList;
 
@@ -68,10 +71,10 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
     public boolean activate(EntityPlayer player) {
         ItemStack stack = player.inventory.getCurrentItem();
 
-        if (stack != null && stack.getItem() instanceof ItemBlock && Block.getBlockFromItem(stack.getItem()) == BlockStabilizer.instance)
+        if (stack != null && stack.getItem() instanceof ItemBlock && Block.getBlockFromItem(stack.getItem()) == EPBlocks.dimensionalBridgeStabilizer)
             return false;
 
-        GuiHandler.openGui(player, this, GuiHandler.DIMENSIONAL_BRIDGE_STABILIZER);
+        GuiHandler.openGui(player, this, EPGuis.DIMENSIONAL_BRIDGE_STABILIZER);
         return true;
     }
 
@@ -98,7 +101,7 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
      * Whether or not this stabilizer can create a new connection
      */
     public boolean canAcceptNewConnection() {
-        return activeConnections.size() * 2 + 2 <= ProxyCommon.CONFIG_PORTAL_CONNECTIONS_PER_ROW * rows;
+        return activeConnections.size() * 2 + 2 <= EPConfiguration.connectionsPerRow * rows;
     }
 
     @Override
@@ -118,7 +121,7 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
 
     public void deconstruct() {
         breakBlock(null, 0);
-        worldObj.setBlock(xCoord, yCoord, zCoord, BlockStabilizer.instance, 0, 3);
+        worldObj.setBlock(xCoord, yCoord, zCoord, EPBlocks.dimensionalBridgeStabilizer, 0, 3);
     }
 
     @Override
@@ -161,7 +164,7 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
     }
 
     public int getEnergyStoragePerRow() {
-        return (int) ((is3x3 ? ENERGY_STORAGE_PER_ROW + ENERGY_STORAGE_PER_ROW / 2 : ENERGY_STORAGE_PER_ROW) * ProxyCommon.CONFIG_POWER_STORAGE_MULTIPLIER);
+        return (int) ((is3x3 ? ENERGY_STORAGE_PER_ROW + ENERGY_STORAGE_PER_ROW / 2 : ENERGY_STORAGE_PER_ROW) * EPConfiguration.powerStorageMultiplier);
     }
 
     @Override
@@ -208,10 +211,10 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
      * Gets whether or not this stabilizer has enough power to keep the portal open for at least one second.
      */
     public boolean hasEnoughPowerToStart() {
-        if (!GeneralUtils.hasEnergyCost())
+        if (!EPConfiguration.requirePower)
             return true;
 
-        int powerRequirement = (int) (GeneralUtils.getPowerMultiplier() * ProxyCommon.CONFIG_REDSTONE_FLUX_COST);
+        int powerRequirement = (int) (EPConfiguration.powerUseMultiplier * EPConfiguration.redstoneFluxCost);
         return extractEnergy(null, (int) (powerRequirement * 0.3), true) == (int) (powerRequirement * 0.3);
     }
 
@@ -469,8 +472,8 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
 
     @Override
     public void updateEntity() {
-        if (activeConnections.size() > 0 && GeneralUtils.hasEnergyCost() && tickTimer >= ProxyCommon.CONFIG_REDSTONE_FLUX_TIMER) {
-            int powerRequirement = (int) (GeneralUtils.getPowerMultiplier() * activeConnections.size() * ProxyCommon.CONFIG_REDSTONE_FLUX_COST);
+        if (activeConnections.size() > 0 && EPConfiguration.requirePower && tickTimer >= EPConfiguration.redstoneFluxTime) {
+            int powerRequirement = (int) (EPConfiguration.powerUseMultiplier * activeConnections.size() * EPConfiguration.redstoneFluxCost);
 
             if (powerState == 0 && extractEnergy(null, powerRequirement, true) == powerRequirement) // Simulate the full power requirement
             {
@@ -508,7 +511,7 @@ public class TileStabilizerMain extends TileEP implements IInventory, IEnergyHan
 
                 if (requiredEnergy > 0 && ((IEnergyContainerItem) inventory.getItem()).getEnergyStored(inventory) > 0)
                     energyStorage.receiveEnergy(((IEnergyContainerItem) inventory.getItem()).extractEnergy(inventory, Math.min(requiredEnergy, 10000), false), false);
-            } else if (inventory.getItem() == ItemLocationCard.instance)
+            } else if (inventory.getItem() == EPItems.locationCard)
                 if (!ItemLocationCard.hasDBSLocation(inventory) && !worldObj.isRemote)
                     ItemLocationCard.setDBSLocation(inventory, getDimensionCoordinates());
 

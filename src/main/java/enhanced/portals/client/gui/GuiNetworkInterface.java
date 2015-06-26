@@ -4,13 +4,15 @@ import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import enhanced.base.client.gui.BaseGui;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerNetworkInterface;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiNetworkInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;
@@ -20,7 +22,7 @@ public class GuiNetworkInterface extends BaseGui {
     public GuiNetworkInterface(TileController c, EntityPlayer p) {
         super(new ContainerNetworkInterface(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.networkInterface");
+        name = Localisation.get(EPMod.ID, Locale.GUI_NETWORK_INTERFACE);
         setHidePlayerInventory();
     }
 
@@ -29,7 +31,7 @@ public class GuiNetworkInterface extends BaseGui {
         super.mouseClicked(x, y, button);
 
         if (x >= guiLeft + 7 && x <= guiLeft + 169 && y >= guiTop + 29 && y < guiTop + 47)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.NETWORK_INTERFACE_B));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.NETWORK_INTERFACE_B));
     }
 
     @Override
@@ -48,12 +50,12 @@ public class GuiNetworkInterface extends BaseGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         super.drawGuiContainerForegroundLayer(x, y);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.networkIdentifier"), 7, 19, 0x404040);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.networkedPortals"), 7, 52, 0x404040);
-        String s = controller.connectedPortals == -1 ? Localization.get(EnhancedPortals.MOD_ID, "gui.notSet") : "" + controller.connectedPortals;
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_NETWORK_IDENTIFIER), 7, 19, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_NETWORKED_PORTALS), 7, 52, 0x404040);
+        String s = controller.connectedPortals == -1 ? Localisation.get(EPMod.ID, Locale.GUI_NOT_SET) : "" + controller.connectedPortals;
         getFontRenderer().drawString(s, xSize - getFontRenderer().getStringWidth(s) - 7, 52, 0x404040);
 
         if (x >= guiLeft + 7 && x <= guiLeft + 169 && y >= guiTop + 29 && y < guiTop + 47)
-            drawHoveringText(Arrays.asList(new String[] { Localization.get(EnhancedPortals.MOD_ID, "gui.clickToModify") }), x - guiLeft, y - guiTop, getFontRenderer());
+            drawHoveringText(Arrays.asList(new String[] { Localisation.get(EPMod.ID, Locale.GUI_CLICK_TO_MODIFY) }), x - guiLeft, y - guiTop, getFontRenderer());
     }
 }

@@ -9,11 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockPortal;
-import enhanced.portals.item.ItemNanobrush;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class TilePortal extends TilePortalPart {
     @Override
@@ -22,10 +23,10 @@ public class TilePortal extends TilePortalPart {
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, controller, GuiHandler.PORTAL_CONTROLLER_A);
+                GuiHandler.openGui(player, controller, EPGuis.PORTAL_CONTROLLER_A);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, player.isSneaking() ? GuiHandler.TEXTURE_C : GuiHandler.TEXTURE_B);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, player.isSneaking() ? EPGuis.TEXTURE_C : EPGuis.TEXTURE_B);
                 return true;
             }
 
@@ -48,7 +49,7 @@ public class TilePortal extends TilePortalPart {
         } else if (portalController != null)
             EnhancedPortals.proxy.waitForController(new ChunkCoordinates(portalController.posX, portalController.posY, portalController.posZ), getChunkCoordinates());
 
-        return BlockPortal.instance.getIcon(side, 0);
+        return EPBlocks.portal.getIcon(side, 0);
     }
 
     public int getColour() {

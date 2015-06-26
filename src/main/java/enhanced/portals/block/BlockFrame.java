@@ -3,7 +3,6 @@ package enhanced.portals.block;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -23,6 +21,7 @@ import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.IPeripheralProvider;
+import enhanced.base.block.BlockContainerBase;
 import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.portals.EnhancedPortals;
@@ -39,26 +38,19 @@ import enhanced.portals.tile.TileRedstoneInterface;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.ISidedBlockTexture;
+import enhanced.portals.utility.Reference;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.EPRenderers;
+import enhanced.portals.utility.Reference.PortalFrames;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = ComputerCraft.MOD_ID) })
-public class BlockFrame extends BlockContainer implements IPeripheralProvider {
-    public static BlockFrame instance;
+public class BlockFrame extends BlockContainerBase implements IPeripheralProvider {
     public static ConnectedTexturesDetailed connectedTextures;
-    public static IIcon[] overlayIcons;
-    public static int PORTAL_CONTROLLER = 1, REDSTONE_INTERFACE = 2, NETWORK_INTERFACE = 3, DIALLING_DEVICE = 4, UNUSED = 5, MODULE_MANIPULATOR = 6, TRANSFER_FLUID = 7, TRANSFER_ITEM = 8, TRANSFER_ENERGY = 9;
-    public static int FRAME_TYPES = 10;
-    static IIcon[] fullIcons;
 
     public BlockFrame(String n) {
-        super(Material.rock);
-        instance = this;
-        setCreativeTab(EnhancedPortals.instance.creativeTab);
-        setHardness(5);
+        super(EPMod.ID, n, Material.rock, EnhancedPortals.instance.creativeTab, 5f);
         setResistance(2000);
-        setBlockName(n);
-        setStepSound(soundTypeStone);
-        connectedTextures = new ConnectedTexturesDetailed("enhancedportals:frame/%s", this, -1);
+        connectedTextures = new ConnectedTexturesDetailed(EPMod.ID + ":frame/%s", this, -1);
     }
 
     @Override
@@ -78,7 +70,7 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
 
     @Override
     public boolean canRenderInPass(int pass) {
-        ProxyClient.renderPass = pass;
+        EPRenderers.renderPass = pass;
         return pass < 2;
     }
 
@@ -94,23 +86,25 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        if (metadata == 0)
+        PortalFrames frame = Reference.PortalFrames.get(metadata);
+
+        if (frame == PortalFrames.BASIC)
             return new TileFrameBasic();
-        else if (metadata == PORTAL_CONTROLLER)
+        else if (frame == PortalFrames.CONTROLLER)
             return new TileController();
-        else if (metadata == REDSTONE_INTERFACE)
+        else if (frame == PortalFrames.REDSTONE)
             return new TileRedstoneInterface();
-        else if (metadata == NETWORK_INTERFACE)
+        else if (frame == PortalFrames.NETWORK)
             return new TileNetworkInterface();
-        else if (metadata == DIALLING_DEVICE)
+        else if (frame == PortalFrames.DIAL)
             return new TileDialingDevice();
-        else if (metadata == MODULE_MANIPULATOR)
+        else if (frame == PortalFrames.PORTAL_MANIPULATOR)
             return new TilePortalManipulator();
-        else if (metadata == TRANSFER_FLUID)
+        else if (frame == PortalFrames.TRANSFER_FLUID)
             return new TileTransferFluid();
-        else if (metadata == TRANSFER_ITEM)
+        else if (frame == PortalFrames.TRANSFER_ITEM)
             return new TileTransferItem();
-        else if (metadata == TRANSFER_ENERGY)
+        else if (frame == PortalFrames.TRANSFER_ENERGY)
             return new TileTransferEnergy();
 
         return null;
@@ -126,14 +120,19 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
         TileEntity tile = blockAccess.getTileEntity(x, y, z);
 
         if (tile instanceof TileFrame)
-            return ((ISidedBlockTexture) tile).getBlockTexture(side, ProxyClient.renderPass);
+            return ((TileFrame) tile).getBlockTexture(side, EPRenderers.renderPass);
 
-        return fullIcons[0];
+        return connectedTextures.getBaseIcon();
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return fullIcons[MathHelper.clamp_int(meta, 0, FRAME_TYPES)];
+        PortalFrames frame = PortalFrames.get(meta);
+
+        if (frame != null)
+            return frame.getFull();
+
+        return connectedTextures.getBaseIcon();
     }
 
     @Override
@@ -157,10 +156,9 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
         return 1;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubBlocks(Item par1, CreativeTabs creativeTab, List list) {
-        for (int i = 0; i < FRAME_TYPES; i++)
+        for (int i = 0; i < PortalFrames.count(); i++)
             list.add(new ItemStack(this, 1, i));
     }
 
@@ -239,21 +237,15 @@ public class BlockFrame extends BlockContainer implements IPeripheralProvider {
 
     @Override
     public void registerBlockIcons(IIconRegister register) {
-        overlayIcons = new IIcon[FRAME_TYPES];
-        fullIcons = new IIcon[FRAME_TYPES];
-
-        for (int i = 0; i < overlayIcons.length; i++) {
-            overlayIcons[i] = register.registerIcon("enhancedportals:frame_" + i);
-            fullIcons[i] = register.registerIcon("enhancedportals:frame_" + i + "b");
-        }
-
         connectedTextures.registerIcons(register);
+        PortalFrames.registerBlockIcons(register);
+
         int counter = 0;
         ProxyClient.customFrameTextures.clear();
 
         while (ProxyClient.resourceExists("textures/blocks/customFrame/" + String.format("%02d", counter) + ".png")) {
             EnhancedPortals.instance.getLogger().debug("Registered custom frame Icon: " + String.format("%02d", counter) + ".png");
-            ProxyClient.customFrameTextures.add(register.registerIcon("enhancedportals:customFrame/" + String.format("%02d", counter)));
+            ProxyClient.customFrameTextures.add(register.registerIcon(EPMod.ID + ":customFrame/" + String.format("%02d", counter)));
             counter++;
         }
     }

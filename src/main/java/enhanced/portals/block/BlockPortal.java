@@ -12,29 +12,32 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import enhanced.base.repack.codechicken.lib.colour.Colour;
+import enhanced.base.repack.codechicken.lib.colour.ColourARGB;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.PortalParticleFX;
-import enhanced.portals.client.PortalRenderer;
-import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.EntityManager;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortal;
 import enhanced.portals.tile.TilePortalManipulator;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPConfiguration;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.EPRenderers;
+import enhanced.portals.utility.Reference.PortalModules;
 
 public class BlockPortal extends BlockContainer {
-    public static BlockPortal instance;
     IIcon texture;
 
     public BlockPortal(String n) {
         super(Material.portal);
-        instance = this;
         setBlockUnbreakable();
         setResistance(2000);
         setBlockName(n);
@@ -104,7 +107,7 @@ public class BlockPortal extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return PortalRenderer.ID;
+        return EPRenderers.portal;
     }
 
     @Override
@@ -147,7 +150,7 @@ public class BlockPortal extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-        if (ProxyCommon.CONFIG_DISABLE_SOUNDS && ProxyCommon.CONFIG_DISABLE_PARTICLES)
+        if (EPConfiguration.disableSounds && EPConfiguration.disableParticles)
             return;
 
         TileEntity tile = world.getTileEntity(x, y, z);
@@ -158,13 +161,14 @@ public class BlockPortal extends BlockContainer {
         int metadata = world.getBlockMetadata(x, y, z);
         TileController controller = ((TilePortal) tile).getPortalController();
         TilePortalManipulator module = controller == null ? null : controller.getModuleManipulator();
-        boolean doSounds = !ProxyCommon.CONFIG_DISABLE_SOUNDS && random.nextInt(100) == 0, doParticles = !ProxyCommon.CONFIG_DISABLE_PARTICLES;
+        boolean doSounds = !EPConfiguration.disableSounds && random.nextInt(100) == 0, doParticles = !EPConfiguration.disableParticles;
 
         if (module != null) {
             if (doSounds)
-                doSounds = !module.hasModule(ItemPortalModule.PortalModules.REMOVE_SOUNDS.getUniqueID());
+                doSounds = !module.hasModule(PortalModules.SOUNDS_REMOVE);
 
-            doParticles = !module.hasModule(ItemPortalModule.PortalModules.REMOVE_PARTICLES.getUniqueID());
+            if (doParticles)
+                doParticles = !module.hasModule(PortalModules.PARTICLES_REMOVE);
         }
 
         if (doSounds)
@@ -201,22 +205,49 @@ public class BlockPortal extends BlockContainer {
 
                 PortalParticleFX fx = new PortalParticleFX(world, controller, d0, d1, d2, d3, d4, d5);
 
-                if (module != null)
-                    module.particleCreated(fx);
+                if (module != null) {
+                    boolean rainbow = module.hasModule(PortalModules.PARTICLES_RAINBOW), tint = module.hasModule(PortalModules.PARTICLES_TINTSHADE);
 
-                FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+                    if (rainbow || tint) {
+                        Colour c = new ColourARGB(0, (int) (fx.getRedColorF() * 255), (int) (fx.getGreenColorF() * 255), (int) (fx.getBlueColorF() * 255));
+
+                        if (rainbow)
+                            c.set(new ColourARGB(0, EPRenderers.random.nextInt(256), EPRenderers.random.nextInt(256), EPRenderers.random.nextInt(256)));
+
+                        if (tint)
+                            if (EPRenderers.random.nextBoolean())
+                                c.interpolate(new ColourARGB(0, 255, 255, 255), MathHelper.clamp_double(EPRenderers.random.nextDouble(), 0.3, 0.7));
+                            else
+                                c.interpolate(new ColourARGB(0, 0, 0, 0), MathHelper.clamp_double(EPRenderers.random.nextDouble(), 0.3, 0.7));
+
+                        int r = c.r, g = c.g, b = c.b;
+
+                        if (c.r < 0)
+                            r = 128 + c.r + 128;
+
+                        if (c.g < 0)
+                            g = 128 + c.g + 128;
+
+                        if (c.b < 0)
+                            b = 128 + c.b + 128;
+
+                        fx.setRBGColorF(r / 255f, g / 255f, b / 255f);
+                    }
+
+                    FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
+                }
             }
     }
 
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
-        texture = iconRegister.registerIcon("enhancedportals:portal");
+        texture = iconRegister.registerIcon(EPMod.ID + ":portal");
         int counter = 0;
         ProxyClient.customPortalTextures.clear();
 
         while (ProxyClient.resourceExists("textures/blocks/customPortal/" + String.format("%02d", counter) + ".png")) {
             EnhancedPortals.instance.getLogger().debug("Registered custom portal Icon: " + String.format("%02d", counter) + ".png");
-            ProxyClient.customPortalTextures.add(iconRegister.registerIcon("enhancedportals:customPortal/" + String.format("%02d", counter)));
+            ProxyClient.customPortalTextures.add(iconRegister.registerIcon(EPMod.ID + ":customPortal/" + String.format("%02d", counter)));
             counter++;
         }
     }
@@ -235,7 +266,7 @@ public class BlockPortal extends BlockContainer {
             TileController controller = portal.getPortalController();
             TilePortalManipulator manip = controller == null ? null : controller.getModuleManipulator();
 
-            if (controller != null && manip != null && manip.isPortalInvisible()) {
+            if (controller != null && manip != null && manip.hasModule(PortalModules.PORTAL_INVISIBLE)) {
                 setBlockBounds(0f, 0f, 0f, 0f, 0f, 0f);
                 return;
             }
@@ -260,7 +291,7 @@ public class BlockPortal extends BlockContainer {
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side) {
-        if (blockAccess.getBlock(x, y, z) == this || blockAccess.getBlock(x, y, z) == BlockFrame.instance)
+        if (blockAccess.getBlock(x, y, z) == this || blockAccess.getBlock(x, y, z) == EPBlocks.frame)
             return false;
 
         return super.shouldSideBeRendered(blockAccess, x, y, z, side);

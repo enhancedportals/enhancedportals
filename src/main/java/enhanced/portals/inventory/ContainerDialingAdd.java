@@ -5,11 +5,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerDialingAdd extends BaseContainer {
     TileDialingDevice dial;
@@ -26,7 +26,7 @@ public class ContainerDialingAdd extends BaseContainer {
             PortalTextureManager ptm = new PortalTextureManager();
             ptm.readFromNBT(tag, "texture");
             dial.glyphList.add(new GlyphElement(tag.getString("name"), new GlyphIdentifier(tag.getString("uid")), ptm));
-            player.openGui(EnhancedPortals.instance, GuiHandler.DIALING_DEVICE_A, dial.getWorldObj(), dial.xCoord, dial.yCoord, dial.zCoord);
+            player.openGui(EnhancedPortals.instance, EPGuis.DIALING_DEVICE_A, dial.getWorldObj(), dial.xCoord, dial.yCoord, dial.zCoord);
         }
     }
 }

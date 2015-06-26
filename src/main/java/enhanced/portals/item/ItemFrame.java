@@ -8,35 +8,39 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockFrame;
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
+import enhanced.portals.utility.Reference.PortalFrames;
 
 public class ItemFrame extends ItemBlockWithMetadata {
-    public static String[] unlocalizedName = new String[] { "frame", "controller", "redstone", "network_interface", "dial_device", "program_interface", "upgrade", "fluid", "item", "energy" };
-
     public ItemFrame(Block b) {
-        super(b, BlockFrame.instance);
+        super(b, EPBlocks.frame);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         int damage = stack.getItemDamage();
 
         if (damage > 0)
-            list.add(Localization.get(EnhancedPortals.MOD_ID, "block.portalFramePart"));
+            list.add(Localisation.get(EPMod.ID, Locale.BLOCK_PORTAL_FRAME_PART));
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List list) {
-        for (int i = 0; i < BlockFrame.FRAME_TYPES; i++)
+        for (int i = 0; i < PortalFrames.count(); i++)
             list.add(new ItemStack(par1, 1, i));
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + unlocalizedName[stack.getItemDamage()];
+        PortalFrames frame = PortalFrames.get(stack.getItemDamage());
+        String name = "unknown";
+
+        if (frame != null)
+            name = frame.getName();
+
+        return super.getUnlocalizedName() + "." + name;
     }
 }

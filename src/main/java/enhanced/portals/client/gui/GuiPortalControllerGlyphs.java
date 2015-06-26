@@ -8,16 +8,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.elements.ElementGlyphSelector;
 import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerPortalControllerGlyphs;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.packet.PacketGuiData;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiPortalControllerGlyphs extends BaseGui {
     public static final int CONTAINER_SIZE = 135;
@@ -30,7 +32,7 @@ public class GuiPortalControllerGlyphs extends BaseGui {
     public GuiPortalControllerGlyphs(TileController c, EntityPlayer p) {
         super(new ContainerPortalControllerGlyphs(c, p.inventory), CONTAINER_SIZE);
         controller = c;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.portalController");
+        name = Localisation.get(EPMod.ID, Locale.GUI_PORTAL_CONTROLLER);
         setHidePlayerInventory();
     }
 
@@ -38,11 +40,11 @@ public class GuiPortalControllerGlyphs extends BaseGui {
     public void initGui() {
         super.initGui();
         int buttonWidth = 80;
-        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.cancel"));
-        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save"));
+        buttonCancel = new GuiButton(0, guiLeft + 7, guiTop + containerSize - 27, buttonWidth, 20, Localisation.get(EPMod.ID, Locale.GUI_CANCEL));
+        buttonSave = new GuiButton(1, guiLeft + xSize - buttonWidth - 7, guiTop + containerSize - 27, buttonWidth, 20, Localisation.get(EPMod.ID, Locale.GUI_SAVE));
         buttonList.add(buttonCancel);
         buttonList.add(buttonSave);
-        addTab(new TabTip(this, "glyphs", EnhancedPortals.MOD_ID));
+        addTab(new TabTip(this, "glyphs", EPMod.ID));
         selector = new ElementGlyphSelector(this, 7, 52);
         selector.setIdentifierTo(controller.getIdentifierUnique());
         addElement(selector);
@@ -51,7 +53,7 @@ public class GuiPortalControllerGlyphs extends BaseGui {
 
     public void setWarningMessage() {
         selector.setIdentifierTo(null);
-        warningMessage = Localization.get(EnhancedPortals.MOD_ID, "gui.uidInUse");
+        warningMessage = Localisation.get(EPMod.ID, Locale.GUI_UID_IN_USE);
         warningTimer = 100;
     }
 
@@ -71,7 +73,7 @@ public class GuiPortalControllerGlyphs extends BaseGui {
                 selector.setIdentifierTo(iden);
             }
         } else if (button.id == buttonCancel.id)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.PORTAL_CONTROLLER_A));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.PORTAL_CONTROLLER_A));
         else if (button.id == buttonSave.id) // Save Changes
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -83,10 +85,10 @@ public class GuiPortalControllerGlyphs extends BaseGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.uniqueIdentifier"), 7, 19, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_UNIQUE_IDENTIFIER), 7, 19, 0x404040);
 
         if (warningTimer > 0) {
-            String s = Localization.get(EnhancedPortals.MOD_ID, "gui.uidInUse");
+            String s = Localisation.get(EPMod.ID, "gui.uidInUse");
             drawRect(7, 29, 169, 47, 0xAA000000);
             getFontRenderer().drawString(s, xSize / 2 - getFontRenderer().getStringWidth(s) / 2, 35, 0xff4040);
         }
@@ -97,11 +99,11 @@ public class GuiPortalControllerGlyphs extends BaseGui {
         super.updateScreen();
 
         if (isShiftKeyDown()) {
-            buttonCancel.displayString = EnumChatFormatting.AQUA + Localization.get(EnhancedPortals.MOD_ID, "gui.clear");
-            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + Localization.get(EnhancedPortals.MOD_ID, "gui.random");
+            buttonCancel.displayString = EnumChatFormatting.AQUA + Localisation.get(EPMod.ID, Locale.GUI_CLEAR);
+            buttonSave.displayString = (isCtrlKeyDown() ? EnumChatFormatting.GOLD : EnumChatFormatting.AQUA) + Localisation.get(EPMod.ID, Locale.GUI_RANDOM);
         } else {
-            buttonCancel.displayString = Localization.get(EnhancedPortals.MOD_ID, "gui.cancel");
-            buttonSave.displayString = Localization.get(EnhancedPortals.MOD_ID, "gui.save");
+            buttonCancel.displayString = Localisation.get(EPMod.ID, Locale.GUI_CANCEL);
+            buttonSave.displayString = Localisation.get(EPMod.ID, Locale.GUI_SAVE);
         }
 
         if (warningTimer > 0)

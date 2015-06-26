@@ -11,9 +11,10 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import enhanced.base.tile.TileBase;
 import enhanced.portals.utility.GeneralUtils;
 
-public abstract class TilePortalPart extends TileEP {
+public abstract class TilePortalPart extends TileBase {
     ChunkCoordinates portalController;
     TileController cachedController;
 

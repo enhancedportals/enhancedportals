@@ -7,9 +7,9 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
+import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiRedstoneInterface;
-import enhanced.portals.network.packet.PacketGui;
 import enhanced.portals.tile.TileRedstoneInterface;
 
 public class ContainerRedstoneInterface extends BaseContainer {

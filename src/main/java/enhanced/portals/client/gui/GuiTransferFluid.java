@@ -5,11 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.ElementFluid;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.inventory.ContainerTransferFluid;
-import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.tile.TileTransferFluid;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTransferFluid extends BaseGui {
     public static final int CONTAINER_SIZE = 75;
@@ -17,14 +19,14 @@ public class GuiTransferFluid extends BaseGui {
 
     public GuiTransferFluid(TileTransferFluid f, EntityPlayer p) {
         super(new ContainerTransferFluid(f, p.inventory), CONTAINER_SIZE);
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.transferFluid");
+        name = Localisation.get(EPMod.ID, Locale.GUI_TRANSFER_FLUID);
         fluid = f;
     }
 
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButton(1, guiLeft + 7, guiTop + 49, 140, 20, Localization.get(EnhancedPortals.MOD_ID, "gui." + (fluid.isSending ? "sending" : "receiving"))));
+        buttonList.add(new GuiButton(1, guiLeft + 7, guiTop + 49, 140, 20, Localisation.get(EPMod.ID, fluid.isSending ? Locale.GUI_SENDING : Locale.GUI_RECEIVING)));
         addElement(new ElementFluid(this, xSize - 25, 7, fluid.tank));
     }
 
@@ -37,6 +39,6 @@ public class GuiTransferFluid extends BaseGui {
     @Override
     public void updateScreen() {
         super.updateScreen();
-        ((GuiButton) buttonList.get(0)).displayString = Localization.get(EnhancedPortals.MOD_ID, "gui." + (fluid.isSending ? "sending" : "receiving"));
+        ((GuiButton) buttonList.get(0)).displayString = Localisation.get(EPMod.ID, fluid.isSending ? Locale.GUI_SENDING : Locale.GUI_RECEIVING);
     }
 }

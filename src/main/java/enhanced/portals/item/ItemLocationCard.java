@@ -2,18 +2,41 @@ package enhanced.portals.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import enhanced.base.item.ItemBase;
 import enhanced.base.utilities.DimensionCoordinates;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
-public class ItemLocationCard extends Item {
-    public static ItemLocationCard instance;
+public class ItemLocationCard extends ItemBase {
+    public ItemLocationCard(String n) {
+        super(EPMod.ID, n, EnhancedPortals.instance.creativeTab);
+        setMaxDamage(0);
+        setHasSubtypes(true);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+        DimensionCoordinates w = getDBSLocation(stack);
+
+        if (w != null)
+            list.add(Localisation.get(EPMod.ID, Locale.ITEM_LOCATION_SET));
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (player.isSneaking() && hasDBSLocation(stack)) {
+            clearDBSLocation(stack);
+            return stack;
+        }
+
+        return stack;
+    }
 
     public static void clearDBSLocation(ItemStack s) {
         s.setTagCompound(null);
@@ -40,45 +63,5 @@ public class ItemLocationCard extends Item {
         t.setInteger("D", w.dimension);
 
         s.setTagCompound(t);
-    }
-
-    IIcon texture;
-
-    public ItemLocationCard(String n) {
-        super();
-        instance = this;
-        setCreativeTab(EnhancedPortals.instance.creativeTab);
-        setUnlocalizedName(n);
-        setMaxDamage(0);
-        setHasSubtypes(true);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        DimensionCoordinates w = getDBSLocation(stack);
-
-        if (w != null)
-            list.add("Location set");
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return texture;
-    }
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking() && hasDBSLocation(stack)) {
-            clearDBSLocation(stack);
-            return stack;
-        }
-
-        return stack;
-    }
-
-    @Override
-    public void registerIcons(IIconRegister register) {
-        texture = register.registerIcon("enhancedportals:location_card");
     }
 }

@@ -13,11 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
-import enhanced.portals.block.BlockFrame;
-import enhanced.portals.item.ItemNanobrush;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class TileRedstoneInterface extends TileFrame {
     // Determines if this instance of a RS interface is Output or Input.
@@ -36,10 +37,10 @@ public class TileRedstoneInterface extends TileFrame {
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                GuiHandler.openGui(player, this, GuiHandler.REDSTONE_INTERFACE);
+                GuiHandler.openGui(player, this, EPGuis.REDSTONE_INTERFACE);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 
@@ -78,11 +79,11 @@ public class TileRedstoneInterface extends TileFrame {
     }
 
     private void notifyNeighbors() {
-        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, BlockFrame.instance);
+        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, EPBlocks.frame);
 
         for (int i = 0; i < 6; i++) {
             ForgeDirection d = ForgeDirection.getOrientation(i);
-            worldObj.notifyBlocksOfNeighborChange(xCoord + d.offsetX, yCoord + d.offsetY, zCoord + d.offsetZ, BlockFrame.instance);
+            worldObj.notifyBlocksOfNeighborChange(xCoord + d.offsetX, yCoord + d.offsetY, zCoord + d.offsetZ, EPBlocks.frame);
         }
     }
 

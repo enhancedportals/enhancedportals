@@ -8,11 +8,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.client.gui.GuiDialingDevice;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class ElementScrollDiallingDevice extends BaseElement {
     TileDialingDevice dial;
@@ -38,14 +39,15 @@ public class ElementScrollDiallingDevice extends BaseElement {
             int entryOffset = i * entryHeight;
             boolean mouseOverEntry = y >= posY + offsetY + entryOffset && y <= posY + offsetY + entryOffset + 20, mouseOverSmall = mouseOverEntry && x >= posX + offsetX + sizeMButton + buttonSpacing && x < posX + offsetX + sizeMButton + buttonSpacing + sizeSButton;
 
-            if (mouseOverSmall)
+            if (mouseOverSmall) {
                 if (GuiScreen.isShiftKeyDown()) {
-                    list.add(Localization.get(EnhancedPortals.MOD_ID, "gui.delete"));
-                    break;
-                } else {
-                    list.add(Localization.get(EnhancedPortals.MOD_ID, "gui.edit"));
+                    list.add(Localisation.get(EPMod.ID, Locale.GUI_DELETE));
                     break;
                 }
+
+                list.add(Localisation.get(EPMod.ID, Locale.GUI_EDIT));
+                break;
+            }
         }
     }
 
@@ -58,21 +60,21 @@ public class ElementScrollDiallingDevice extends BaseElement {
             if (scrollAmount + i >= dial.glyphList.size())
                 break;
 
-            GlyphElement e = dial.glyphList.get(scrollAmount + i);
             int entryOffset = i * entryHeight;
             boolean mouseOverEntry = y >= posY + offsetY + entryOffset && y <= posY + offsetY + entryOffset + 20, mouseOverMain = mouseOverEntry && x >= posX + offsetX && x < posX + offsetX + sizeMButton, mouseOverSmall = mouseOverEntry && x >= posX + offsetX + sizeMButton + buttonSpacing && x < posX + offsetX + sizeMButton + buttonSpacing + sizeSButton;
 
             if (mouseOverMain) {
                 ((GuiDialingDevice) parent).onEntrySelected(scrollAmount + i);
                 break;
-            } else if (mouseOverSmall)
+            } else if (mouseOverSmall) {
                 if (GuiScreen.isShiftKeyDown()) {
                     ((GuiDialingDevice) parent).onEntryDeleted(scrollAmount + i);
                     break;
-                } else {
-                    ((GuiDialingDevice) parent).onEntryEdited(scrollAmount + i);
-                    break;
                 }
+
+                ((GuiDialingDevice) parent).onEntryEdited(scrollAmount + i);
+                break;
+            }
         }
 
         return true;

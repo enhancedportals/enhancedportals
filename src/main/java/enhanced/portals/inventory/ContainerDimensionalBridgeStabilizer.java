@@ -7,10 +7,10 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
+import enhanced.base.network.packet.PacketGuiData;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiDimensionalBridgeStabilizer;
 import enhanced.portals.inventory.slot.SlotDBS;
-import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.tile.TileStabilizerMain;
 
 public class ContainerDimensionalBridgeStabilizer extends BaseContainer {

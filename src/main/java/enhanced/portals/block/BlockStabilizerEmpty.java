@@ -6,14 +6,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class BlockStabilizerEmpty extends Block {
-    public static BlockStabilizerEmpty instance;
     IIcon dbsEmpty;
 
     public BlockStabilizerEmpty(String n) {
         super(Material.rock);
-        instance = this;
         setCreativeTab(EnhancedPortals.instance.creativeTab);
         setHardness(5);
         setResistance(2000);
@@ -41,6 +40,6 @@ public class BlockStabilizerEmpty extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister register) {
-        dbsEmpty = register.registerIcon("enhancedportals:dbs_empty");
+        dbsEmpty = register.registerIcon(EPMod.ID + ":dbs_empty");
     }
 }

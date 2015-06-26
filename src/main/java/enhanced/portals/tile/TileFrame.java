@@ -10,11 +10,11 @@ import cpw.mods.fml.relauncher.Side;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.block.BlockFrame;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.ISidedBlockTexture;
+import enhanced.portals.utility.Reference.EPConfiguration;
+import enhanced.portals.utility.Reference.PortalFrames;
 
-public abstract class TileFrame extends TilePortalPart implements ISidedBlockTexture {
+public abstract class TileFrame extends TilePortalPart {
     protected boolean wearingGoggles = GeneralUtils.isWearingGoggles();
 
     @Override
@@ -28,7 +28,6 @@ public abstract class TileFrame extends TilePortalPart implements ISidedBlockTex
             controller.onPartFrameBroken();
     }
 
-    @Override
     public IIcon getBlockTexture(int side, int pass) {
         if (pass == 0) {
             TileController controller = getPortalController();
@@ -44,14 +43,18 @@ public abstract class TileFrame extends TilePortalPart implements ISidedBlockTex
                 return BlockFrame.connectedTextures.getBaseIcon();
 
             return BlockFrame.connectedTextures.getIconForSide(worldObj, xCoord, yCoord, zCoord, side);
-        } else {
-            int meta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
-
-            if (meta == BlockFrame.DIALLING_DEVICE)
-                return BlockFrame.overlayIcons[meta];
-
-            return shouldShowOverlay() ? BlockFrame.overlayIcons[meta] : BlockFrame.overlayIcons[0];
         }
+
+        PortalFrames frame = PortalFrames.get(worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+
+        if (frame != null) {
+            if (frame == PortalFrames.DIAL)
+                return frame.getOverlay();
+
+            return shouldShowOverlay() ? frame.getOverlay() : PortalFrames.BASIC.getOverlay();
+        }
+
+        return PortalFrames.BASIC.getOverlay();
     }
 
     public int getColour() {
@@ -73,7 +76,7 @@ public abstract class TileFrame extends TilePortalPart implements ISidedBlockTex
     }
 
     protected boolean shouldShowOverlay() {
-        return wearingGoggles || ProxyCommon.CONFIG_FORCE_FRAME_OVERLAY;
+        return wearingGoggles || EPConfiguration.forceFrameOverlay;
     }
 
     @Override

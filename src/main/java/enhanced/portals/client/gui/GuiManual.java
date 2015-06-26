@@ -1,32 +1,33 @@
 package enhanced.portals.client.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import enhanced.base.client.gui.BaseGui;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.manual.ManualParser;
+import enhanced.base.manual.PageManual;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.client.gui.elements.ElementManualCraftingGrid;
 import enhanced.portals.client.gui.elements.ElementManualTextButton;
 import enhanced.portals.inventory.ContainerManual;
 import enhanced.portals.network.ProxyClient;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class GuiManual extends BaseGui {
     public static final int CONTAINER_SIZE = 180, CONTAINER_WIDTH = 279;
-    static ResourceLocation textureB = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/manualB.png");
+    static HashMap<String, PageManual> manualPages;
+
+    static ResourceLocation textureB = new ResourceLocation(EPMod.ID, "textures/gui/manualB.png");
     ElementManualCraftingGrid craftingGrid;
     ArrayList<ElementManualTextButton> text_buttons = new ArrayList<ElementManualTextButton>();
     // Pages assigned to be triggered on next or prev.
     String NEXT_PAGE;
     String PREV_PAGE;
     // The page to go to by default (localization line).
-    String START_PAGE = EnhancedPortals.MOD_ID + ".manual.subject";
+    String START_PAGE = EPMod.ID + ".manual.subject";
     // Text Format.
     int RED = 0xFF0000;
     int DARK_GREY = 0x222222;
@@ -45,11 +46,18 @@ public class GuiManual extends BaseGui {
     String HR = "_____________________";
     String LOC_MANUAL_STRING = "manual.chapter";
 
+    String activePage = "intro";
+    String activeSecondPage = "toc";
+
     public GuiManual(EntityPlayer p) {
         super(new ContainerManual(p.inventory), CONTAINER_SIZE);
         xSize = CONTAINER_WIDTH;
         setHidePlayerInventory();
-        texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/manualA.png");
+        texture = new ResourceLocation(EPMod.ID, "textures/gui/manualA.png");
+
+        manualPages = null;
+        if (manualPages == null)
+            manualPages = ManualParser.loadManual(EPMod.ID);
     }
 
     @Override
@@ -60,20 +68,20 @@ public class GuiManual extends BaseGui {
         mc.renderEngine.bindTexture(textureB);
         drawTexturedModalRect(guiLeft + 140, guiTop, 0, 0, 139, ySize);
 
-        boolean mouseHeight = guiTop + mouseY >= guiTop + CONTAINER_SIZE + 3 && guiTop + mouseY < guiTop + CONTAINER_SIZE + 13;
-        boolean rightButton = mouseHeight && guiLeft + mouseX >= guiLeft + CONTAINER_WIDTH - 23 && guiLeft + mouseX < guiLeft + CONTAINER_WIDTH - 5;
-        boolean leftButton = mouseHeight && guiLeft + mouseX >= guiLeft + 5 && guiLeft + mouseX < guiLeft + 23;
-        boolean middleButton = mouseHeight && guiLeft + mouseX >= guiLeft + xSize / 2 - 10 && guiLeft + mouseX < guiLeft + xSize / 2 - 10 + 21;
+        //boolean mouseHeight = guiTop + mouseY >= guiTop + CONTAINER_SIZE + 3 && guiTop + mouseY < guiTop + CONTAINER_SIZE + 13;
+        //boolean rightButton = mouseHeight && guiLeft + mouseX >= guiLeft + CONTAINER_WIDTH - 23 && guiLeft + mouseX < guiLeft + CONTAINER_WIDTH - 5;
+        //boolean leftButton = mouseHeight && guiLeft + mouseX >= guiLeft + 5 && guiLeft + mouseX < guiLeft + 23;
+        //boolean middleButton = mouseHeight && guiLeft + mouseX >= guiLeft + xSize / 2 - 10 && guiLeft + mouseX < guiLeft + xSize / 2 - 10 + 21;
 
         // Draw "next page" button.
-        if (nextPage(true))
-            drawTexturedModalRect(guiLeft + CONTAINER_WIDTH - 23, guiTop + CONTAINER_SIZE + 3, rightButton ? 23 : 0, 233, 18, 10);
+        //if (manualPages.get(activePage).hasNextPage())
+        //    drawTexturedModalRect(guiLeft + CONTAINER_WIDTH - 23, guiTop + CONTAINER_SIZE + 3, rightButton ? 23 : 0, 233, 18, 10);
         // Draw "prev page" button.
-        if (prevPage(true))
-            drawTexturedModalRect(guiLeft + 5, guiTop + CONTAINER_SIZE + 3, leftButton ? 23 : 0, 246, 18, 10);
+        //if (prevPage(true))
+        //    drawTexturedModalRect(guiLeft + 5, guiTop + CONTAINER_SIZE + 3, leftButton ? 23 : 0, 246, 18, 10);
         // Draw "back to" button.
-        if (!(ProxyClient.manualEntry.equals("subject") || ProxyClient.manualEntry.equals("contents")))
-            drawTexturedModalRect(guiLeft + xSize / 2 - 10, guiTop + CONTAINER_SIZE + 3, middleButton ? 21 : 0, 222, 21, 10);
+        //if (!(ProxyClient.manualEntry.equals("subject") || ProxyClient.manualEntry.equals("contents")))
+        //    drawTexturedModalRect(guiLeft + xSize / 2 - 10, guiTop + CONTAINER_SIZE + 3, middleButton ? 21 : 0, 222, 21, 10);
     }
 
     protected void writeChapterHeader() {
@@ -81,7 +89,7 @@ public class GuiManual extends BaseGui {
     }
 
     protected void writeChapterHeader(int chapter_num) {
-        String title = Localization.get(EnhancedPortals.MOD_ID, LOC_MANUAL_STRING + "." + chapter_num + ".title").trim().toUpperCase();
+        String title = Localisation.get(EPMod.ID, LOC_MANUAL_STRING + "." + chapter_num + ".title").trim().toUpperCase();
         getFontRenderer().drawString(title, 15, 15, RED);
         getFontRenderer().drawSplitString(HR, 10, 17, PAGE_MARGIN, LIGHT_GREY);
     }
@@ -149,12 +157,12 @@ public class GuiManual extends BaseGui {
         do {
             // Set up some localization things.
             loc = LOC_MANUAL_STRING + "." + chapter_num + ".p.";
-            String paragraph = Localization.get(EnhancedPortals.MOD_ID, loc + iterator);
+            String paragraph = Localisation.get(EPMod.ID, loc + iterator);
             iterator++;
             // Add to our array.
             paragraphs.add(paragraph);
             // Loop if we have another paragraph after this.
-        } while (ProxyClient.locExists(loc + iterator));
+        } while (Localisation.exists(EPMod.ID, loc + iterator));
         // Process the paragraphs and turn them into pages.
         while (!paragraphs.isEmpty()) {
             ArrayList<String> page = new ArrayList<String>();
@@ -209,7 +217,7 @@ public class GuiManual extends BaseGui {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        hideItemLinks();
+        /*hideItemLinks();
 
         // Check to see where we are in the Manual:
         // Main Title page.
@@ -218,26 +226,26 @@ public class GuiManual extends BaseGui {
             // drawSplitString(<right>,<down>,<width>,<text>,<color>)
             getFontRenderer().drawString("ENHANCED", 160, 70, RED);
             getFontRenderer().drawString("PORTALS", 210, 70, DARK_GREY);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.subject.sub").toLowerCase(), 160, 80, PAGE_MARGIN, LIGHT_GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.subject.sub").toLowerCase(), 160, 80, PAGE_MARGIN, LIGHT_GREY);
             // Table of Contents.
         } else if (ProxyClient.manualEntry.equals("contents")) {
             hideCraftingTable();
             GL11.glEnable(GL11.GL_ALPHA_TEST);
-            getFontRenderer().drawSplitString("> " + Localization.get(EnhancedPortals.MOD_ID, "manual.table_of_contents.title").toUpperCase() + " <", 15, 20, PAGE_MARGIN, RED);
+            getFontRenderer().drawSplitString("> " + Localisation.get(EPMod.ID, "manual.table_of_contents.title").toUpperCase() + " <", 15, 20, PAGE_MARGIN, RED);
             getFontRenderer().drawSplitString(":", 17, 35, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.0.title"), 20, 35, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.0.title"), 20, 35, PAGE_MARGIN, GREY);
             getFontRenderer().drawSplitString(":", 17, 50, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.1.title"), 20, 50, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.1.title"), 20, 50, PAGE_MARGIN, GREY);
             getFontRenderer().drawSplitString(":", 17, 65, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.2.title"), 20, 65, 120, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.2.title"), 20, 65, 120, GREY);
             getFontRenderer().drawSplitString(":", 17, 80, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.3.title"), 20, 80, 120, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.3.title"), 20, 80, 120, GREY);
             getFontRenderer().drawSplitString(":", 17, 95, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.4.title"), 20, 95, 120, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.4.title"), 20, 95, 120, GREY);
             getFontRenderer().drawSplitString(":", 17, 110, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.5.title"), 20, 110, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.5.title"), 20, 110, PAGE_MARGIN, GREY);
             getFontRenderer().drawSplitString(":", 17, 125, PAGE_MARGIN, RED);
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, "manual.chapter.6.title"), 20, 125, PAGE_MARGIN, GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, "manual.chapter.6.title"), 20, 125, PAGE_MARGIN, GREY);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             // Chapters.
         } else if (ProxyClient.manualEntry.equals("chapter")) {
@@ -246,7 +254,7 @@ public class GuiManual extends BaseGui {
             // Item Gallery for each chapter.
         } else if (ProxyClient.manualEntry.equals("gallery")) {
             hideCraftingTable();
-            String title = Localization.get(EnhancedPortals.MOD_ID, "manual.gallery.title");
+            String title = Localisation.get(EPMod.ID, "manual.gallery.title");
             ArrayList<String> items = new ArrayList<String>();
             // Draw the header.
             getFontRenderer().drawString(title.toUpperCase(), 40, 15, LIGHT_GREY);
@@ -290,15 +298,20 @@ public class GuiManual extends BaseGui {
             int left_margin = 15;
             int top_margin = 15;
             String loc_entry = "manual." + ProxyClient.manualEntry;
-            top_margin += drawSplitString(left_margin, top_margin, CONTENT_MARGIN, Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".title").toUpperCase(), RED);
+            top_margin += drawSplitString(left_margin, top_margin, CONTENT_MARGIN, Localisation.get(EPMod.ID, loc_entry + ".title").toUpperCase(), RED);
             // Check if subtitles exist.
-            if (ProxyClient.locExists(loc_entry + ".subtitle"))
-                getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".subtitle"), left_margin, top_margin, CONTENT_MARGIN, LIGHT_GREY);
+            if (Localisation.exists(EPMod.ID, loc_entry + ".subtitle"))
+                getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, loc_entry + ".subtitle"), left_margin, top_margin, CONTENT_MARGIN, LIGHT_GREY);
             // Right page.
             top_margin = 15;
-            getFontRenderer().drawSplitString(Localization.get(EnhancedPortals.MOD_ID, loc_entry + ".info"), PAGE_MARGIN + left_margin, top_margin, CONTENT_MARGIN, DARK_GREY);
+            getFontRenderer().drawSplitString(Localisation.get(EPMod.ID, loc_entry + ".info"), PAGE_MARGIN + left_margin, top_margin, CONTENT_MARGIN, DARK_GREY);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
-        }
+        }*/
+
+        manualPages.get(activePage).render(false);
+
+        if (activeSecondPage != null)
+            manualPages.get(activeSecondPage).render(true);
 
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
@@ -336,11 +349,18 @@ public class GuiManual extends BaseGui {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (mouseButton == 4 && nextPage(true)) {
-            nextPage();
+        if (mouseButton == 4 && activeSecondPage != null && !activeSecondPage.isEmpty() && manualPages.get(activeSecondPage).hasNextPage()) {
+            activePage = manualPages.get(activeSecondPage).getNextPage();
+            activeSecondPage = manualPages.get(activePage).getNextPage();
             return;
-        } else if (mouseButton == 3 && prevPage(true)) {
-            prevPage();
+        } else if (mouseButton == 3 && manualPages.get(activePage).hasPrevPage()) {
+            String prev = manualPages.get(activePage).getPrevPage();
+            PageManual m = manualPages.get(prev);
+            
+            if (m.hasPrevPage()) {
+                activePage = m.getPrevPage();
+                activeSecondPage = prev;
+            }
             return;
         } else if (mouseY >= guiTop + CONTAINER_SIZE + 3 && mouseY < guiTop + CONTAINER_SIZE + 13)
             if (mouseX >= guiLeft + CONTAINER_WIDTH - 23 && mouseX < guiLeft + CONTAINER_WIDTH - 5 && nextPage(true)) {
@@ -372,50 +392,47 @@ public class GuiManual extends BaseGui {
         if (ProxyClient.manualEntry.equals("subject")) {
             if (is_next)
                 return true;
-            else
-                // Trigger the page change.
-                changeEntry("contents");
+
+            // Trigger the page change.
+            changeEntry("contents");
         } else if (ProxyClient.manualEntry.equals("contents")) {
             if (is_next)
                 return true;
-            else {
-                ProxyClient.chapterNum = 0;
-                ProxyClient.chapterPage = 0;
-                changeEntry("chapter");
-            }
+
+            ProxyClient.chapterNum = 0;
+            ProxyClient.chapterPage = 0;
+            changeEntry("chapter");
         } else if (ProxyClient.manualEntry.equals("chapter")) {
             int total_chapter_pages = countChapterPages(ProxyClient.chapterNum);
             // Check if the current page is not the last page.
             if (total_chapter_pages > ProxyClient.chapterPage + 2) {
                 if (is_next)
                     return true;
-                else {
-                    ProxyClient.chapterPage += 2;
-                    changeEntry("chapter");
-                }
+
+                ProxyClient.chapterPage += 2;
+                changeEntry("chapter");
             } else // Check if this chapter has a term Gallery.
                 if (ProxyClient.chapterNum > 1) {
                     if (is_next)
                         return true;
-                    else
-                        changeEntry("gallery");
-                } else if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1))
+
+                    changeEntry("gallery");
+                } else if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1)) {
                     if (is_next)
                         return true;
-                    else {
-                        ProxyClient.chapterNum++;
-                        ProxyClient.chapterPage = 0;
-                        changeEntry("chapter");
-                    }
-        } else if (ProxyClient.manualEntry.equals("gallery")) // Check if there is a next chapter.
-            if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1))
-                if (is_next)
-                    return true;
-                else {
+
                     ProxyClient.chapterNum++;
                     ProxyClient.chapterPage = 0;
                     changeEntry("chapter");
                 }
+        } else if (ProxyClient.manualEntry.equals("gallery")) // Check if there is a next chapter.
+            if (ProxyClient.manualChapterExists(ProxyClient.chapterNum + 1)) {
+                if (is_next)
+                    return true;
+                ProxyClient.chapterNum++;
+                ProxyClient.chapterPage = 0;
+                changeEntry("chapter");
+            }
         return false;
     }
 
@@ -424,30 +441,27 @@ public class GuiManual extends BaseGui {
         if (ProxyClient.manualEntry.equals("contents")) {
             if (is_prev)
                 return true;
-            else
-                changeEntry("subject");
+
+            changeEntry("subject");
         } else if (ProxyClient.manualEntry.equals("chapter")) {
             // Check if the current page is not the last page.
             if (!(ProxyClient.chapterPage <= 1)) {
                 if (is_prev)
                     return true;
-                else {
-                    ProxyClient.chapterPage -= 2;
-                    changeEntry("chapter");
-                }
+
+                ProxyClient.chapterPage -= 2;
+                changeEntry("chapter");
             } else // Check if there is a next chapter.
                 if (ProxyClient.manualChapterExists(ProxyClient.chapterNum - 1)) {
                     if (is_prev)
                         return true;
-                    else {
-                        ProxyClient.chapterNum--;
-                        ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
-                        // Check if the previous chapter has a Gallery.
-                        if (ProxyClient.chapterNum > 1)
-                            changeEntry("gallery");
-                        else
-                            changeEntry("chapter");
-                    }
+                    ProxyClient.chapterNum--;
+                    ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
+                    // Check if the previous chapter has a Gallery.
+                    if (ProxyClient.chapterNum > 1)
+                        changeEntry("gallery");
+                    else
+                        changeEntry("chapter");
                 } else if (is_prev)
                     return true;
                 else {
@@ -455,13 +469,12 @@ public class GuiManual extends BaseGui {
                     ProxyClient.chapterPage = 0;
                     changeEntry("contents");
                 }
-        } else if (ProxyClient.manualEntry.equals("gallery"))
+        } else if (ProxyClient.manualEntry.equals("gallery")) {
             if (is_prev)
                 return true;
-            else {
-                ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
-                changeEntry("chapter");
-            }
+            ProxyClient.chapterPage = countChapterPages(ProxyClient.chapterNum) - 1;
+            changeEntry("chapter");
+        }
         return false;
     }
 

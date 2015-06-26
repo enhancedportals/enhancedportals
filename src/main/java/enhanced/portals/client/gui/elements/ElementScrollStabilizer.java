@@ -8,10 +8,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.client.gui.GuiDimensionalBridgeStabilizer;
 import enhanced.portals.tile.TileStabilizerMain;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class ElementScrollStabilizer extends BaseElement {
 
@@ -40,9 +41,9 @@ public class ElementScrollStabilizer extends BaseElement {
 
             if (mouseOverSmall) {
                 /*
-                 * if (parent.isShiftKeyDown()) { list.add(Localization.get(EnhancedPortals.MOD_ID, "gui.delete")); break; } else {
+                 * if (parent.isShiftKeyDown()) { list.add(Localization.get(EPMod.ID, "gui.delete")); break; } else {
                  */
-                list.add(Localization.get(EnhancedPortals.MOD_ID, "gui.edit"));
+                list.add(Localisation.get(EPMod.ID, Locale.GUI_EDIT));
                 break;
                 // }
             }
@@ -145,8 +146,8 @@ public class ElementScrollStabilizer extends BaseElement {
 
             GL11.glColor3f(1f, 1f, 1f);
             // GlyphElement e = dial.glyphList.get(scrollAmount + i);
-            int state = 1, entryOffset = i * entryHeight, mouseX = parent.getMouseX() + parent.getGuiLeft(), mouseY = parent.getMouseY() + parent.getGuiTop(), fontColour = 0xFFFFFF;
-            boolean mouseOverEntry = mouseY >= posY + offsetY + entryOffset && mouseY <= posY + offsetY + entryOffset + 20, mouseOverMain = mouseOverEntry && mouseX >= posX + offsetX && mouseX < posX + offsetX + sizeMButton, mouseOverSmall = mouseOverEntry && mouseX >= posX + offsetX + sizeMButton + buttonSpacing && mouseX < posX + offsetX + sizeMButton + buttonSpacing + sizeSButton, delete = GuiScreen.isShiftKeyDown();
+            // int state = 1, entryOffset = i * entryHeight, mouseX = parent.getMouseX() + parent.getGuiLeft(), mouseY = parent.getMouseY() + parent.getGuiTop(), fontColour = 0xFFFFFF;
+            // boolean mouseOverEntry = mouseY >= posY + offsetY + entryOffset && mouseY <= posY + offsetY + entryOffset + 20, mouseOverMain = mouseOverEntry && mouseX >= posX + offsetX && mouseX < posX + offsetX + sizeMButton, mouseOverSmall = mouseOverEntry && mouseX >= posX + offsetX + sizeMButton + buttonSpacing && mouseX < posX + offsetX + sizeMButton + buttonSpacing + sizeSButton, delete = GuiScreen.isShiftKeyDown();
 
             /*
              * if (dial.getPortalController().isPortalActive()) { state = 0; }

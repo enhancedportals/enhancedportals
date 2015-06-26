@@ -1,0 +1,51 @@
+[ {
+	"pageName": "intro",
+    "nextPage": "toc",
+    "pageType": "text",
+    "text": "\n\n\n\n \u00A74ENHANCED  \u00A70PORTALS\n \u00A77wormhole tunnelling"
+  }, {
+  	"pageName": "toc",
+    "pageType": "toc",
+    "nextPage": "chapter1",
+    "prevPage": "intro",
+    "title": "Table of Contents",
+    "entries": [ { "text": "Prelude", "link": "chapter1" },
+    			 { "text": "The Basics", "link": "chapter2" },
+    			 { "text": "Stabilizing Dimensions", "link": "chapter3" },
+    			 { "text": "Building the Harness", "link": "chapter4" },
+    			 { "text": "Igniting a Black Hole", "link": "chapter5" },
+    			 { "text": "Phone Home", "link": "chapter6" },
+    			 { "text": "Accessorizing", "link": "chapter7" },
+    			 { "text": "", "link": "" },
+    			 { "text": "Quick Links", "link": "HEADER" },
+    			 { "text": "Items", "link": "items" },
+    			 { "text": "Blocks", "link": "blocks" }
+   ]
+  }, {
+  	"pageName": "chapter1",
+  	"pageType": "text",
+  	"nextPage": "chapter2",
+  	"prevPage": "toc",
+  	"title": "Prelude",
+  	"text": "The subatomic particles of life and space are now easily manipulated. We have learned to weave them like fine silk for us to reap the benefits. With these concepts at the helm, we can now create harnesses, for micro wormholes to tunnel between space and dimensions."
+  }, {
+  	"pageName": "chapter2",
+  	"pageType": "text",
+  	"nextPage": "chapter2b",
+  	"prevPage": "chapter1",
+  	"title": "The Basics",
+  	"text": "The principals behind channeling a wormhole starts with constructing a Dimensional Bridge Stabilizer. This device will allow you to maintain and transport Bio Information across great distances."
+  }, {
+  	"pageName": "chapter2b",
+  	"pageType": "text",
+  	"nextPage": "chapter3",
+  	"prevPage": "chapter2",
+  	"text": "To sustain a wormhole you will need to create a frame which can withstand and encapsulate a wormhole formation, these are known as portal frames.\n\nFinally you will need a method that will begin the portal, this can be anything from a simple button to a Dialling Device."
+  }, {
+  	"pageName": "chapter3",
+  	"pageType": "text",
+  	"nextPage": "",
+  	"prevPage": "chapter2b",
+  	"title": "Stabilizing Dimensions",
+  	"text": "The Dimensional Bridge Stabilizer allows several simultaneous wormholes to be created depending on it's volume. To create a DBS, place 12 Dimensional Bridge Stabilizer blocks in a configuration of 3 wide by 3 long, with a minimum height of 2 blocks and a maximum height of 256, then right click on any block with a wrench. If configured correctly, a functional DBS will form."
+} ]

@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiManual;
 import enhanced.portals.network.ProxyClient;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementManualCraftingGrid extends BaseElement {
     int offset = 7;
@@ -19,7 +19,7 @@ public class ElementManualCraftingGrid extends BaseElement {
 
     public ElementManualCraftingGrid(GuiManual gui, int x, int y, ItemStack[] i) {
         super(gui, x, y, 66, i == null ? 66 : i.length == 10 ? 99 : 66);
-        texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/crafting.png");
+        texture = new ResourceLocation(EPMod.ID, "textures/gui/crafting.png");
         items = i;
     }
 

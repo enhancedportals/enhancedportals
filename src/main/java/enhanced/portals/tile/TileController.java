@@ -9,9 +9,11 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -27,14 +29,13 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.utilities.DimensionCoordinates;
-import enhanced.base.utilities.Localization;
+import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
+import enhanced.base.xmod.OpenComputers;
+import enhanced.core.Reference.ECItems;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockPortal;
 import enhanced.portals.item.ItemLocationCard;
-import enhanced.portals.item.ItemNanobrush;
 import enhanced.portals.network.GuiHandler;
-import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.network.packet.PacketRerender;
 import enhanced.portals.portal.EntityManager;
 import enhanced.portals.portal.GlyphIdentifier;
@@ -43,8 +44,14 @@ import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.portal.PortalUtils;
 import enhanced.portals.utility.ComputerUtils;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPConfiguration;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.PortalModules;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileController extends TileFrame implements IPeripheral, SimpleComponent {
     enum ControlState {
         REQUIRES_LOCATION, REQUIRES_WRENCH, FINALIZED
@@ -59,21 +66,17 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     ArrayList<ChunkCoordinates> transferItems = new ArrayList<ChunkCoordinates>();
     ArrayList<ChunkCoordinates> transferEnergy = new ArrayList<ChunkCoordinates>();
 
-    ChunkCoordinates moduleManipulator;
-
-    DimensionCoordinates dimensionalBridgeStabilizer, temporaryDBS;
-
     public PortalTextureManager activeTextureData = new PortalTextureManager(), inactiveTextureData;
-
-    ControlState portalState = ControlState.REQUIRES_LOCATION;
-
     public int connectedPortals = -1, instability = 0, portalType = 0;
+    public boolean isPublic;
 
     boolean processing;
-    public boolean isPublic;
+    ControlState portalState = ControlState.REQUIRES_LOCATION;
 
     GlyphIdentifier cachedDestinationUID;
     DimensionCoordinates cachedDestinationLoc;
+    ChunkCoordinates moduleManipulator;
+    DimensionCoordinates dimensionalBridgeStabilizer, temporaryDBS;
 
     @SideOnly(Side.CLIENT)
     GlyphIdentifier uID, nID;
@@ -86,27 +89,27 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         try {
             if (stack != null)
                 if (portalState == ControlState.REQUIRES_LOCATION) {
-                    if (stack.getItem() == ItemLocationCard.instance && !worldObj.isRemote) {
+                    if (stack.getItem() == EPItems.locationCard && !worldObj.isRemote) {
                         boolean reconfiguring = dimensionalBridgeStabilizer != null;
                         setDBS(player, stack);
                         configurePortal();
-                        player.addChatComponentMessage(new ChatComponentText(Localization.getChatSuccess(EnhancedPortals.MOD_ID, !reconfiguring ? "create" : "reconfigure")));
+                        player.addChatComponentMessage(new ChatComponentText(Localisation.getChatSuccess(EPMod.ID, !reconfiguring ? "create" : "reconfigure")));
                     }
 
                     return true;
                 } else if (portalState == ControlState.REQUIRES_WRENCH) {
                     if (GeneralUtils.isWrench(stack) && !worldObj.isRemote) {
                         configurePortal();
-                        player.addChatComponentMessage(new ChatComponentText(Localization.getChatSuccess(EnhancedPortals.MOD_ID, "reconfigure")));
+                        player.addChatComponentMessage(new ChatComponentText(Localisation.getChatSuccess(EPMod.ID, "reconfigure")));
                     }
 
                     return true;
                 } else if (portalState == ControlState.FINALIZED)
                     if (GeneralUtils.isWrench(stack)) {
-                        GuiHandler.openGui(player, this, GuiHandler.PORTAL_CONTROLLER_A);
+                        GuiHandler.openGui(player, this, EPGuis.PORTAL_CONTROLLER_A);
                         return true;
-                    } else if (stack.getItem() == ItemNanobrush.instance) {
-                        GuiHandler.openGui(player, this, GuiHandler.TEXTURE_A);
+                    } else if (stack.getItem() == EPItems.nanobrush) {
+                        GuiHandler.openGui(player, this, EPGuis.TEXTURE_A);
                         return true;
                     }
         } catch (PortalException e) {
@@ -228,8 +231,8 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
         if (identifier == null || identifier.isEmpty())
             return new Object[] { "" };
-        else
-            return new Object[] { identifier.getGlyphString() };
+
+        return new Object[] { identifier.getGlyphString() };
     }
 
     Object[] comp_SetFrameColour(Object[] arguments) throws Exception {
@@ -490,7 +493,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_controller";
     }
@@ -574,7 +577,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(direct = true, doc = "function():number -- Returns the hexadecimal colour of the portal frame.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getFrameColour(Context context, Arguments args) throws Exception {
         return new Object[] { activeTextureData.getFrameColour() };
     }
@@ -639,13 +642,13 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(direct = true, doc = "function():number -- Returns the hexadecimal colour of the particles.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getParticleColour(Context context, Arguments args) throws Exception {
         return new Object[] { activeTextureData.getParticleColour() };
     }
 
     @Callback(direct = true, doc = "function():number -- Returns the hexadecimal colour of the portal.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getPortalColour(Context context, Arguments args) throws Exception {
         return new Object[] { activeTextureData.getPortalColour() };
     }
@@ -682,7 +685,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(direct = true, doc = "function():string -- Returns a string containing the numeric glyph IDs of each glyph in the unique identifier.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getUniqueIdentifier(Context context, Arguments args) throws Exception {
         return comp_GetUniqueIdentifier();
     }
@@ -699,7 +702,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(direct = true, doc = "function():boolean -- Returns true if the portal has an active connection.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] isPortalActive(Context context, Arguments args) {
         return new Object[] { isPortalActive() };
     }
@@ -746,6 +749,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
             try {
                 EntityManager.transferEntity(entity, this, control);
+                onEntityTeleported(entity);
                 control.onEntityTeleported(entity);
                 control.onEntityTouchPortal(entity);
             } catch (PortalException e) {
@@ -760,7 +764,9 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         TilePortalManipulator module = getModuleManipulator();
 
         if (module != null)
-            module.onEntityTeleported(entity);
+            if (module.hasModule(PortalModules.FEATHERFALL))
+                if (entity instanceof EntityLivingBase)
+                    ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ECItems.potionFeatherfall.id, 200, 0));
     }
 
     public void onEntityTouchPortal(Entity entity) {
@@ -778,13 +784,13 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     public void portalCreate() throws PortalException {
         for (ChunkCoordinates c : portalBlocks)
             if (!worldObj.isAirBlock(c.posX, c.posY, c.posZ))
-                if (ProxyCommon.CONFIG_PORTAL_DESTROYS_BLOCKS)
+                if (EPConfiguration.portalDestroysBlocks)
                     worldObj.setBlockToAir(c.posX, c.posY, c.posZ);
                 else
                     throw new PortalException("failedToCreatePortal");
 
         for (ChunkCoordinates c : portalBlocks) {
-            worldObj.setBlock(c.posX, c.posY, c.posZ, BlockPortal.instance, portalType, 2);
+            worldObj.setBlock(c.posX, c.posY, c.posZ, EPBlocks.portal, portalType, 2);
 
             TilePortal portal = (TilePortal) worldObj.getTileEntity(c.posX, c.posY, c.posZ);
             portal.portalController = getChunkCoordinates();
@@ -912,7 +918,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(doc = "function(color:number):boolean -- Sets the portal frame colour to the specified hexadecimal string.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] setFrameColour(Context context, Arguments args) throws Exception {
         return comp_SetFrameColour(ComputerUtils.argsToArray(args));
     }
@@ -1011,7 +1017,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(doc = "function(color:number):boolean -- Sets the particle colour to the specified hexadecimal string.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] setParticleColour(Context context, Arguments args) throws Exception {
         return comp_SetParticleColour(ComputerUtils.argsToArray(args));
     }
@@ -1029,7 +1035,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(doc = "function(color:number):boolean -- Sets the portal colour to the specified hexadecimal string.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] setPortalColour(Context context, Arguments args) throws Exception {
         return comp_SetPortalColour(ComputerUtils.argsToArray(args));
     }
@@ -1056,7 +1062,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
 
     @Callback(doc = "function(uuid:string):string -- Sets the UID to the specified string. If no string is given it will reset the UID. Must be given as numbers separated by spaces.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] setUniqueIdentifier(Context context, Arguments args) throws Exception {
         return comp_SetUniqueIdentifier(ComputerUtils.argsToArray(args));
     }

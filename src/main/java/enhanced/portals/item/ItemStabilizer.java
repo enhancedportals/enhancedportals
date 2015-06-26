@@ -8,9 +8,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockStabilizer;
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class ItemStabilizer extends ItemBlock {
     public ItemStabilizer(Block b) {
@@ -19,16 +20,15 @@ public class ItemStabilizer extends ItemBlock {
         setHasSubtypes(true);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        list.add(Localization.get(EnhancedPortals.MOD_ID, "block.multiblockStructure"));
-        list.add(EnumChatFormatting.DARK_GRAY + Localization.get(EnhancedPortals.MOD_ID, "block.dbsSize"));
+        list.add(Localisation.get(EPMod.ID, Locale.BLOCK_MULTIBLOCK_STRUCTURE));
+        list.add(EnumChatFormatting.DARK_GRAY + Localisation.get(EPMod.ID, Locale.BLOCK_DBS_SIZE));
     }
 
     @Override
     public IIcon getIconFromDamage(int par1) {
-        return BlockStabilizer.instance.getBlockTextureFromSide(0);
+        return EPBlocks.dimensionalBridgeStabilizer.getBlockTextureFromSide(0);
     }
 
     @Override

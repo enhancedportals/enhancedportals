@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import enhanced.base.network.PacketBase;
+import enhanced.base.network.packet.PacketBase;
 import enhanced.portals.client.gui.GuiDialingEdit;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.portal.GlyphIdentifier;

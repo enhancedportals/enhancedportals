@@ -13,20 +13,19 @@ import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.tile.TileStabilizer;
 import enhanced.portals.tile.TileStabilizerMain;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class BlockStabilizer extends BlockContainer {
-    public static BlockStabilizer instance;
     public static ConnectedTexturesDetailed connectedTextures;
 
     public BlockStabilizer(String n) {
         super(Material.rock);
-        instance = this;
         setHardness(5);
         setResistance(2000);
         setBlockName(n);
         setStepSound(soundTypeStone);
         setCreativeTab(EnhancedPortals.instance.creativeTab);
-        connectedTextures = new ConnectedTexturesDetailed("enhancedportals:bridge/%s", this, -1);
+        connectedTextures = new ConnectedTexturesDetailed(EPMod.ID + ":bridge/%s", this, -1);
     }
 
     @Override

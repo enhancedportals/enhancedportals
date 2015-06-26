@@ -7,9 +7,9 @@ import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiNetworkInterfaceGlyphs;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerNetworkInterfaceGlyphs extends BaseContainer {
     TileController controller;
@@ -24,7 +24,7 @@ public class ContainerNetworkInterfaceGlyphs extends BaseContainer {
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
         if (tag.hasKey("nid")) {
             controller.setIdentifierNetwork(new GlyphIdentifier(tag.getString("nid")));
-            player.openGui(EnhancedPortals.instance, GuiHandler.NETWORK_INTERFACE_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
+            player.openGui(EnhancedPortals.instance, EPGuis.NETWORK_INTERFACE_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
         }
     }
 }

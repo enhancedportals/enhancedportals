@@ -1,21 +1,40 @@
 package enhanced.portals.tile;
 
-import java.util.ArrayList;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import enhanced.portals.client.PortalParticleFX;
-import enhanced.portals.item.ItemNanobrush;
+import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.IPortalModule;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
+import enhanced.portals.utility.Reference.PortalModules;
 
 public class TilePortalManipulator extends TileFrame implements IInventory {
     ItemStack[] inventory = new ItemStack[9];
+    PortalModules[] modules = new PortalModules[9];
+
+    void updateModuleCache() {
+        modules = new PortalModules[9];
+
+        for (int i = 0; i < inventory.length; i++) {
+            ItemStack s = inventory[i];
+
+            if (s != null)
+                if (s.getItem() == EPItems.portalModule)
+                    modules[i] = PortalModules.get(s.getItemDamage());
+        }
+    }
+
+    public boolean hasModule(PortalModules m) {
+        for (PortalModules installed : modules)
+            if (installed == m)
+                return true;
+
+        return false;
+    }
 
     @Override
     public boolean activate(EntityPlayer player, ItemStack stack) {
@@ -26,10 +45,10 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                GuiHandler.openGui(player, this, GuiHandler.MODULE_MANIPULATOR);
+                GuiHandler.openGui(player, this, EPGuis.MODULE_MANIPULATOR);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 
@@ -80,19 +99,6 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
         return stack;
     }
 
-    public IPortalModule[] getInstalledUpgrades() {
-        IPortalModule[] modules = new IPortalModule[getSizeInventory()];
-
-        for (int i = 0; i < getSizeInventory(); i++) {
-            ItemStack s = getStackInSlot(i);
-
-            if (s != null)
-                modules[i] = (IPortalModule) s.getItem();
-        }
-
-        return modules;
-    }
-
     @Override
     public String getInventoryName() {
         return "tile.ep3.portalFrame.upgrade.name";
@@ -101,28 +107,6 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
     @Override
     public int getInventoryStackLimit() {
         return 1;
-    }
-
-    public ItemStack getModifierItem() {
-        return inventory[9];
-    }
-
-    public ItemStack getModule(String ID) {
-        for (ItemStack i : getModules())
-            if (((IPortalModule) i.getItem()).getID(i).equals(ID))
-                return i;
-
-        return null;
-    }
-
-    public ArrayList<ItemStack> getModules() {
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-        for (ItemStack i : inventory)
-            if (i != null && i.getItem() instanceof IPortalModule)
-                list.add(i);
-
-        return list;
     }
 
     @Override
@@ -145,41 +129,9 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
         return false;
     }
 
-    public boolean hasModule(String ID) {
-        return getModule(ID) != null;
-    }
-
-    public boolean installUpgrade(ItemStack stack) {
-        if (stack == null || !(stack.getItem() instanceof IPortalModule))
-            return false;
-
-        IPortalModule pModule = (IPortalModule) stack.getItem();
-
-        if (!hasModule(pModule.getID(stack)) && pModule.canInstallUpgrade(this, getInstalledUpgrades(), stack))
-            for (int i = 0; i < getSizeInventory(); i++)
-                if (getStackInSlot(i) == null) {
-                    ItemStack s = stack.copy();
-                    s.stackSize = 1;
-
-                    setInventorySlotContents(i, s);
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    return true;
-                }
-
-        return false;
-    }
-
     @Override
     public boolean isItemValidForSlot(int i, ItemStack stack) {
-        return stack != null && stack.getItem() instanceof IPortalModule && !hasModule(((IPortalModule) stack.getItem()).getID(stack));
-    }
-
-    public boolean isPortalInvisible() {
-        for (ItemStack i : getModules())
-            if (((IPortalModule) i.getItem()).disablePortalRendering(this, i))
-                return true;
-
-        return false;
+        return stack != null && stack.getItem() instanceof ItemPortalModule && !hasModule(PortalModules.get(stack.getItemDamage()));
     }
 
     @Override
@@ -201,27 +153,9 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
             setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(items.getCompoundTagAt(i)));
     }
 
-    public boolean onEntityTeleport(Entity entity) {
-        for (ItemStack i : getModules())
-            if (((IPortalModule) i.getItem()).onEntityTeleportStart(entity, this, i))
-                return true;
-
-        return false;
-    }
-
-    public void onEntityTeleported(Entity entity) {
-        for (ItemStack i : getModules())
-            ((IPortalModule) i.getItem()).onEntityTeleportEnd(entity, this, i);
-    }
-
     @Override
     public void openInventory() {
 
-    }
-
-    public void particleCreated(PortalParticleFX portalFX) {
-        for (ItemStack i : getModules())
-            ((IPortalModule) i.getItem()).onParticleCreated(this, i, portalFX);
     }
 
     @Override
@@ -236,19 +170,14 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
             if (slot >= 0 && slot < getSizeInventory())
                 setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
         }
+
+        updateModuleCache();
     }
 
     @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
         inventory[i] = itemstack;
-    }
-
-    public boolean shouldKeepMomentumOnTeleport() {
-        for (ItemStack i : getModules())
-            if (((IPortalModule) i.getItem()).keepMomentumOnTeleport(this, i))
-                return true;
-
-        return false;
+        updateModuleCache();
     }
 
     @Override
@@ -270,5 +199,16 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
 
         // Saves the inventory under "Modules" in NBT
         compound.setTag("Modules", items);
+    }
+
+    public ItemStack getModule(PortalModules m) {
+        if (!hasModule(m))
+            return null;
+
+        for (int i = 0; i < inventory.length; i++)
+            if (modules[i] == m)
+                return inventory[i];
+
+        return null;
     }
 }

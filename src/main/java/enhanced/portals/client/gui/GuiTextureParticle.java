@@ -14,19 +14,20 @@ import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.button.GuiBetterSlider;
 import enhanced.base.client.gui.button.GuiRGBSlider;
 import enhanced.base.client.gui.tabs.TabTip;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockFrame;
-import enhanced.portals.block.BlockPortal;
 import enhanced.portals.client.gui.elements.ElementScrollParticles;
 import enhanced.portals.client.gui.tabs.TabColour;
 import enhanced.portals.inventory.ContainerTextureParticle;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketGuiData;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTextureParticle extends BaseGui {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;
@@ -38,8 +39,8 @@ public class GuiTextureParticle extends BaseGui {
         super(new ContainerTextureParticle(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.particle");
-        texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/textures_particles.png");
+        name = Localisation.get(EPMod.ID, Locale.GUI_PARTICLE);
+        texture = new ResourceLocation(EPMod.ID, "textures/gui/textures_particles.png");
         leftNudge = 7;
         hasSingleTexture = true;
     }
@@ -64,9 +65,9 @@ public class GuiTextureParticle extends BaseGui {
             tag.setInteger("colour", Integer.parseInt(String.format("%02x%02x%02x", sliderR.getValue(), sliderG.getValue(), sliderB.getValue()), 16));
             EnhancedPortals.instance.packetPipeline.sendToServer(new PacketGuiData(tag));
         } else if (button.id == 500)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_A));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.TEXTURE_A));
         else if (button.id == 501)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_B));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.TEXTURE_B));
     }
 
     @Override
@@ -74,16 +75,16 @@ public class GuiTextureParticle extends BaseGui {
         super.initGui();
 
         Color c = new Color(getPTM().getParticleColour());
-        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, Localization.get(EnhancedPortals.MOD_ID, "gui.red"), c.getRed() / 255f, 105);
-        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, Localization.get(EnhancedPortals.MOD_ID, "gui.green"), c.getGreen() / 255f, 105);
-        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, Localization.get(EnhancedPortals.MOD_ID, "gui.blue"), c.getBlue() / 255f, 105);
+        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, Localisation.get(EPMod.ID, Locale.GUI_RED), c.getRed() / 255f, 105);
+        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, Localisation.get(EPMod.ID, Locale.GUI_GREEN), c.getGreen() / 255f, 105);
+        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, Localisation.get(EPMod.ID, Locale.GUI_BLUE), c.getBlue() / 255f, 105);
 
         buttonList.add(sliderR);
         buttonList.add(sliderG);
         buttonList.add(sliderB);
 
-        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save"));
-        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.reset"));
+        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, Localisation.get(EPMod.ID, Locale.GUI_SAVE));
+        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, Localisation.get(EPMod.ID, Locale.GUI_RESET));
 
         buttonList.add(buttonSave);
         buttonList.add(buttonReset);
@@ -92,7 +93,7 @@ public class GuiTextureParticle extends BaseGui {
         buttonList.add(new GuiButton(501, guiLeft + 28, guiTop + containerSize - 18, 20, 20, ""));
 
         addTab(new TabColour(this, sliderR, sliderG, sliderB, buttonSave, buttonReset));
-        addTab(new TabTip(this, "colourTip", EnhancedPortals.MOD_ID));
+        addTab(new TabTip(this, "colourTip", EPMod.ID));
         addElement(new ElementScrollParticles(this, 7, 17, texture));
     }
 
@@ -117,9 +118,8 @@ public class GuiTextureParticle extends BaseGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         getItemRenderer().renderWithColor = false;
-        ItemStack frame = new ItemStack(BlockFrame.instance, 0, 0), portal = new ItemStack(BlockPortal.instance, 0, 0);
+        ItemStack frame = new ItemStack(EPBlocks.frame, 0, 0), portal = new ItemStack(EPBlocks.portal, 0, 0);
         Color frameColour = new Color(getPTM().getFrameColour()), portalColour = new Color(getPTM().getPortalColour());
-        int particleType = 0;
 
         if (getPTM() != null) {
             frameColour = new Color(getPTM().getFrameColour());

@@ -4,55 +4,34 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import enhanced.base.utilities.Localization;
+import enhanced.base.item.ItemBase;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.client.PortalParticleFX;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.ProxyCommon;
-import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.utility.IPortalModule;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
+import enhanced.portals.utility.Reference.PortalModules;
 
-public class ItemPortalModule extends Item implements IPortalModule {
-    public static enum PortalModules {
-        REMOVE_PARTICLES, RAINBOW_PARTICLES, REMOVE_SOUNDS, KEEP_MOMENTUM, INVISIBLE_PORTAL, TINTSHADE_PARTICLES, FACING, FEATHERFALL;
-
-        public String getUniqueID() {
-            ItemStack s = new ItemStack(instance, 1, ordinal());
-            return ((IPortalModule) s.getItem()).getID(s);
-        }
-    }
-
-    public static ItemPortalModule instance;
-
-    static IIcon baseIcon;
-    static IIcon[] overlayIcons = new IIcon[PortalModules.values().length];
+public class ItemPortalModule extends ItemBase {
+    IIcon[] overlayIcons = new IIcon[PortalModules.count()];
 
     public ItemPortalModule(String n) {
-        super();
-        instance = this;
-        setCreativeTab(EnhancedPortals.instance.creativeTab);
-        setUnlocalizedName(n);
+        super(EPMod.ID, n, EnhancedPortals.instance.creativeTab);
         setMaxDamage(0);
-        setMaxStackSize(64);
         setHasSubtypes(true);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        list.add("Portal Module");
+        list.add(Localisation.get(EPMod.ID, Locale.ITEM_PORTAL_MODULE));
 
         if (stack.getItemDamage() == PortalModules.FACING.ordinal()) {
             NBTTagCompound t = stack.getTagCompound();
@@ -61,30 +40,10 @@ public class ItemPortalModule extends Item implements IPortalModule {
             if (t != null)
                 i = t.getInteger("facing");
 
-            list.add(EnumChatFormatting.GRAY + Localization.get(EnhancedPortals.MOD_ID, "gui.facing." + i));
+            list.add(EnumChatFormatting.GRAY + Localisation.get(EPMod.ID, Locale.GUI_FACING_X + i));
         }
 
         list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".desc"));
-    }
-
-    @Override
-    public boolean canInstallUpgrade(TilePortalManipulator moduleManipulator, IPortalModule[] installedUpgrades, ItemStack upgrade) {
-        return true;
-    }
-
-    @Override
-    public boolean canRemoveUpgrade(TilePortalManipulator moduleManipulator, IPortalModule[] installedUpgrades, ItemStack upgrade) {
-        return true;
-    }
-
-    @Override
-    public boolean disableParticles(TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        return upgrade.getItemDamage() == PortalModules.REMOVE_PARTICLES.ordinal();
-    }
-
-    @Override
-    public boolean disablePortalRendering(TilePortalManipulator modulemanipulator, ItemStack upgrade) {
-        return upgrade.getItemDamage() == PortalModules.INVISIBLE_PORTAL.ordinal();
     }
 
     @Override
@@ -92,25 +51,19 @@ public class ItemPortalModule extends Item implements IPortalModule {
         if (pass == 1)
             return overlayIcons[damage];
 
-        return baseIcon;
-    }
-
-    @Override
-    public String getID(ItemStack upgrade) {
-        return "ep3." + upgrade.getItemDamage();
+        return super.getIconFromDamageForRenderPass(damage, pass);
     }
 
     @Override
     public EnumRarity getRarity(ItemStack itemStack) {
-        if (itemStack.getItemDamage() == PortalModules.INVISIBLE_PORTAL.ordinal())
+        if (itemStack.getItemDamage() == PortalModules.PORTAL_INVISIBLE.ordinal())
             return EnumRarity.epic;
-        else if (itemStack.getItemDamage() == PortalModules.KEEP_MOMENTUM.ordinal())
+        else if (itemStack.getItemDamage() == PortalModules.MOMENTUM.ordinal())
             return EnumRarity.rare;
 
         return EnumRarity.common;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTab, List list) {
         for (int i = 0; i < PortalModules.values().length; i++)
@@ -120,31 +73,6 @@ public class ItemPortalModule extends Item implements IPortalModule {
     @Override
     public String getUnlocalizedName(ItemStack stack) {
         return super.getUnlocalizedName() + "." + stack.getItemDamage();
-    }
-
-    @Override
-    public boolean keepMomentumOnTeleport(TilePortalManipulator tileModuleManipulator, ItemStack i) {
-        return i.getItemDamage() == PortalModules.KEEP_MOMENTUM.ordinal();
-    }
-
-    @Override
-    public void onEntityTeleportEnd(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
-            if (entity instanceof EntityPlayer)
-                ((EntityPlayer) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-            else if (entity instanceof EntityLiving)
-                ((EntityLiving) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-    }
-
-    @Override
-    public boolean onEntityTeleportStart(Entity entity, TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-        if (upgrade.getItemDamage() == PortalModules.FEATHERFALL.ordinal())
-            if (entity instanceof EntityPlayer)
-                ((EntityPlayer) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-            else if (entity instanceof EntityLiving)
-                ((EntityLiving) entity).addPotionEffect(new PotionEffect(ProxyCommon.featherfallPotion.id, 200, 0));
-
-        return false;
     }
 
     @Override
@@ -171,53 +99,11 @@ public class ItemPortalModule extends Item implements IPortalModule {
     }
 
     @Override
-    public void onParticleCreated(TilePortalManipulator moduleManipulator, ItemStack upgrade, PortalParticleFX particle) {
-        if (upgrade.getItemDamage() == PortalModules.RAINBOW_PARTICLES.ordinal())
-            particle.setRBGColorF((float) Math.random(), (float) Math.random(), (float) Math.random());
-        else if (upgrade.getItemDamage() == PortalModules.TINTSHADE_PARTICLES.ordinal()) {
-            float particleRed = particle.getRedColorF(), particleGreen = particle.getGreenColorF(), particleBlue = particle.getBlueColorF();
-            int i = ProxyClient.random.nextInt(3);
-
-            if (i == 0) {
-                particleRed *= particleRed / 4 * 3;
-                particleGreen *= particleGreen / 4 * 3;
-                particleBlue *= particleBlue / 4 * 3;
-            } else if (i == 1) {
-                particleRed = (255 - particleRed) * (particleRed / 4 * 3);
-                particleGreen = (255 - particleGreen) * (particleGreen / 4 * 3);
-                particleBlue = (255 - particleBlue) * (particleBlue / 4 * 3);
-            }
-
-            particle.setRBGColorF(particleRed, particleGreen, particleBlue);
-        }
-    }
-
-    @Override
-    public void onPortalCreated(TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-
-    }
-
-    @Override
-    public void onPortalRemoved(TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-
-    }
-
-    @Override
-    public void onUpgradeInstalled(TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-
-    }
-
-    @Override
-    public void onUpgradeRemoved(TilePortalManipulator moduleManipulator, ItemStack upgrade) {
-
-    }
-
-    @Override
     public void registerIcons(IIconRegister register) {
-        baseIcon = register.registerIcon("enhancedportals:blank_portal_module");
+        super.registerIcons(register);
 
         for (int i = 0; i < overlayIcons.length; i++)
-            overlayIcons[i] = register.registerIcon("enhancedportals:portal_module_" + i);
+            overlayIcons[i] = register.registerIcon(EPMod.ID + ":portal_module_" + i);
     }
 
     @Override

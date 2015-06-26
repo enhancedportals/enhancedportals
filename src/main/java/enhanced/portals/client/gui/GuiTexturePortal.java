@@ -20,18 +20,20 @@ import enhanced.base.client.gui.elements.ElementFakeItemSlot;
 import enhanced.base.client.gui.elements.IFakeSlotHandler;
 import enhanced.base.client.gui.tabs.TabTip;
 import enhanced.base.client.gui.tabs.TabTipSecondary;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.block.BlockFrame;
 import enhanced.portals.client.gui.elements.ElementScrollPortalIcons;
 import enhanced.portals.client.gui.tabs.TabColour;
 import enhanced.portals.inventory.ContainerTexturePortal;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketGuiData;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileController;
+import enhanced.portals.utility.Reference.EPBlocks;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;
@@ -45,19 +47,19 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
         super(new ContainerTexturePortal(c, p.inventory), CONTAINER_SIZE);
         controller = c;
         xSize = CONTAINER_WIDTH;
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.portal");
-        texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/textures.png");
+        name = Localisation.get(EPMod.ID, Locale.GUI_PORTAL);
+        texture = new ResourceLocation(EPMod.ID, "textures/gui/textures.png");
         leftNudge = 7;
         hasSingleTexture = true;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        String s = Localization.get(EnhancedPortals.MOD_ID, "gui.facade");
+        String s = Localisation.get(EPMod.ID, Locale.GUI_FACADE);
         getFontRenderer().drawString(s, xSize - 30 - getFontRenderer().getStringWidth(s), containerSize - 12, 0x404040);
 
         getItemRenderer().renderWithColor = false;
-        ItemStack frame = new ItemStack(BlockFrame.instance, 0, 0);
+        ItemStack frame = new ItemStack(EPBlocks.frame, 0, 0);
         Color frameColour = new Color(getPTM().getFrameColour()), particleColour = new Color(0x0077D8);
         int particleType = 0;
 
@@ -112,9 +114,9 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
             tag.setInteger("colour", Integer.parseInt(String.format("%02x%02x%02x", sliderR.getValue(), sliderG.getValue(), sliderB.getValue()), 16));
             EnhancedPortals.instance.packetPipeline.sendToServer(new PacketGuiData(tag));
         } else if (button.id == 500)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_A));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.TEXTURE_A));
         else if (button.id == 501)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, GuiHandler.TEXTURE_C));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(controller, EPGuis.TEXTURE_C));
     }
 
     @Override
@@ -122,16 +124,16 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
         super.initGui();
 
         Color c = new Color(getPTM().getPortalColour());
-        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, Localization.get(EnhancedPortals.MOD_ID, "gui.red"), c.getRed() / 255f, 105);
-        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, Localization.get(EnhancedPortals.MOD_ID, "gui.green"), c.getGreen() / 255f, 105);
-        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, Localization.get(EnhancedPortals.MOD_ID, "gui.blue"), c.getBlue() / 255f, 105);
+        sliderR = new GuiRGBSlider(100, guiLeft + xSize + 4, guiTop + 25, Localisation.get(EPMod.ID, Locale.GUI_RED), c.getRed() / 255f, 105);
+        sliderG = new GuiRGBSlider(101, guiLeft + xSize + 4, guiTop + 46, Localisation.get(EPMod.ID, Locale.GUI_GREEN), c.getGreen() / 255f, 105);
+        sliderB = new GuiRGBSlider(102, guiLeft + xSize + 4, guiTop + 67, Localisation.get(EPMod.ID, Locale.GUI_BLUE), c.getBlue() / 255f, 105);
 
         buttonList.add(sliderR);
         buttonList.add(sliderG);
         buttonList.add(sliderB);
 
-        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.save"));
-        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.reset"));
+        buttonSave = new GuiButton(110, guiLeft + xSize + 4, guiTop + 88, 53, 20, Localisation.get(EPMod.ID, Locale.GUI_SAVE));
+        buttonReset = new GuiButton(111, guiLeft + xSize + 57, guiTop + 88, 53, 20, Localisation.get(EPMod.ID, Locale.GUI_RESET));
 
         buttonList.add(buttonSave);
         buttonList.add(buttonReset);
@@ -140,8 +142,8 @@ public class GuiTexturePortal extends BaseGui implements IFakeSlotHandler {
         buttonList.add(new GuiButton(501, guiLeft + 28, guiTop + containerSize - 18, 20, 20, ""));
 
         addTab(new TabColour(this, sliderR, sliderG, sliderB, buttonSave, buttonReset));
-        addTab(new TabTip(this, "colourTip", EnhancedPortals.MOD_ID));
-        addTab(new TabTipSecondary(this, "portalCustomTexture", EnhancedPortals.MOD_ID));
+        addTab(new TabTip(this, "colourTip", EPMod.ID));
+        addTab(new TabTipSecondary(this, "portalCustomTexture", EPMod.ID));
         addElement(new ElementScrollPortalIcons(this, 7, 17, texture));
         addElement(new ElementFakeItemSlot(this, xSize - 24, containerSize - 16, getPTM().getPortalItem()));
     }

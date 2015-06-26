@@ -13,25 +13,16 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import enhanced.base.utilities.DimensionCoordinates;
-import enhanced.portals.item.ItemGlasses;
-import enhanced.portals.network.ProxyCommon;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class GeneralUtils {
-    public static double getPowerMultiplier() {
-        return hasEnergyCost() ? ProxyCommon.CONFIG_POWER_MULTIPLIER : 0;
-    }
-
-    public static boolean hasEnergyCost() {
-        return ProxyCommon.CONFIG_REQUIRE_POWER;
-    }
-
     public static boolean isWearingGoggles() {
         if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
             if (Minecraft.getMinecraft().thePlayer == null)
                 return false;
 
             ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.armorItemInSlot(3);
-            return stack != null && stack.getItem() == ItemGlasses.instance;
+            return stack != null && stack.getItem() == EPItems.glasses;
         }
 
         return false;
@@ -46,13 +37,11 @@ public class GeneralUtils {
             return null;
 
         NBTTagCompound t = (NBTTagCompound) tagCompound.getTag(string);
-
         return t.getInteger("Y") == -1 ? null : new ChunkCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z"));
     }
 
     public static ArrayList<ChunkCoordinates> loadChunkCoordList(NBTTagCompound tag, String name) {
         ArrayList<ChunkCoordinates> list = new ArrayList<ChunkCoordinates>();
-
         NBTTagList tagList = tag.getTagList(name, 10);
 
         for (int i = 0; i < tagList.tagCount(); i++) {
@@ -69,7 +58,6 @@ public class GeneralUtils {
             return null;
 
         NBTTagCompound t = (NBTTagCompound) tagCompound.getTag(string);
-
         return t.getInteger("Y") == -1 ? null : new DimensionCoordinates(t.getInteger("X"), t.getInteger("Y"), t.getInteger("Z"), t.getInteger("D"));
     }
 
@@ -81,7 +69,6 @@ public class GeneralUtils {
         t.setInteger("X", c.posX);
         t.setInteger("Y", c.posY);
         t.setInteger("Z", c.posZ);
-
         tagCompound.setTag(string, t);
     }
 
@@ -93,7 +80,6 @@ public class GeneralUtils {
             t.setInteger("X", c.posX);
             t.setInteger("Y", c.posY);
             t.setInteger("Z", c.posZ);
-
             tagList.appendTag(t);
         }
 
@@ -109,7 +95,6 @@ public class GeneralUtils {
         t.setInteger("Y", c.posY);
         t.setInteger("Z", c.posZ);
         t.setInteger("D", c.dimension);
-
         tagCompound.setTag(string, t);
     }
 

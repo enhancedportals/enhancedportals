@@ -3,9 +3,10 @@ package enhanced.portals.tile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import enhanced.portals.item.ItemNanobrush;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class TileFrameBasic extends TileFrame {
     @Override
@@ -17,10 +18,10 @@ public class TileFrameBasic extends TileFrame {
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, controller, GuiHandler.PORTAL_CONTROLLER_A);
+                GuiHandler.openGui(player, controller, EPGuis.PORTAL_CONTROLLER_A);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 

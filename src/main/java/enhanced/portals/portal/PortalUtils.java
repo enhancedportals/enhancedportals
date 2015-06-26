@@ -70,7 +70,7 @@ public class PortalUtils {
         if (portalBlocks.isEmpty())
             throw new PortalException("couldNotCreatePortalHere");
 
-        boolean program = false, mod = false, dialler = false, network = false;
+        boolean mod = false, dialler = false, network = false;
 
         while (!toProcess.isEmpty()) {
             ChunkCoordinates c = toProcess.remove();

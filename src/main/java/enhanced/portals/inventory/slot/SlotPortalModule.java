@@ -3,7 +3,7 @@ package enhanced.portals.inventory.slot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import enhanced.portals.utility.IPortalModule;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class SlotPortalModule extends Slot {
     public SlotPortalModule(IInventory par1iInventory, int par2, int par3, int par4) {
@@ -12,6 +12,6 @@ public class SlotPortalModule extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack s) {
-        return s == null || s.getItem() instanceof IPortalModule;
+        return s == null || s.getItem() == EPItems.portalModule;
     }
 }

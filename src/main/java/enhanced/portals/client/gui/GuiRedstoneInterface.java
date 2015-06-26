@@ -4,11 +4,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.inventory.ContainerRedstoneInterface;
-import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.tile.TileRedstoneInterface;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiRedstoneInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;
@@ -16,7 +18,7 @@ public class GuiRedstoneInterface extends BaseGui {
 
     public GuiRedstoneInterface(TileRedstoneInterface ri, EntityPlayer p) {
         super(new ContainerRedstoneInterface(ri, p.inventory), CONTAINER_SIZE);
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.redstoneInterface");
+        name = Localisation.get(EPMod.ID, Locale.GUI_REDSTONE_INTERFACE);
         redstone = ri;
         setHidePlayerInventory();
     }
@@ -44,39 +46,39 @@ public class GuiRedstoneInterface extends BaseGui {
 
         switch (redstone.state) {
             case 0:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.portalCreated") : Localization.get(EnhancedPortals.MOD_ID, "gui.createPortalOnSignal");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_PORTAL_CREATED) : Localisation.get(EPMod.ID, Locale.GUI_CREATE_PORTAL_ON_SIGNAL);
                 break;
 
             case 1:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.portalRemoved") : Localization.get(EnhancedPortals.MOD_ID, "gui.removePortalOnSignal");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_PORTAL_REMOVED) : Localisation.get(EPMod.ID, Locale.GUI_REMOVE_PORTAL_ON_SIGNAL);
                 break;
 
             case 2:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.portalActive") : Localization.get(EnhancedPortals.MOD_ID, "gui.createPortalOnPulse");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_PORTAL_ACTIVE) : Localisation.get(EPMod.ID, Locale.GUI_CREATE_PORTAL_ON_PULSE);
                 break;
 
             case 3:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.portalInactive") : Localization.get(EnhancedPortals.MOD_ID, "gui.removePortalOnPulse");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_PORTAL_INACTIVE) : Localisation.get(EPMod.ID, Locale.GUI_REMOVE_PORTAL_ON_PULSE);
                 break;
 
             case 4:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.entityTeleport") : Localization.get(EnhancedPortals.MOD_ID, "gui.dialStoredIdentifier");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_ENTITY_TELEPORT) : Localisation.get(EPMod.ID, Locale.GUI_DIAL_STORED_IDENTIFIER);
                 break;
 
             case 5:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.playerTeleport") : Localization.get(EnhancedPortals.MOD_ID, "gui.dialStoredIdentifier2");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_PLAYER_TELEPORT) : Localisation.get(EPMod.ID, Locale.GUI_DIAL_STORED_IDENTIFIER2);
                 break;
 
             case 6:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.animalTeleport") : Localization.get(EnhancedPortals.MOD_ID, "gui.dialRandomIdentifier");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_ANIMAL_TELEPORT) : Localisation.get(EPMod.ID, Locale.GUI_DIAL_RANDOM_IDENTIFIER);
                 break;
 
             case 7:
-                stateText = flag ? Localization.get(EnhancedPortals.MOD_ID, "gui.monsterTeleport") : Localization.get(EnhancedPortals.MOD_ID, "gui.dialRandomIdentifier2");
+                stateText = flag ? Localisation.get(EPMod.ID, Locale.GUI_MONSTER_TELEPORT) : Localisation.get(EPMod.ID, Locale.GUI_DIAL_RANDOM_IDENTIFIER2);
                 break;
         }
 
-        ((GuiButton) buttonList.get(0)).displayString = redstone.isOutput ? Localization.get(EnhancedPortals.MOD_ID, "gui.output") : Localization.get(EnhancedPortals.MOD_ID, "gui.input");
+        ((GuiButton) buttonList.get(0)).displayString = redstone.isOutput ? Localisation.get(EPMod.ID, Locale.GUI_OUTPUT) : Localisation.get(EPMod.ID, Locale.GUI_INPUT);
         ((GuiButton) buttonList.get(1)).displayString = stateText;
     }
 }

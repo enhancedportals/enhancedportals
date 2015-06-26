@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import enhanced.base.xmod.RedstoneFlux;
-import enhanced.portals.item.ItemLocationCard;
+import enhanced.portals.utility.Reference.EPItems;
 
 public class SlotDBS extends Slot {
     public SlotDBS(IInventory par1iInventory, int par2, int par3, int par4) {
@@ -13,6 +13,6 @@ public class SlotDBS extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack s) {
-        return s == null || RedstoneFlux.isEnergyContainer(s) || s.getItem() == ItemLocationCard.instance;
+        return s == null || RedstoneFlux.isEnergyContainer(s) || s.getItem() == EPItems.locationCard;
     }
 }

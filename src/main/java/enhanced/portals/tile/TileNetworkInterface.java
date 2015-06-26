@@ -14,14 +14,16 @@ import cpw.mods.fml.common.Optional.Method;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
-import enhanced.base.utilities.Localization;
+import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemNanobrush;
+import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
+import enhanced.portals.utility.Reference.EPMod;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileNetworkInterface extends TileFrame implements IPeripheral, SimpleComponent {
     @Override
     public boolean activate(EntityPlayer player, ItemStack stack) {
@@ -34,11 +36,11 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
             if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
                 if (controller.getIdentifierUnique() == null) {
                     if (!worldObj.isRemote)
-                        player.addChatComponentMessage(new ChatComponentText(Localization.getChatError(EnhancedPortals.MOD_ID, "noUidSet")));
+                        player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
                 } else
-                    GuiHandler.openGui(player, controller, GuiHandler.NETWORK_INTERFACE_A);
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+                    GuiHandler.openGui(player, controller, EPGuis.NETWORK_INTERFACE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 
@@ -79,7 +81,7 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     }
 
     @Callback(doc = "function():boolean -- Attempts to create a connection to the next portal in the network.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] dial(Context context, Arguments args) {
         getPortalController().connectionDial();
         return new Object[] { true };
@@ -92,7 +94,7 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_interface_network";
     }
@@ -115,7 +117,7 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     }
 
     @Callback(doc = "function():boolean -- Terminates any active connection.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] terminate(Context context, Arguments args) {
         getPortalController().connectionTerminate();
         return new Object[] { true };

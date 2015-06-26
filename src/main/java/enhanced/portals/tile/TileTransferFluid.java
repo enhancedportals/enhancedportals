@@ -25,12 +25,13 @@ import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemNanobrush;
+import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPItems;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferFluid extends TileFrameTransfer implements IFluidHandler, IPeripheral, SimpleComponent {
     public FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 16);
 
@@ -51,10 +52,10 @@ public class TileTransferFluid extends TileFrameTransfer implements IFluidHandle
 
         if (stack != null && controller != null && controller.isFinalized())
             if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, this, GuiHandler.TRANSFER_FLUID);
+                GuiHandler.openGui(player, this, EPGuis.TRANSFER_FLUID);
                 return true;
-            } else if (stack.getItem() == ItemNanobrush.instance) {
-                GuiHandler.openGui(player, controller, GuiHandler.TEXTURE_A);
+            } else if (stack.getItem() == EPItems.nanobrush) {
+                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
                 return true;
             }
 
@@ -125,13 +126,13 @@ public class TileTransferFluid extends TileFrameTransfer implements IFluidHandle
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_transfer_fluid";
     }
 
     @Callback(direct = true, limit = 1, doc = "function():table -- Get a description of the fluid stored inside the module.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getFluid(Context context, Arguments args) {
         return new Object[] { tank.getInfo() };
     }
@@ -154,7 +155,7 @@ public class TileTransferFluid extends TileFrameTransfer implements IFluidHandle
     }
 
     @Callback(direct = true, doc = "function():boolean -- Returns true if the module is set to send fluids.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] isSending(Context context, Arguments args) {
         return new Object[] { isSending };
     }

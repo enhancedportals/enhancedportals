@@ -3,10 +3,10 @@ package enhanced.portals.client.gui.elements;
 import java.util.List;
 
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.base.utilities.Localization;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.client.gui.GuiManual;
 import enhanced.portals.network.ProxyClient;
+import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementManualTextButton extends BaseElement {
     String entry;
@@ -19,7 +19,7 @@ public class ElementManualTextButton extends BaseElement {
         entry = mEntry;
 
         if (entry != null) {
-            displayStr = Localization.get(EnhancedPortals.MOD_ID, "manual." + entry + ".title");
+            displayStr = Localisation.get(EPMod.ID, "manual." + entry + ".title");
 
             if (displayStr.length() > length) {
                 displayStr = displayStr.substring(0, length);
@@ -38,7 +38,7 @@ public class ElementManualTextButton extends BaseElement {
         tooLong = false;
 
         if (entry != null) {
-            displayStr = Localization.get(EnhancedPortals.MOD_ID, "manual." + entry + ".title");
+            displayStr = Localisation.get(EPMod.ID, "manual." + entry + ".title");
 
             if (displayStr.length() > length) {
                 displayStr = displayStr.substring(0, length);
@@ -55,7 +55,7 @@ public class ElementManualTextButton extends BaseElement {
     @Override
     public void addTooltip(List<String> list) {
         if (tooLong)
-            list.add(Localization.get(EnhancedPortals.MOD_ID, "manual." + entry + ".title"));
+            list.add(Localisation.get(EPMod.ID, "manual." + entry + ".title"));
     }
 
     @Override

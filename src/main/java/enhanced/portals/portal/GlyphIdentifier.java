@@ -175,4 +175,9 @@ public class GlyphIdentifier {
     public void writeToStream(DataOutputStream stream) throws IOException {
         stream.writeUTF(getGlyphString());
     }
+
+    @Override
+    public int hashCode() {
+        return glyphs.hashCode();
+    }
 }

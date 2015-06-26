@@ -7,11 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.inventory.ContainerTransferItem;
-import enhanced.portals.network.packet.PacketGuiData;
 import enhanced.portals.tile.TileTransferItem;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTransferItem extends BaseGui {
     public static final int CONTAINER_SIZE = 47;
@@ -19,13 +21,14 @@ public class GuiTransferItem extends BaseGui {
 
     public GuiTransferItem(TileTransferItem i, EntityPlayer p) {
         super(new ContainerTransferItem(i, p.inventory), CONTAINER_SIZE);
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.transferItem");
+        name = Localisation.get(EPMod.ID, Locale.GUI_TRANSFER_ITEM);
         item = i;
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        drawGuiBackgroundLayer(f, i, j);
+    protected void drawBackgroundTexture() {
+        super.drawBackgroundTexture();
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(playerInventoryTexture);
         drawTexturedModalRect(guiLeft + xSize - 18 - 7, guiTop + 22, 7, 7, 18, 18);
@@ -40,12 +43,12 @@ public class GuiTransferItem extends BaseGui {
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButton(1, guiLeft + 7, guiTop + 21, 140, 20, Localization.get(EnhancedPortals.MOD_ID, "gui." + (item.isSending ? "sending" : "receiving"))));
+        buttonList.add(new GuiButton(1, guiLeft + 7, guiTop + 21, 140, 20, Localisation.get(EPMod.ID, item.isSending ? Locale.GUI_SENDING : Locale.GUI_RECEIVING)));
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
-        ((GuiButton) buttonList.get(0)).displayString = Localization.get(EnhancedPortals.MOD_ID, "gui." + (item.isSending ? "sending" : "receiving"));
+        ((GuiButton) buttonList.get(0)).displayString = Localisation.get(EPMod.ID, item.isSending ? Locale.GUI_SENDING : Locale.GUI_RECEIVING);
     }
 }

@@ -20,16 +20,18 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
-import enhanced.base.utilities.Localization;
+import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
-import enhanced.portals.EnhancedPortals;
+import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.utility.ComputerUtils;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
 
-@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = EnhancedPortals.MODID_OPENCOMPUTERS) })
+@InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleComponent {
     public ArrayList<GlyphElement> glyphList = new ArrayList<GlyphElement>();
 
@@ -42,13 +44,13 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
 
         if (controller != null && controller.isFinalized()) {
             if (controller.getIdentifierUnique() == null)
-                player.addChatComponentMessage(new ChatComponentText(Localization.getChatError(EnhancedPortals.MOD_ID, "noUidSet")));
+                player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
             else if (!player.isSneaking())
-                GuiHandler.openGui(player, this, GuiHandler.DIALING_DEVICE_A);
+                GuiHandler.openGui(player, this, EPGuis.DIALING_DEVICE_A);
             else if (controller.isPortalActive())
                 controller.connectionTerminate();
             else
-                GuiHandler.openGui(player, this, GuiHandler.DIALING_DEVICE_B);
+                GuiHandler.openGui(player, this, EPGuis.DIALING_DEVICE_B);
 
             return true;
         }
@@ -117,8 +119,8 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
 
         if (entry != null)
             return new Object[] { entry.identifier.getGlyphString() };
-        else
-            throw new Exception("Entry not found");
+
+        throw new Exception("Entry not found");
     }
 
     Object[] comp_GetStoredName(Object[] arguments) throws Exception {
@@ -127,8 +129,8 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
 
         if (entry != null)
             return new Object[] { entry.name };
-        else
-            throw new Exception("Entry not found");
+
+        throw new Exception("Entry not found");
     }
 
     @Override
@@ -138,7 +140,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     }
 
     @Callback(doc = "function(uid:string):boolean -- Attempts to create a connection to the specified portal. UID must be given as a single string in the format of numbers separated by spaces.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] dial(Context context, Arguments args) throws Exception {
         if (args.count() < 1)
             return null;
@@ -147,7 +149,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     }
 
     @Callback(doc = "function(entry:number):boolean -- Dials the specified entry in the Dialing Device's list.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] dialStored(Context context, Arguments args) throws Exception {
         return comp_DialStored(ComputerUtils.argsToArray(args));
     }
@@ -159,7 +161,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     }
 
     @Override
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public String getComponentName() {
         return "ep_dialling_device";
     }
@@ -191,19 +193,19 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     }
 
     @Callback(direct = true, doc = "function():number -- Returns the amount of entries in the Dialing Device's list.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getStoredCount(Context context, Arguments args) {
         return new Object[] { glyphList.size() };
     }
 
     @Callback(direct = true, doc = "function(entry:number):string -- Returns the UID as a string of the specified entry in the Dialing Device's list.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getStoredGlyph(Context context, Arguments args) throws Exception {
         return comp_GetStoredGlyph(ComputerUtils.argsToArray(args));
     }
 
     @Callback(direct = true, doc = "function(entry:number):string -- Returns the name of the specified entry in the Dialing Device's list.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] getStoredName(Context context, Arguments args) throws Exception {
         return comp_GetStoredName(ComputerUtils.argsToArray(args));
     }
@@ -258,7 +260,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     }
 
     @Callback(doc = "function():boolean -- Terminates any active connection.")
-    @Method(modid = EnhancedPortals.MODID_OPENCOMPUTERS)
+    @Method(modid = OpenComputers.MOD_ID)
     public Object[] terminate(Context context, Arguments args) {
         getPortalController().connectionTerminate();
         return new Object[] { true };

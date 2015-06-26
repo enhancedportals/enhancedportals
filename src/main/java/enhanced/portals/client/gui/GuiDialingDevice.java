@@ -7,16 +7,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
-import enhanced.base.utilities.Localization;
+import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.network.packet.PacketRequestGui;
+import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.elements.ElementScrollDiallingDevice;
 import enhanced.portals.inventory.ContainerDialingDevice;
-import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.network.packet.PacketGuiData;
-import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.utility.Reference.EPGuis;
+import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingDevice extends BaseGui {
     public static final int CONTAINER_SIZE = 175, CONTAINER_WIDTH = 256;
@@ -26,11 +28,11 @@ public class GuiDialingDevice extends BaseGui {
 
     public GuiDialingDevice(TileDialingDevice d, EntityPlayer p) {
         super(new ContainerDialingDevice(d, p.inventory), CONTAINER_SIZE);
-        texture = new ResourceLocation(EnhancedPortals.MOD_ID, "textures/gui/dialling_device.png");
+        texture = new ResourceLocation(EPMod.ID, "textures/gui/dialling_device.png");
         xSize = CONTAINER_WIDTH;
         dial = d;
         controller = dial.getPortalController();
-        name = Localization.get(EnhancedPortals.MOD_ID, "gui.dialDevice");
+        name = Localisation.get(EPMod.ID, Locale.GUI_DIALLING_DEVICE);
         setHidePlayerInventory();
     }
 
@@ -38,13 +40,13 @@ public class GuiDialingDevice extends BaseGui {
     public void initGui() {
         super.initGui();
 
-        buttonDial = new GuiButton(1, guiLeft + xSize - 147, guiTop + ySize - 27, 140, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.terminate"));
+        buttonDial = new GuiButton(1, guiLeft + xSize - 147, guiTop + ySize - 27, 140, 20, Localisation.get(EPMod.ID, Locale.GUI_TERMINATE));
         buttonDial.enabled = controller.isPortalActive();
-        buttonList.add(new GuiButton(0, guiLeft + 7, guiTop + ySize - 27, 100, 20, Localization.get(EnhancedPortals.MOD_ID, "gui.manualEntry")));
+        buttonList.add(new GuiButton(0, guiLeft + 7, guiTop + ySize - 27, 100, 20, Localisation.get(EPMod.ID, Locale.GUI_MANUAL_ENTRY)));
         buttonList.add(buttonDial);
 
         addElement(new ElementScrollDiallingDevice(this, dial, 7, 28));
-        addTab(new TabTip(this, "dialling", EnhancedPortals.MOD_ID));
+        addTab(new TabTip(this, "dialling", EPMod.ID));
     }
 
     @Override
@@ -56,13 +58,13 @@ public class GuiDialingDevice extends BaseGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-        getFontRenderer().drawString(Localization.get(EnhancedPortals.MOD_ID, "gui.storedIdentifiers"), 7, 18, 0x404040);
+        getFontRenderer().drawString(Localisation.get(EPMod.ID, Locale.GUI_STORED_IDENTIFIERS), 7, 18, 0x404040);
     }
 
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 0)
-            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, GuiHandler.DIALING_DEVICE_B));
+            EnhancedPortals.instance.packetPipeline.sendToServer(new PacketRequestGui(dial, EPGuis.DIALING_DEVICE_B));
         else if (button.id == 1)
             if (controller.isPortalActive()) {
                 NBTTagCompound tag = new NBTTagCompound();
