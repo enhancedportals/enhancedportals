@@ -9,11 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
 
 import enhanced.base.network.packet.PacketGuiData;
-import enhanced.base.network.packet.PacketRequestGui;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.inventory.ContainerDialingEdit;
 import enhanced.portals.network.ProxyClient;
+import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;

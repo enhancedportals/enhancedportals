@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import enhanced.base.client.gui.BaseGui;
-import enhanced.base.network.packet.PacketRequestGui;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerNetworkInterface;
+import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.utility.Reference.EPGuis;
 import enhanced.portals.utility.Reference.EPMod;
