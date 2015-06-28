@@ -102,8 +102,6 @@ public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
             int z = ticket.getModData().getInteger("controllerZ");
             TileEntity tile = world.getTileEntity(x, y, z);
             
-            System.out.println("Looking up TileEntity at: " + x + " " + y + " " + z + " ... " + (tile instanceof TileController ? "VALID" : "INVALID"));
-            
             if (tile instanceof TileController)
                 valid.add(ticket);
         }

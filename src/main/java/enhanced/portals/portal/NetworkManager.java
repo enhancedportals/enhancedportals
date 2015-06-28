@@ -154,11 +154,13 @@ public class NetworkManager {
     }
 
     public void removePortalUID(TileController controller) {
-        portalCoords.removeSecond(controller.getDimensionCoordinates());
+        if (hasUID(controller))
+            portalCoords.removeSecond(controller.getDimensionCoordinates());
     }
 
     public void removePortalNID(TileController controller) {
-        portalNetwrks.remove(getPortalUID(controller));
+        if (hasNID(controller))
+            portalNetwrks.remove(getPortalUID(controller));
     }
 
     public String getPortalUID(TileController controller) {
@@ -171,8 +173,6 @@ public class NetworkManager {
 
     public TileController getPortalController(GlyphIdentifier g) {
         DimensionCoordinates c = portalCoords.get(g.getGlyphString());
-
-
         TileController controller = (TileController) c.getTileEntity();
         return controller;
     }

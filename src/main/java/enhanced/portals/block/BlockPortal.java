@@ -222,9 +222,9 @@ public class BlockPortal extends BlockContainer {
 
                         fx.setRBGColorF(r / 255f, g / 255f, b / 255f);
                     }
-
-                    FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
                 }
+                
+                FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
             }
     }
 

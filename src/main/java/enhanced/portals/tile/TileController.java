@@ -492,12 +492,18 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             inactiveTextureData.writeToNBT(tagCompound, "InactiveTextureData");
     }
 
-    public void revertTextureData() {
-        if (inactiveTextureData == null)
-            return;
-
+    void swapTextureData(PortalTextureManager textureManager) {
+        if (textureManager == null) return;
+        inactiveTextureData = new PortalTextureManager(activeTextureData);
+        activeTextureData = textureManager;
+        markDirty();
+    }
+    
+    void revertTextureData() {
+        if (inactiveTextureData == null) return;
         activeTextureData = new PortalTextureManager(inactiveTextureData);
         inactiveTextureData = null;
+        markDirty();
     }
 
     /***
@@ -568,7 +574,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
         try {
             forceChunk();
-            paired.constructConnection(this);
+            paired.constructConnection(this, null);
             portalCreate();
         } catch (PortalException e) {
             lastError = e.getMessage();
@@ -588,6 +594,9 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         } else if (!hasEnoughPower()) {
             player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "notEnoughPower")));
             return;
+        } else if (!EnhancedPortals.proxy.networkManager.UIDInUse(identifier)) {
+            player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noDestinationFound")));
+            return;
         }
 
         TileController paired = EnhancedPortals.proxy.networkManager.getPortalController(identifier);
@@ -600,7 +609,8 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         try {
             forceChunk();
             portalCreate();
-            paired.constructConnection(this);
+            paired.constructConnection(this, texture);
+            swapTextureData(texture);
         } catch (PortalException e) {
             player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, e.getMessage())));
             releaseChunk();
@@ -612,7 +622,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         sendUpdatePacket(false);
     }
 
-    public void constructConnection(TileController requester) throws PortalException {
+    public void constructConnection(TileController requester, PortalTextureManager texture) throws PortalException {
         if (isPortalActive())
             throw new PortalException("portalActiveRemote");
         else if (!hasEnoughPower())
@@ -621,6 +631,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         forceChunk();
         portalCreate();
         pairedController = requester;
+        swapTextureData(texture);
         markDirty();
         sendUpdatePacket(false);
     }
@@ -630,6 +641,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         pairedController.deconstructConnectionRemote();
         pairedController = null;
         portalRemove();
+        revertTextureData();
         markDirty();
         sendUpdatePacket(false);
     }
@@ -638,6 +650,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         releaseChunk();
         pairedController = null; 
         portalRemove();
+        revertTextureData();
         markDirty();
         sendUpdatePacket(false);
     }
