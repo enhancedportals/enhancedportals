@@ -36,7 +36,7 @@ public class GuiPortalController extends BaseGui {
         super.initGui();
         buttonLock = new GuiButton(10, guiLeft + 7, guiTop + containerSize - 27, 162, 20, Localisation.get(EPMod.ID, controller.isPublic ? Locale.GUI_PUBLIC : Locale.GUI_PRIVATE));
         buttonList.add(buttonLock);
-        display = new ElementGlyphDisplay(this, 7, 29, controller.getIdentifierUnique());
+        display = new ElementGlyphDisplay(this, 7, 29, controller.uID);
         addElement(display);
         addTab(new TabTip(this, "privatePublic", EPMod.ID));
     }
@@ -71,6 +71,6 @@ public class GuiPortalController extends BaseGui {
     public void updateScreen() {
         super.updateScreen();
         buttonLock.displayString = Localisation.get(EPMod.ID, controller.isPublic ? Locale.GUI_PUBLIC : Locale.GUI_PRIVATE);
-        display.setIdentifier(controller.getIdentifierUnique());
+        display.setIdentifier(controller.uID);
     }
 }

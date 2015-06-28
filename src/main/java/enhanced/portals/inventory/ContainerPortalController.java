@@ -29,7 +29,9 @@ public class ContainerPortalController extends BaseContainer {
         super.detectAndSendChanges();
 
         byte isPublic = (byte) (controller.isPublic ? 1 : 0);
-        String glyphs = controller.getIdentifierUnique() == null ? "" : controller.getIdentifierUnique().getGlyphString();
+        String glyphs = EnhancedPortals.proxy.networkManager.getPortalUID(controller);
+        if (glyphs == null)
+            glyphs = "";
 
         for (int i = 0; i < crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) crafters.get(i);

@@ -1,6 +1,5 @@
 package enhanced.portals.tile;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,13 +22,6 @@ public abstract class TilePortalPart extends TileBase {
     }
 
     public abstract void addDataToPacket(NBTTagCompound tag);
-
-    public void breakBlock(Block b, int oldMeta) {
-        TileController controller = getPortalController();
-
-        if (controller != null)
-            controller.connectionTerminate();
-    }
 
     @Override
     public Packet getDescriptionPacket() {

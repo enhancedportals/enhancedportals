@@ -1,24 +1,7 @@
 package enhanced.portals.tile;
 
-import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import enhanced.base.tile.TileBase;
-import enhanced.base.utilities.DimensionCoordinates;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPBlocks;
-
-public class TileStabilizer extends TileBase implements IEnergyHandler {
+public class TileStabilizer /*extends TileBase implements IEnergyHandler*/ {/*
     ChunkCoordinates mainBlock;
     int rows;
     boolean is3x3 = false;
@@ -198,9 +181,6 @@ public class TileStabilizer extends TileBase implements IEnergyHandler {
         return main.getEnergyStored(from);
     }
 
-    /***
-     * Gets the block that does all the processing for this multiblock. If that block is self, will return self.
-     */
     public TileStabilizerMain getMainBlock() {
         if (mainBlock != null) {
             TileEntity tile = worldObj.getTileEntity(mainBlock.posX, mainBlock.posY, mainBlock.posZ);
@@ -249,5 +229,5 @@ public class TileStabilizer extends TileBase implements IEnergyHandler {
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         GeneralUtils.saveChunkCoord(tag, mainBlock, "mainBlock");
-    }
+    }*/
 }

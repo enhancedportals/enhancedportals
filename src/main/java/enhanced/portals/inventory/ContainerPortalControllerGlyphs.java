@@ -12,7 +12,6 @@ import enhanced.base.network.packet.PacketGuiData;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.PortalException;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.utility.Reference.EPGuis;
 
@@ -27,15 +26,14 @@ public class ContainerPortalControllerGlyphs extends BaseContainer {
 
     @Override
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
-        if (tag.hasKey("uid"))
-            try {
-                controller.setIdentifierUnique(new GlyphIdentifier(tag.getString("uid")));
-                player.openGui(EnhancedPortals.instance, EPGuis.PORTAL_CONTROLLER_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
-            } catch (PortalException e) {
+        if (tag.hasKey("uid")) {
+            if (EnhancedPortals.proxy.networkManager.setPortalUID(controller, new GlyphIdentifier(tag.getString("uid"))) == false) {
                 NBTTagCompound errorTag = new NBTTagCompound();
                 errorTag.setInteger("error", 0);
                 EnhancedPortals.instance.packetPipeline.sendTo(new PacketGuiData(errorTag), (EntityPlayerMP) player);
-            }
+            } else
+                player.openGui(EnhancedPortals.instance, EPGuis.PORTAL_CONTROLLER_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
+        }
         else if (tag.hasKey("error") && FMLCommonHandler.instance().getEffectiveSide().isClient())
             ((GuiPortalControllerGlyphs) Minecraft.getMinecraft().currentScreen).setWarningMessage();
     }

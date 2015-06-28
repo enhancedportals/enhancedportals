@@ -1,6 +1,14 @@
 package enhanced.portals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import cpw.mods.fml.common.Mod;
@@ -18,11 +26,12 @@ import enhanced.base.xmod.ComputerCraft;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.NetworkManager;
+import enhanced.portals.tile.TileController;
 import enhanced.portals.utility.Reference.EPBlocks;
 import enhanced.portals.utility.Reference.EPMod;
 
 @Mod(name = EPMod.name, modid = EPMod.ID, version = EPMod.version, dependencies = EPMod.dependencies)
-public class EnhancedPortals extends BaseMod {
+public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
     @Instance(EPMod.ID)
     public static EnhancedPortals instance;
 
@@ -54,6 +63,7 @@ public class EnhancedPortals extends BaseMod {
         super.postInit(event);
         ComputerCraft.registerPeripheralProvider(EPBlocks.frame);
         creativeTab.setItem(new ItemStack(EPBlocks.portal, 1));
+        ForgeChunkManager.setForcedChunkLoadingCallback(instance, this);
     }
 
     // World Events
@@ -67,5 +77,37 @@ public class EnhancedPortals extends BaseMod {
     public void worldSave(WorldEvent.Save event) {
         if (!event.world.isRemote)
             proxy.networkManager.saveAllData();
+    }
+
+    @Override
+    public void ticketsLoaded(List<Ticket> tickets, World world) {
+        for (Ticket ticket : tickets) {
+            int x = ticket.getModData().getInteger("controllerX");
+            int y = ticket.getModData().getInteger("controllerY");
+            int z = ticket.getModData().getInteger("controllerZ");
+            TileEntity tile = world.getTileEntity(x, y, z);
+            
+            if (tile instanceof TileController)
+                ((TileController) tile).forceChunk(ticket);
+        }
+    }
+
+    @Override
+    public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
+        List<Ticket> valid = new ArrayList<Ticket>();
+        
+        for (Ticket ticket : tickets) {
+            int x = ticket.getModData().getInteger("controllerX");
+            int y = ticket.getModData().getInteger("controllerY");
+            int z = ticket.getModData().getInteger("controllerZ");
+            TileEntity tile = world.getTileEntity(x, y, z);
+            
+            System.out.println("Looking up TileEntity at: " + x + " " + y + " " + z + " ... " + (tile instanceof TileController ? "VALID" : "INVALID"));
+            
+            if (tile instanceof TileController)
+                valid.add(ticket);
+        }
+        
+        return valid;
     }
 }

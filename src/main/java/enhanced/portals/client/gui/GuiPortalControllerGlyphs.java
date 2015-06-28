@@ -46,7 +46,7 @@ public class GuiPortalControllerGlyphs extends BaseGui {
         buttonList.add(buttonSave);
         addTab(new TabTip(this, "glyphs", EPMod.ID));
         selector = new ElementGlyphSelector(this, 7, 52);
-        selector.setIdentifierTo(controller.getIdentifierUnique());
+        selector.setIdentifierTo(controller.uID);
         addElement(selector);
         addElement(new ElementGlyphViewer(this, 7, 29, selector));
     }

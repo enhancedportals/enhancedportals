@@ -27,9 +27,10 @@ public class ContainerNetworkInterface extends BaseContainer {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-
-        int cPortals = controller.getHasIdentifierNetwork() ? EnhancedPortals.proxy.networkManager.getNetworkSize(controller.getIdentifierNetwork()) : -1;
-        String glyphs = controller.getIdentifierNetwork() == null ? "" : controller.getIdentifierNetwork().getGlyphString();
+        
+        String network = EnhancedPortals.proxy.networkManager.getPortalNID(controller);
+        int cPortals = network != null ? EnhancedPortals.proxy.networkManager.getNetworkedPortalsCount(new GlyphIdentifier(network)) : -1;
+        String glyphs = network == null ? "" : network;
 
         for (int i = 0; i < crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) crafters.get(i);

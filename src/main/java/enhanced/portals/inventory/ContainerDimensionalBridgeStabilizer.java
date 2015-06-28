@@ -1,20 +1,8 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.nbt.NBTTagCompound;
-import enhanced.base.client.gui.BaseGui;
-import enhanced.base.inventory.BaseContainer;
-import enhanced.base.network.packet.PacketGuiData;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.client.gui.GuiDimensionalBridgeStabilizer;
-import enhanced.portals.inventory.slot.SlotDBS;
-import enhanced.portals.tile.TileStabilizerMain;
 
-public class ContainerDimensionalBridgeStabilizer extends BaseContainer {
-    int lastPower = 0, lastMaxPower = 0, lastPortals = -1, lastInstability = 0, lastPowerState = -1;
+public class ContainerDimensionalBridgeStabilizer /*extends BaseContainer*/ {
+    /*int lastPower = 0, lastMaxPower = 0, lastPortals = -1, lastInstability = 0, lastPowerState = -1;
     TileStabilizerMain stabilizer;
 
     public ContainerDimensionalBridgeStabilizer(TileStabilizerMain s, InventoryPlayer p) {
@@ -81,5 +69,5 @@ public class ContainerDimensionalBridgeStabilizer extends BaseContainer {
             stabilizer.instability = par2;
         else if (par1 == 4)
             stabilizer.powerState = par2;
-    }
+    }*/
 }

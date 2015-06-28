@@ -39,7 +39,7 @@ public class Reference {
     public static class EPBlocks {
         public static final BlockFrame frame = new BlockFrame("frame");
         public static final BlockPortal portal = new BlockPortal("portal");
-        public static final BlockStabilizer dimensionalBridgeStabilizer = new BlockStabilizer("dbs");
+        //public static final BlockStabilizer dimensionalBridgeStabilizer = new BlockStabilizer("dbs");
 
         public static final BlockStabilizerEmpty dimensionalBridgeStabilizerEmpty = new BlockStabilizerEmpty("dbs_empty");
 

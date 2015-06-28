@@ -38,7 +38,7 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
 
         TileController controller = getPortalController();
 
-        if (GeneralUtils.isWrench(stack) && controller != null && controller.isFinalized()) {
+        if (GeneralUtils.isWrench(stack) && controller != null && controller.isFinalized) {
             GuiHandler.openGui(player, this, EPGuis.TRANSFER_ITEM);
             return true;
         }
@@ -222,10 +222,10 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
                     TileController controller = getPortalController();
 
                     if (controller != null && controller.isPortalActive() && stack != null) {
-                        TileController exitController = (TileController) controller.getDestinationLocation().getTileEntity();
+                        TileController exitController = controller.getDestination();
 
                         if (exitController != null)
-                            for (ChunkCoordinates c : exitController.getTransferItems()) {
+                            for (ChunkCoordinates c : exitController.transferItems) {
                                 TileEntity tile = exitController.getWorldObj().getTileEntity(c.posX, c.posY, c.posZ);
 
                                 if (tile != null && tile instanceof TileTransferItem) {

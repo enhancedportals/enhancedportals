@@ -21,7 +21,7 @@ public class TilePortal extends TilePortalPart {
     public boolean activate(EntityPlayer player, ItemStack stack) {
         TileController controller = getPortalController();
 
-        if (stack != null && controller != null && controller.isFinalized())
+        if (stack != null && controller != null && controller.isFinalized)
             if (GeneralUtils.isWrench(stack)) {
                 GuiHandler.openGui(player, controller, EPGuis.PORTAL_CONTROLLER_A);
                 return true;

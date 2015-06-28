@@ -25,7 +25,6 @@ import enhanced.base.xmod.ThermalExpansion;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.item.ItemDiamondNugget;
 import enhanced.portals.item.ItemFrame;
-import enhanced.portals.item.ItemStabilizer;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.network.packet.PacketRerender;
 import enhanced.portals.network.packet.PacketTextureData;
@@ -37,8 +36,6 @@ import enhanced.portals.tile.TileNetworkInterface;
 import enhanced.portals.tile.TilePortal;
 import enhanced.portals.tile.TilePortalManipulator;
 import enhanced.portals.tile.TileRedstoneInterface;
-import enhanced.portals.tile.TileStabilizer;
-import enhanced.portals.tile.TileStabilizerMain;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
@@ -79,7 +76,7 @@ public class ProxyCommon extends BaseProxy {
     public void registerBlocks() {
         GameRegistry.registerBlock(EPBlocks.frame, ItemFrame.class, "frame");
         GameRegistry.registerBlock(EPBlocks.portal, "portal");
-        GameRegistry.registerBlock(EPBlocks.dimensionalBridgeStabilizer, ItemStabilizer.class, "dbs");
+        //GameRegistry.registerBlock(EPBlocks.dimensionalBridgeStabilizer, ItemStabilizer.class, "dbs");
         GameRegistry.registerBlock(EPBlocks.decorBorderedQuartz, "decor_frame");
         GameRegistry.registerBlock(EPBlocks.decorEnderInfusedMetal, "decor_dbs");
         GameRegistry.registerBlock(EPBlocks.dimensionalBridgeStabilizerEmpty, "dbs_empty");
@@ -107,7 +104,7 @@ public class ProxyCommon extends BaseProxy {
             ThermalExpansion.addTransposerFill(10000, new ItemStack(EPItems.upgradeBlank, 1, 0), new ItemStack(EPItems.upgrade, 1, 0), new FluidStack(FluidRegistry.getFluidID("redstone"), 400), false);
             ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
             ThermalExpansion.addTransposerFill(15000, new ItemStack(EPItems.upgradeBlank, 1, 1), new ItemStack(EPItems.upgrade, 1, 1), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
-            ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.dimensionalBridgeStabilizerEmpty, 1, 0), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 1, 0), new FluidStack(FluidRegistry.getFluidID("ender"), 125), false);
+            //ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.dimensionalBridgeStabilizerEmpty, 1, 0), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 1, 0), new FluidStack(FluidRegistry.getFluidID("ender"), 125), false);
         }
     }
 
@@ -129,8 +126,8 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerTileEntity(TileNetworkInterface.class, "epNI");
         GameRegistry.registerTileEntity(TileDialingDevice.class, "epDD");
         GameRegistry.registerTileEntity(TilePortalManipulator.class, "epMM");
-        GameRegistry.registerTileEntity(TileStabilizer.class, "epDBS");
-        GameRegistry.registerTileEntity(TileStabilizerMain.class, "epDBSM");
+        //GameRegistry.registerTileEntity(TileStabilizer.class, "epDBS");
+        //GameRegistry.registerTileEntity(TileStabilizerMain.class, "epDBSM");
         GameRegistry.registerTileEntity(TileTransferEnergy.class, "epTE");
         GameRegistry.registerTileEntity(TileTransferFluid.class, "epTF");
         GameRegistry.registerTileEntity(TileTransferItem.class, "epTI");
@@ -154,7 +151,7 @@ public class ProxyCommon extends BaseProxy {
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.ender_pearl));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.upgrade, 1, 0), new Object[] { " R ", "RFR", " R ", 'F', new ItemStack(EPItems.upgradeBlank), 'R', Items.redstone }));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.upgrade, 1, 1), new ItemStack(EPItems.upgradeBlank), Items.ender_pearl));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6), new Object[] { "QPQ", "PDP", "QPQ", 'D', Items.diamond, 'Q', Blocks.iron_block, 'P', Items.ender_pearl }));
+            //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6), new Object[] { "QPQ", "PDP", "QPQ", 'D', Items.diamond, 'Q', Blocks.iron_block, 'P', Items.ender_pearl }));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.CONTROLLER.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.diamond));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.DIAL.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), Items.diamond));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.PORTAL_MANIPULATOR.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.diamond, Items.emerald, new ItemStack(EPItems.portalModuleBlank)));
@@ -210,7 +207,7 @@ public class ProxyCommon extends BaseProxy {
         EnhancedPortals.instance.CHECK_FOR_UPDATES = config.get("General", "UpdateCheck", EnhancedPortals.instance.CHECK_FOR_UPDATES, "Allow checking for updates from " + EPMod.url).getBoolean();
         EPConfiguration.recipeVanilla = config.get("General", "VanillaRecipes", EPConfiguration.recipeVanilla, "Should the recipes using the vanilla materials be enabled?").getBoolean();
         EPConfiguration.recipeTE = config.get("General", "ThermalExpansionRecipes", EPConfiguration.recipeTE, "Should the recipes using the Thermal Expansion materials be enabled?").getBoolean();
-
+        
         if (EPConfiguration.powerUseMultiplier < 0)
             EPConfiguration.requirePower = false;
 

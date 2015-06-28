@@ -14,7 +14,7 @@ public class BlockDecorEnderInfusedMetal extends BlockBase {
 
     public BlockDecorEnderInfusedMetal(String n) {
         super(EPMod.ID, n, Material.rock, EnhancedPortals.instance.creativeTab, 3f);
-        connectedTextures = new ConnectedTexturesDetailed(BlockStabilizer.connectedTextures, this, -1);
+        connectedTextures = new ConnectedTexturesDetailed(/*BlockStabilizer.connectedTextures*/EPMod.ID + ":bridge/%s", this, -1);
     }
 
     @Override

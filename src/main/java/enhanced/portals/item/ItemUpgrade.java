@@ -92,10 +92,10 @@ public class ItemUpgrade extends ItemBase {
                 return true;
             }
 
-            if (controller.getDiallingDevices().size() > 0 && type == PortalFrames.NETWORK) {
+            if (controller.diallingDevices.size() > 0 && type == PortalFrames.NETWORK) {
                 player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "dialAndNetwork")));
                 return false;
-            } else if (controller.getNetworkInterfaces().size() > 0 && type == PortalFrames.DIAL) {
+            } else if (controller.networkInterfaces.size() > 0 && type == PortalFrames.DIAL) {
                 player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "dialAndNetwork")));
                 return false;
             } else if (controller.getModuleManipulator() != null && type == PortalFrames.PORTAL_MANIPULATOR) {
@@ -103,26 +103,26 @@ public class ItemUpgrade extends ItemBase {
                 return false;
             }
 
-            controller.removeFrame(frame.getChunkCoordinates());
+            controller.portalFrames.remove(frame.getChunkCoordinates());
             frame = null;
             world.setBlock(x, y, z, EPBlocks.frame, type.ordinal(), 2);
             decrementStack(player, stack);
             TilePortalPart t = (TilePortalPart) world.getTileEntity(x, y, z);
 
             if (t instanceof TileRedstoneInterface)
-                controller.addRedstoneInterface(t.getChunkCoordinates());
+                controller.redstoneInterfaces.add(t.getChunkCoordinates());
             else if (t instanceof TileDialingDevice)
-                controller.addDialDevice(t.getChunkCoordinates());
+                controller.diallingDevices.add(t.getChunkCoordinates());
             else if (t instanceof TileNetworkInterface)
-                controller.addNetworkInterface(t.getChunkCoordinates());
+                controller.networkInterfaces.add(t.getChunkCoordinates());
             else if (t instanceof TilePortalManipulator)
                 controller.setModuleManipulator(t.getChunkCoordinates());
             else if (t instanceof TileTransferEnergy)
-                controller.addTransferEnergy(t.getChunkCoordinates());
+                controller.transferEnergy.add(t.getChunkCoordinates());
             else if (t instanceof TileTransferFluid)
-                controller.addTransferFluid(t.getChunkCoordinates());
+                controller.transferFluids.add(t.getChunkCoordinates());
             else if (t instanceof TileTransferItem)
-                controller.addTransferItem(t.getChunkCoordinates());
+                controller.transferItems.add(t.getChunkCoordinates());
 
             t.setPortalController(controller.getChunkCoordinates());
             world.markBlockForUpdate(controller.xCoord, controller.yCoord, controller.zCoord);

@@ -44,7 +44,7 @@ public class EntityManager {
         boolean horizontal = controller.portalType == 3;
 
         forloop:
-            for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.getPortals())) {
+            for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.portalBlocks)) {
                 for (int i = 0; i < entityHeight; i++)
                     if (world.getBlock(c.posX, c.posY + i, c.posZ) != EPBlocks.portal && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
                         continue forloop;
@@ -196,9 +196,7 @@ public class EntityManager {
         while (entity.ridingEntity != null)
             entity = entity.ridingEntity;
 
-        int instability = exit.getDimensionalBridgeStabilizer().instability;
-
-        transferEntityWithRider(entity, exitLoc.posX + 0.5, exitLoc.posY, exitLoc.posZ + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, instability);
+        transferEntityWithRider(entity, exitLoc.posX + 0.5, exitLoc.posY, exitLoc.posZ + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, 0);
     }
 
     static Entity transferEntityToDimension(Entity entity, double x, double y, double z, float yaw, WorldServer exitingWorld, WorldServer enteringWorld, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {

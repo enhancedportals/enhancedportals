@@ -14,7 +14,6 @@ import enhanced.portals.client.gui.GuiDialingEditIdentifier;
 import enhanced.portals.client.gui.GuiDialingEditParticle;
 import enhanced.portals.client.gui.GuiDialingEditPortal;
 import enhanced.portals.client.gui.GuiDialingManual;
-import enhanced.portals.client.gui.GuiDimensionalBridgeStabilizer;
 import enhanced.portals.client.gui.GuiManual;
 import enhanced.portals.client.gui.GuiModuleManipulator;
 import enhanced.portals.client.gui.GuiNetworkInterface;
@@ -36,7 +35,6 @@ import enhanced.portals.inventory.ContainerDialingEditParticle;
 import enhanced.portals.inventory.ContainerDialingEditPortal;
 import enhanced.portals.inventory.ContainerDialingEditTexture;
 import enhanced.portals.inventory.ContainerDialingManual;
-import enhanced.portals.inventory.ContainerDimensionalBridgeStabilizer;
 import enhanced.portals.inventory.ContainerManual;
 import enhanced.portals.inventory.ContainerModuleManipulator;
 import enhanced.portals.inventory.ContainerNetworkInterface;
@@ -54,7 +52,6 @@ import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TileDialingDevice;
 import enhanced.portals.tile.TilePortalManipulator;
 import enhanced.portals.tile.TileRedstoneInterface;
-import enhanced.portals.tile.TileStabilizerMain;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
@@ -89,8 +86,8 @@ public class GuiHandler implements IGuiHandler {
             return new GuiNetworkInterfaceGlyphs((TileController) tile, player);
         else if (ID == EPGuis.MODULE_MANIPULATOR)
             return new GuiModuleManipulator((TilePortalManipulator) tile, player);
-        else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
-            return new GuiDimensionalBridgeStabilizer((TileStabilizerMain) tile, player);
+        //else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
+        //    return new GuiDimensionalBridgeStabilizer((TileStabilizerMain) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_A)
             return new GuiDialingDevice((TileDialingDevice) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_B)
@@ -153,8 +150,8 @@ public class GuiHandler implements IGuiHandler {
             return new ContainerNetworkInterfaceGlyphs((TileController) tile, player.inventory);
         else if (ID == EPGuis.MODULE_MANIPULATOR)
             return new ContainerModuleManipulator((TilePortalManipulator) tile, player.inventory);
-        else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
-            return new ContainerDimensionalBridgeStabilizer((TileStabilizerMain) tile, player.inventory);
+        //else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
+        //    return new ContainerDimensionalBridgeStabilizer((TileStabilizerMain) tile, player.inventory);
         else if (ID == EPGuis.DIALING_DEVICE_A)
             return new ContainerDialingDevice((TileDialingDevice) tile, player.inventory);
         else if (ID == EPGuis.DIALING_DEVICE_B)

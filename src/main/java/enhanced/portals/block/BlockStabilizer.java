@@ -15,8 +15,8 @@ import enhanced.portals.tile.TileStabilizer;
 import enhanced.portals.tile.TileStabilizerMain;
 import enhanced.portals.utility.Reference.EPMod;
 
-public class BlockStabilizer extends BlockContainer {
-    public static ConnectedTexturesDetailed connectedTextures;
+public class BlockStabilizer /*extends BlockContainer*/ {
+    /*public static ConnectedTexturesDetailed connectedTextures;
 
     public BlockStabilizer(String n) {
         super(Material.rock);
@@ -80,5 +80,5 @@ public class BlockStabilizer extends BlockContainer {
     @Override
     public void registerBlockIcons(IIconRegister iconRegister) {
         connectedTextures.registerIcons(iconRegister);
-    }
+    }*/
 }

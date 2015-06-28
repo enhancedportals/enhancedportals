@@ -2,7 +2,6 @@ package enhanced.portals.block;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -43,16 +42,6 @@ public class BlockPortal extends BlockContainer {
         setBlockName(n);
         setLightOpacity(0);
         setStepSound(soundTypeGlass);
-    }
-
-    @Override
-    public void breakBlock(World world, int x, int y, int z, Block b, int newID) {
-        TileEntity tile = world.getTileEntity(x, y, z);
-
-        if (tile instanceof TilePortal)
-            ((TilePortal) tile).breakBlock(b, newID);
-
-        super.breakBlock(world, x, y, z, b, newID);
     }
 
     @Override

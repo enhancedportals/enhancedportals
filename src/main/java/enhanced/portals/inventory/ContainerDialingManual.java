@@ -19,6 +19,6 @@ public class ContainerDialingManual extends BaseContainer {
     @Override
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
         if (tag.hasKey("dial"))
-            dial.getPortalController().connectionDial(new GlyphIdentifier(tag.getString("dial")), null, player);
+            dial.getPortalController().constructConnection(new GlyphIdentifier(tag.getString("dial")), null, player);
     }
 }

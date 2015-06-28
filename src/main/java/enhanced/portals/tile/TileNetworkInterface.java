@@ -17,6 +17,7 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.EnhancedPortals;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
 import enhanced.portals.utility.Reference.EPGuis;
@@ -31,10 +32,10 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
             return false;
 
         TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized())
+        
+        if (stack != null && controller != null && controller.isFinalized)
             if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                if (controller.getIdentifierUnique() == null) {
+                if (!EnhancedPortals.proxy.networkManager.hasUID(controller)) {
                     if (!worldObj.isRemote)
                         player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
                 } else
@@ -62,9 +63,9 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     @Method(modid = ComputerCraft.MOD_ID)
     public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws Exception {
         if (method == 0)
-            getPortalController().connectionDial();
+            getPortalController().constructConnection();
         else if (method == 1)
-            getPortalController().connectionTerminate();
+            getPortalController().deconstructConnection();
 
         return null;
     }
@@ -83,7 +84,7 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     @Callback(doc = "function():boolean -- Attempts to create a connection to the next portal in the network.")
     @Method(modid = OpenComputers.MOD_ID)
     public Object[] dial(Context context, Arguments args) {
-        getPortalController().connectionDial();
+        getPortalController().constructConnection();
         return new Object[] { true };
     }
 
@@ -119,7 +120,7 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
     @Callback(doc = "function():boolean -- Terminates any active connection.")
     @Method(modid = OpenComputers.MOD_ID)
     public Object[] terminate(Context context, Arguments args) {
-        getPortalController().connectionTerminate();
+        getPortalController().deconstructConnection();
         return new Object[] { true };
     }
 }

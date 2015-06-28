@@ -45,7 +45,7 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
 
         TileController controller = getPortalController();
 
-        if (stack != null && controller != null && controller.isFinalized())
+        if (stack != null && controller != null && controller.isFinalized)
             if (GeneralUtils.isWrench(stack)) {
                 GuiHandler.openGui(player, this, EPGuis.TRANSFER_ENERGY);
                 return true;
@@ -200,10 +200,10 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
                     TileController controller = getPortalController();
 
                     if (controller != null && controller.isPortalActive() && storage.getEnergyStored() > 0) {
-                        TileController exitController = (TileController) controller.getDestinationLocation().getTileEntity();
+                        TileController exitController = controller.getDestination();
 
                         if (exitController != null)
-                            for (ChunkCoordinates c : exitController.getTransferEnergy()) {
+                            for (ChunkCoordinates c : exitController.transferEnergy) {
                                 TileEntity tile = exitController.getWorldObj().getTileEntity(c.posX, c.posY, c.posZ);
 
                                 if (tile != null && tile instanceof TileTransferEnergy) {

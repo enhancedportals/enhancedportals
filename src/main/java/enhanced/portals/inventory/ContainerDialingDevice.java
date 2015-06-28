@@ -47,13 +47,13 @@ public class ContainerDialingDevice extends BaseContainer {
     @Override
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
         if (tag.hasKey("terminate"))
-            dial.getPortalController().connectionTerminate();
+            dial.getPortalController().deconstructConnection();
         else if (tag.hasKey("dial")) {
             int id = tag.getInteger("dial");
 
             if (dial.glyphList.size() > id) {
                 GlyphElement e = dial.glyphList.get(id);
-                dial.getPortalController().connectionDial(e.identifier, e.texture, player);
+                dial.getPortalController().constructConnection(e.identifier, e.texture, player);
             }
         } else if (tag.hasKey("edit")) {
             int id = tag.getInteger("edit");

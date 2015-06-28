@@ -44,7 +44,7 @@ public class GuiNetworkInterfaceGlyphs extends BaseGui {
         buttonList.add(buttonSave);
         addTab(new TabTip(this, "glyphs", EPMod.ID));
         selector = new ElementGlyphSelector(this, 7, 52);
-        selector.setIdentifierTo(controller.getIdentifierNetwork());
+        selector.setIdentifierTo(controller.nID);
         addElement(selector);
         addElement(new ElementGlyphViewer(this, 7, 29, selector));
     }

@@ -1,42 +1,8 @@
 package enhanced.portals.tile;
 
-import io.netty.buffer.ByteBuf;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import enhanced.base.tile.TileBase;
-import enhanced.base.xmod.RedstoneFlux;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemLocationCard;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.PortalException;
-import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
-
-public class TileStabilizerMain extends TileBase implements IInventory, IEnergyHandler {
-    static final int ENERGY_STORAGE_PER_ROW = EPConfiguration.redstoneFluxCost + EPConfiguration.redstoneFluxCost / 2;
+public class TileStabilizerMain /*extends TileBase implements IInventory, IEnergyHandler*/ {
+    /*static final int ENERGY_STORAGE_PER_ROW = EPConfiguration.redstoneFluxCost + EPConfiguration.redstoneFluxCost / 2;
 
     ArrayList<ChunkCoordinates> blockList;
 
@@ -61,9 +27,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         energyStorage = new EnergyStorage(0);
     }
 
-    /*
-     * Adds the given TileController to the connectedPortals HashMap
-     */
     public void addPortal(TileController portal) {
         connectedPortals.add(portal);
     }
@@ -97,9 +60,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         }
     }
 
-    /***
-     * Whether or not this stabilizer can create a new connection
-     */
     public boolean canAcceptNewConnection() {
         return activeConnections.size() * 2 + 2 <= EPConfiguration.connectionsPerRow * rows;
     }
@@ -207,9 +167,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         return false;
     }
 
-    /***
-     * Gets whether or not this stabilizer has enough power to keep the portal open for at least one second.
-     */
     public boolean hasEnoughPowerToStart() {
         if (!EPConfiguration.requirePower)
             return true;
@@ -285,9 +242,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
-    /***
-     * Removes a connection from the active list.
-     */
     public void removeExistingConnection(GlyphIdentifier portalA, GlyphIdentifier portalB) {
         activeConnections.remove(portalA.getGlyphString());
         activeConnections.remove(portalB.getGlyphString());
@@ -329,11 +283,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         inventory = itemstack;
     }
 
-    /***
-     * Sets up a new connection between two portals.
-     *
-     * @return True if connection was successfully established.
-     */
     public boolean setupNewConnection(GlyphIdentifier portalA, GlyphIdentifier portalB, PortalTextureManager textureManager) throws PortalException {
         if (activeConnections.containsKey(portalA.getGlyphString()))
             throw new PortalException("diallingPortalAlreadyActive");
@@ -409,9 +358,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         return true;
     }
 
-    /***
-     * Terminates both portals and removes them from the active connection list. Used by dialling devices when the exit location is not known by the controller.
-     */
     public void terminateExistingConnection(GlyphIdentifier identifier) throws PortalException {
         if (identifier == null || identifier.isEmpty())
             throw new PortalException("No identifier found for first portal");
@@ -426,9 +372,6 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
         terminateExistingConnection(portalA, portalB);
     }
 
-    /***
-     * Terminates both portals and removes them from the active connection list.
-     */
     public void terminateExistingConnection(GlyphIdentifier portalA, GlyphIdentifier portalB) throws PortalException {
         if (portalA == null)
             throw new PortalException("No identifier found for first portal");
@@ -545,5 +488,5 @@ public class TileStabilizerMain extends TileBase implements IInventory, IEnergyH
             inventory.writeToNBT(t);
             tag.setTag("inventory", t);
         }
-    }
+    }*/
 }

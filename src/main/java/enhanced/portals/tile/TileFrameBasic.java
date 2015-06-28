@@ -16,7 +16,7 @@ public class TileFrameBasic extends TileFrame {
 
         TileController controller = getPortalController();
 
-        if (stack != null && controller != null && controller.isFinalized())
+        if (stack != null && controller != null && controller.isFinalized)
             if (GeneralUtils.isWrench(stack)) {
                 GuiHandler.openGui(player, controller, EPGuis.PORTAL_CONTROLLER_A);
                 return true;

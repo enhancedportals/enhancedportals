@@ -17,7 +17,6 @@ import enhanced.portals.utility.Reference.PortalFrames;
 public abstract class TileFrame extends TilePortalPart {
     protected boolean wearingGoggles = GeneralUtils.isWearingGoggles();
 
-    @Override
     public void breakBlock(Block b, int oldMetadata) {
         if (b == worldObj.getBlock(xCoord, yCoord, zCoord))
             return;

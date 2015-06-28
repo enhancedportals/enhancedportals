@@ -1,20 +1,8 @@
 package enhanced.portals.item;
 
-import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import enhanced.base.utilities.Localisation;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
-
-public class ItemStabilizer extends ItemBlock {
-    public ItemStabilizer(Block b) {
+public class ItemStabilizer /*extends ItemBlock*/ {
+    /*public ItemStabilizer(Block b) {
         super(b);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -34,5 +22,5 @@ public class ItemStabilizer extends ItemBlock {
     @Override
     public int getMetadata(int par1) {
         return par1;
-    }
+    }*/
 }

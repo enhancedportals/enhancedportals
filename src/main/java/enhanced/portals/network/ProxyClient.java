@@ -129,9 +129,9 @@ public class ProxyClient extends ProxyCommon {
         } else if (b == EPBlocks.decorEnderInfusedMetal) {
             manualChangeEntry("decorStabilizer");
             return true;
-        } else if (b == EPBlocks.dimensionalBridgeStabilizer) {
-            manualChangeEntry("dbs");
-            return true;
+        //} else if (b == EPBlocks.dimensionalBridgeStabilizer) {
+        //    manualChangeEntry("dbs");
+        //    return true;
         } else if (b == EPBlocks.dimensionalBridgeStabilizerEmpty) {
             manualChangeEntry("dbsEmpty");
             return true;
@@ -196,7 +196,7 @@ public class ProxyClient extends ProxyCommon {
         craftingRecipes.put("frame" + PortalFrames.TRANSFER_FLUID.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.bucket), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_FLUID.ordinal()) });
         craftingRecipes.put("frame" + PortalFrames.TRANSFER_ITEM.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.chest), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_ITEM.ordinal()) });
         craftingRecipes.put("decorStabilizer", new ItemStack[] { new ItemStack(Blocks.iron_block), new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.ender_pearl), new ItemStack(Items.ender_pearl), null, null, null, null, new ItemStack(EPBlocks.decorEnderInfusedMetal, 9) });
-        craftingRecipes.put("dbs", new ItemStack[] { new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6) });
+        //craftingRecipes.put("dbs", new ItemStack[] { new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6) });
         craftingRecipes.put("dbsEmpty", new ItemStack[] {});
         craftingRecipes.put("decorBorderedQuartz", new ItemStack[] { new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(EPBlocks.decorBorderedQuartz, 9) });
         craftingRecipes.put("blank_module", new ItemStack[] { new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.iron_ingot), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(EPItems.portalModuleBlank) });

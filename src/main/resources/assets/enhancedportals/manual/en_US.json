@@ -16,7 +16,6 @@
     			 { "text": "Igniting a Black Hole", "link": "chapter5" },
     			 { "text": "Phone Home", "link": "chapter6" },
     			 { "text": "Accessorizing", "link": "chapter7" },
-    			 { "text": "", "link": "" },
     			 { "text": "Quick Links", "link": "HEADER" },
     			 { "text": "Items", "link": "items" },
     			 { "text": "Blocks", "link": "blocks" }
@@ -44,8 +43,21 @@
   }, {
   	"pageName": "chapter3",
   	"pageType": "text",
-  	"nextPage": "",
+  	"nextPage": "chapter4",
   	"prevPage": "chapter2b",
   	"title": "Stabilizing Dimensions",
-  	"text": "The Dimensional Bridge Stabilizer allows several simultaneous wormholes to be created depending on it's volume. To create a DBS, place 12 Dimensional Bridge Stabilizer blocks in a configuration of 3 wide by 3 long, with a minimum height of 2 blocks and a maximum height of 256, then right click on any block with a wrench. If configured correctly, a functional DBS will form."
+  	"text": "The Dimensional Bridge Stabilizer allows several wormholes to be created simultaneously. Creating wormholes is an extremely dangerous process, but the Dimensional Bridge Stabilizers attempt to make it stable by using Redstone Flux."
+  }, {
+	"pageName": "chapter4",
+	"pageType": "text",
+	"nextPage": "chapter4b",
+	"prevPage": "chapter3",
+	"title": "Building the Harness",
+	"text": "The struggle to keep a wormhole harnessed in a dimesion can be overcome with the use of Portal Frames. A Portal Frame is configured in much of the same manner as the ancient prototype for interdimensional travel, the obsidian nether portal."
+  }, {
+  	"pageName": "chapter4b",
+  	"pageType": "text",
+  	"prevPage": "chapter4",
+  	"text": "A portal can only be formed if there are blocks forming a closed shape along a flat area going horizontally or vertically."
+
 } ]

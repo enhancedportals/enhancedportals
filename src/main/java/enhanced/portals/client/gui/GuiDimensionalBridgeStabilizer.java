@@ -16,7 +16,7 @@ import enhanced.portals.utility.Reference.EPConfiguration;
 import enhanced.portals.utility.Reference.EPMod;
 import enhanced.portals.utility.Reference.Locale;
 
-public class GuiDimensionalBridgeStabilizer extends BaseGui {
+public class GuiDimensionalBridgeStabilizer /*extends BaseGui*/ {/*
     public static final int CONTAINER_SIZE = 90;
     TileStabilizerMain stabilizer;
     TabRedstoneFlux rfTab = null;
@@ -90,5 +90,5 @@ public class GuiDimensionalBridgeStabilizer extends BaseGui {
             powerCost -= (int) (powerCost * (instability / 100f));
             rfTab.setPowerCost(powerCost / 20);
         }
-    }
+    }*/
 }

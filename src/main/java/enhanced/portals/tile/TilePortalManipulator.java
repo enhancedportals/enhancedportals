@@ -43,7 +43,7 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
 
         TileController controller = getPortalController();
 
-        if (stack != null && controller != null && controller.isFinalized())
+        if (stack != null && controller != null && controller.isFinalized)
             if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
                 GuiHandler.openGui(player, this, EPGuis.MODULE_MANIPULATOR);
                 return true;

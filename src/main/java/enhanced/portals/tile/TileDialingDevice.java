@@ -23,6 +23,7 @@ import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.EnhancedPortals;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
@@ -42,13 +43,13 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
         if (worldObj.isRemote)
             return controller != null;
 
-        if (controller != null && controller.isFinalized()) {
-            if (controller.getIdentifierUnique() == null)
+        if (controller != null && controller.isFinalized) {
+            if (EnhancedPortals.proxy.networkManager.getPortalUID(controller) == null)
                 player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
             else if (!player.isSneaking())
                 GuiHandler.openGui(player, this, EPGuis.DIALING_DEVICE_A);
             else if (controller.isPortalActive())
-                controller.connectionTerminate();
+                controller.deconstructConnection();
             else
                 GuiHandler.openGui(player, this, EPGuis.DIALING_DEVICE_B);
 
@@ -75,7 +76,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
         if (method == 0)
             return comp_Dial(arguments);
         else if (method == 1)
-            getPortalController().connectionTerminate();
+            getPortalController().deconstructConnection();
         else if (method == 2)
             return comp_DialStored(arguments);
         else if (method == 3)
@@ -97,7 +98,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
             if (error != null)
                 throw new Exception(error);
 
-            getPortalController().connectionDial(new GlyphIdentifier(s), null, null);
+            getPortalController().constructConnection(new GlyphIdentifier(s), null, null);
         } else
             throw new Exception("Invalid arguments");
 
@@ -108,7 +109,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
         int num = getSelectedEntry(arguments);
 
         if (num >= 0 && num < glyphList.size())
-            getPortalController().connectionDial(glyphList.get(num).identifier, null, null);
+            getPortalController().constructConnection(glyphList.get(num).identifier, null, null);
 
         return new Object[] { true };
     }
@@ -262,7 +263,7 @@ public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleC
     @Callback(doc = "function():boolean -- Terminates any active connection.")
     @Method(modid = OpenComputers.MOD_ID)
     public Object[] terminate(Context context, Arguments args) {
-        getPortalController().connectionTerminate();
+        getPortalController().deconstructConnection();
         return new Object[] { true };
     }
 

@@ -37,14 +37,14 @@ public class GuiNetworkInterface extends BaseGui {
     @Override
     public void initGui() {
         super.initGui();
-        display = new ElementGlyphDisplay(this, 7, 29, controller.getIdentifierNetwork());
+        display = new ElementGlyphDisplay(this, 7, 29, controller.nID);
         addElement(display);
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
-        display.setIdentifier(controller.getIdentifierNetwork());
+        display.setIdentifier(controller.nID);
     }
 
     @Override

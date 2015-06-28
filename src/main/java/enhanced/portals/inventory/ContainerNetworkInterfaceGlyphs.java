@@ -23,7 +23,7 @@ public class ContainerNetworkInterfaceGlyphs extends BaseContainer {
     @Override
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
         if (tag.hasKey("nid")) {
-            controller.setIdentifierNetwork(new GlyphIdentifier(tag.getString("nid")));
+            EnhancedPortals.proxy.networkManager.setPortalNID(controller, new GlyphIdentifier(tag.getString("nid")));
             player.openGui(EnhancedPortals.instance, EPGuis.NETWORK_INTERFACE_A, controller.getWorldObj(), controller.xCoord, controller.yCoord, controller.zCoord);
         }
     }
