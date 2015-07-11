@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGuiData;
@@ -16,6 +17,7 @@ import enhanced.portals.tile.TileController;
 public class ContainerPortalController extends BaseContainer {
     TileController controller;
     String oldGlyphs = "EMPTY";
+    int power = -1;
 
     public ContainerPortalController(TileController c, InventoryPlayer p) {
         super(null, p, GuiPortalController.CONTAINER_SIZE + BaseGui.bufferSpace + BaseGui.playerInventorySize);
@@ -28,6 +30,8 @@ public class ContainerPortalController extends BaseContainer {
         super.detectAndSendChanges();
 
         String glyphs = EnhancedPortals.proxy.networkManager.getPortalUID(controller);
+        int _power = controller.getEnergyStored(ForgeDirection.UNKNOWN);
+        
         if (glyphs == null)
             glyphs = "";
 
@@ -39,9 +43,13 @@ public class ContainerPortalController extends BaseContainer {
                 t.setString("uid", glyphs);
                 EnhancedPortals.instance.packetPipeline.sendTo(new PacketGuiData(t), (EntityPlayerMP) icrafting);
             }
+            
+            if (power != _power)
+            	icrafting.sendProgressBarUpdate(this, 0, _power);
         }
 
         oldGlyphs = glyphs;
+        power = _power;
     }
 
     @Override
@@ -52,6 +60,7 @@ public class ContainerPortalController extends BaseContainer {
 
     @Override
     public void updateProgressBar(int id, int val) {
-
+    	if (id == 0)
+    		controller.getEnergyStorage().setEnergyStored(val);
     }
 }

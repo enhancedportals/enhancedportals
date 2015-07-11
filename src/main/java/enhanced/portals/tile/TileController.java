@@ -20,7 +20,10 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -52,8 +55,12 @@ import enhanced.portals.utility.ComputerUtils;
 import enhanced.portals.utility.GeneralUtils;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
-public class TileController extends TileFrame implements IPeripheral, SimpleComponent {
-    public ArrayList<ChunkCoordinates> portalFrames = new ArrayList<ChunkCoordinates>();
+public class TileController extends TileFrame implements IPeripheral, SimpleComponent, IEnergyHandler {
+	final int INITIALIZATION_COST = 5000;
+	final int ENTITY_BASE_COST = 1000;
+	final int UPKEEP_COST = 10;
+	
+	public ArrayList<ChunkCoordinates> portalFrames = new ArrayList<ChunkCoordinates>();
     public ArrayList<ChunkCoordinates> portalBlocks = new ArrayList<ChunkCoordinates>();
     public ArrayList<ChunkCoordinates> redstoneInterfaces = new ArrayList<ChunkCoordinates>();
     public ArrayList<ChunkCoordinates> networkInterfaces = new ArrayList<ChunkCoordinates>();
@@ -72,6 +79,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     Ticket chunkLoadTicket;
     String lastError;
     boolean processing;
+    EnergyStorage storage = new EnergyStorage(16000);
 
     @SideOnly(Side.CLIENT)
     public GlyphIdentifier uID, nID;
@@ -227,6 +235,14 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             pairedControllerLOAD = null;
         }
         
+        if (isPortalActive() && !worldObj.isRemote) {
+        	if (extractEnergy(ForgeDirection.UNKNOWN, UPKEEP_COST, true) == UPKEEP_COST) {
+        		extractEnergy(ForgeDirection.UNKNOWN, UPKEEP_COST, false);
+        	} else {
+        		deconstructConnection();
+        	}
+        }
+        
         super.updateEntity();
     }
 
@@ -342,39 +358,38 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     public void onEntityEnterPortal(Entity entity, TilePortal tilePortal) {
         if (pairedController != null) {
             try {
+            	int sim = extractEnergy(ForgeDirection.UNKNOWN, ENTITY_BASE_COST, true), sim2 = pairedController.extractEnergy(ForgeDirection.UNKNOWN, ENTITY_BASE_COST, true), third = ENTITY_BASE_COST / 3;
+            	
+            	int instabilityA = sim == ENTITY_BASE_COST ? 0 : sim >= third * 2 ? 1 : sim >= third ? 2 : -1;
+            	int instabilityB = sim2 == ENTITY_BASE_COST ? 0 : sim2 >= third * 2 ? 1 : sim2 >= third ? 2 : -1;
+            	int instability = 0;
+            	
+            	if (instabilityA == -1)
+            		throw new PortalException("notEnoughEnergyToTransfer");
+            	else if (instabilityB == -1)
+            		throw new PortalException("notEnoughEnergyToTransferRemote");
+            	else
+            		instability = instabilityA + instabilityB;
+            	
                 EntityManager.transferEntity(entity, this, pairedController);
-                onEntityTeleported(entity);
-                pairedController.onEntityTeleported(entity);
+                onEntityTeleported(entity, instability);
+                pairedController.onEntityTeleported(entity, instability);
             } catch (PortalException e) {
                 if (entity instanceof EntityPlayer)
                     ((EntityPlayer) entity).addChatComponentMessage(new ChatComponentText(e.getMessage()));
             }
         }
-        
-        /*if (cachedDestinationLoc == null)
-            return;
-
-        // Set tile to the joined portal's controller.
-        TileEntity tile = cachedDestinationLoc.getTileEntity();
-        // Trigger redstone interfaces.
-        onEntityTouchPortal(entity);
-
-        if (tile != null && tile instanceof TileController) {
-            TileController control = (TileController) tile;
-
-            try {
-                EntityManager.transferEntity(entity, this, control);
-                onEntityTeleported(entity);
-                control.onEntityTeleported(entity);
-                control.onEntityTouchPortal(entity);
-            } catch (PortalException e) {
-                if (entity instanceof EntityPlayer)
-                    ((EntityPlayer) entity).addChatComponentMessage(new ChatComponentText(e.getMessage()));
-            }
-        }*/
     }
 
-    public void onEntityTeleported(Entity entity) {
+    public void onEntityTeleported(Entity entity, int instability) {
+    	if (instability == 0) {
+    		extractEnergy(ForgeDirection.UNKNOWN, ENTITY_BASE_COST, false);
+    	} else if (instability == 1 || instability == 2) {
+    		extractEnergy(ForgeDirection.UNKNOWN, (ENTITY_BASE_COST / 3) * 2, false);
+    	} else if (instability == 3 || instability == 4) {
+    		extractEnergy(ForgeDirection.UNKNOWN, ENTITY_BASE_COST / 3, false);
+    	}
+    	
         TilePortalManipulator module = getModuleManipulator();
 
         if (module != null)
@@ -438,6 +453,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         isFinalized = tagCompound.getInteger("PortalState") == 1;
         instability = tagCompound.getInteger("Instability");
         portalType = tagCompound.getInteger("PortalType");
+        storage.readFromNBT(tagCompound);
 
         portalFrames = GeneralUtils.loadChunkCoordList(tagCompound, "Frames");
         portalBlocks = GeneralUtils.loadChunkCoordList(tagCompound, "Portals");
@@ -467,6 +483,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         tagCompound.setInteger("PortalState", isFinalized ? 1 : 0);
         tagCompound.setInteger("Instability", instability);
         tagCompound.setInteger("PortalType", portalType);
+        storage.writeToNBT(tagCompound);
 
         GeneralUtils.saveChunkCoordList(tagCompound, portalFrames, "Frames");
         GeneralUtils.saveChunkCoordList(tagCompound, portalBlocks, "Portals");
@@ -547,7 +564,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     }
     
     public boolean hasEnoughPower() {
-        return true; // TODO
+        return storage.getEnergyStored() >= INITIALIZATION_COST;
     }
 
     public void constructConnection() {
@@ -571,6 +588,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             forceChunk();
             paired.constructConnection(this, null);
             portalCreate();
+            storage.extractEnergy(INITIALIZATION_COST, false);
         } catch (PortalException e) {
             lastError = e.getMessage();
             releaseChunk();
@@ -603,9 +621,10 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         
         try {
             forceChunk();
-            portalCreate();
             paired.constructConnection(this, texture);
+            portalCreate();
             swapTextureData(texture);
+            storage.extractEnergy(INITIALIZATION_COST, false);
         } catch (PortalException e) {
             player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, e.getMessage())));
             releaseChunk();
@@ -627,6 +646,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         portalCreate();
         pairedController = requester;
         swapTextureData(texture);
+        storage.extractEnergy(INITIALIZATION_COST, false);
         markDirty();
         sendUpdatePacket(false);
     }
@@ -896,4 +916,35 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
     public String[] getMethodNames() {
         return new String[] { "isPortalActive", "getUniqueIdentifier", "setUniqueIdentifier", "getFrameColour", "setFrameColour", "getPortalColour", "setPortalColour", "getParticleColour", "setParticleColour" };
     }
+
+    /* IEnergyHandler */
+    
+	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+		return true;
+	}
+
+	@Override
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+		return storage.receiveEnergy(maxReceive, simulate);
+	}
+
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+		return storage.extractEnergy(maxExtract, simulate);
+	}
+
+	@Override
+	public int getEnergyStored(ForgeDirection from) {
+		return storage.getEnergyStored();
+	}
+
+	@Override
+	public int getMaxEnergyStored(ForgeDirection from) {
+		return storage.getMaxEnergyStored();
+	}
+
+	public EnergyStorage getEnergyStorage() {
+		return storage;
+	}
 }
