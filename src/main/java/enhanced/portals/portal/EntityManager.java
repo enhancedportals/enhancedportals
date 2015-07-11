@@ -29,10 +29,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
 import cpw.mods.fml.common.FMLCommonHandler;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.PortalModules;
 
 public class EntityManager {
     static Random rand = new Random();

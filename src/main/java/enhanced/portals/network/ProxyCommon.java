@@ -12,7 +12,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -23,7 +22,11 @@ import enhanced.base.network.packet.PacketGui;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.xmod.ThermalExpansion;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.item.ItemDiamondNugget;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPConfiguration;
+import enhanced.portals.Reference.EPItems;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.item.ItemFrame;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.network.packet.PacketRerender;
@@ -39,11 +42,6 @@ import enhanced.portals.tile.TileRedstoneInterface;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.PortalFrames;
 
 public class ProxyCommon extends BaseProxy {
     public NetworkManager networkManager;
@@ -76,18 +74,13 @@ public class ProxyCommon extends BaseProxy {
     public void registerBlocks() {
         GameRegistry.registerBlock(EPBlocks.frame, ItemFrame.class, "frame");
         GameRegistry.registerBlock(EPBlocks.portal, "portal");
-        //GameRegistry.registerBlock(EPBlocks.dimensionalBridgeStabilizer, ItemStabilizer.class, "dbs");
         GameRegistry.registerBlock(EPBlocks.decorBorderedQuartz, "decor_frame");
         GameRegistry.registerBlock(EPBlocks.decorEnderInfusedMetal, "decor_dbs");
-        GameRegistry.registerBlock(EPBlocks.dimensionalBridgeStabilizerEmpty, "dbs_empty");
     }
 
     @Override
     public void registerItems() {
-        GameRegistry.registerItem(EPItems.wrench, "wrench");
-        GameRegistry.registerItem(EPItems.nanobrush, "nanobrush");
         GameRegistry.registerItem(EPItems.glasses, "glasses");
-        GameRegistry.registerItem(EPItems.locationCard, "location_card");
         GameRegistry.registerItem(EPItems.portalModule, "portal_module");
         GameRegistry.registerItem(EPItems.upgrade, "upgrade");
         GameRegistry.registerItem(EPItems.portalModuleBlank, "blank_portal_module");
@@ -95,16 +88,10 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerItem(EPItems.manual, "manual");
 
         if (EPConfiguration.recipeTE && Loader.isModLoaded(ThermalExpansion.MOD_ID)) {
-            GameRegistry.registerItem(new ItemDiamondNugget("diamondNugget"), "nuggetDiamond");
-            OreDictionary.registerOre("nuggetDiamond", EPItems.nuggetDiamond);
-            GameRegistry.addShapelessRecipe(new ItemStack(EPItems.nuggetDiamond, 9), Items.diamond);
-            GameRegistry.addShapelessRecipe(new ItemStack(Items.diamond, 1), EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond, EPItems.nuggetDiamond);
-
             ThermalExpansion.addTransposerFill(10000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.REDSTONE.ordinal()), new FluidStack(FluidRegistry.getFluidID("redstone"), 400), false);
             ThermalExpansion.addTransposerFill(10000, new ItemStack(EPItems.upgradeBlank, 1, 0), new ItemStack(EPItems.upgrade, 1, 0), new FluidStack(FluidRegistry.getFluidID("redstone"), 400), false);
             ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
             ThermalExpansion.addTransposerFill(15000, new ItemStack(EPItems.upgradeBlank, 1, 1), new ItemStack(EPItems.upgrade, 1, 1), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
-            //ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.dimensionalBridgeStabilizerEmpty, 1, 0), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 1, 0), new FluidStack(FluidRegistry.getFluidID("ender"), 125), false);
         }
     }
 
@@ -126,8 +113,6 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerTileEntity(TileNetworkInterface.class, "epNI");
         GameRegistry.registerTileEntity(TileDialingDevice.class, "epDD");
         GameRegistry.registerTileEntity(TilePortalManipulator.class, "epMM");
-        //GameRegistry.registerTileEntity(TileStabilizer.class, "epDBS");
-        //GameRegistry.registerTileEntity(TileStabilizerMain.class, "epDBSM");
         GameRegistry.registerTileEntity(TileTransferEnergy.class, "epTE");
         GameRegistry.registerTileEntity(TileTransferFluid.class, "epTF");
         GameRegistry.registerTileEntity(TileTransferItem.class, "epTI");
@@ -151,7 +136,6 @@ public class ProxyCommon extends BaseProxy {
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.ender_pearl));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.upgrade, 1, 0), new Object[] { " R ", "RFR", " R ", 'F', new ItemStack(EPItems.upgradeBlank), 'R', Items.redstone }));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.upgrade, 1, 1), new ItemStack(EPItems.upgradeBlank), Items.ender_pearl));
-            //GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6), new Object[] { "QPQ", "PDP", "QPQ", 'D', Items.diamond, 'Q', Blocks.iron_block, 'P', Items.ender_pearl }));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.CONTROLLER.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.diamond));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.DIAL.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), Items.diamond));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.PORTAL_MANIPULATOR.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), Items.diamond, Items.emerald, new ItemStack(EPItems.portalModuleBlank)));
@@ -174,21 +158,13 @@ public class ProxyCommon extends BaseProxy {
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.portalModule, 1, 5), new ItemStack(EPItems.portalModuleBlank), "dyeWhite", "dyeBlack"));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.portalModule, 1, 6), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.compass)));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.portalModule, 1, 7), new Object[] { "FFF", "FXF", "FFF", 'X', new ItemStack(EPItems.portalModuleBlank), 'F', new ItemStack(Items.feather) }));
-            GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.manual), new ItemStack(Items.book), new ItemStack(EPItems.locationCard)));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.nanobrush), new Object[] { "WT ", "TS ", "  S", 'W', Blocks.wool, 'T', Items.string, 'S', "stickWood" }));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.nanobrush), new Object[] { " TW", " ST", "S  ", 'W', Blocks.wool, 'T', Items.string, 'S', "stickWood" }));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.locationCard, 16), new Object[] { "IPI", "PPP", "IDI", 'I', Items.iron_ingot, 'P', Items.paper, 'D', "dyeBlue" }));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.wrench), new Object[] { "I I", " Q ", " I ", 'I', Items.iron_ingot, 'Q', Items.quartz }));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPItems.glasses), true, new Object[] { "R B", "GLG", "L L", 'R', "dyeRed", 'B', "dyeCyan", 'G', Blocks.glass_pane, 'L', Items.leather }));
         }
 
         if (EPConfiguration.recipeTE && Loader.isModLoaded(ThermalExpansion.MOD_ID)) {
-            String diamondNugget = "nuggetDiamond";
-
-            ItemStack machineFrameBasic = ThermalExpansion.getItemStack("Frame"), machineFrameHardened = ThermalExpansion.getItemStack("Frame", 1), powerCoilGold = ThermalExpansion.getItemStack("powerCoilGold");
+            ItemStack machineFrameBasic = ThermalExpansion.getItemStack("Frame"), powerCoilGold = ThermalExpansion.getItemStack("powerCoilGold");
 
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPBlocks.frame, 4, 0), "SQS", "QFQ", "SQS", 'S', Blocks.stone, 'Q', Items.quartz, 'F', machineFrameBasic));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EPBlocks.dimensionalBridgeStabilizerEmpty, 3, 0), "INI", "NFN", "ICI", 'F', machineFrameHardened, 'C', powerCoilGold, 'I', Items.iron_ingot, 'N', diamondNugget));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_ENERGY.ordinal()), EPBlocks.frame, Items.ender_pearl, Items.diamond, powerCoilGold));
             GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EPItems.upgrade, 1, 7), EPItems.upgradeBlank, Items.ender_pearl, Items.diamond, powerCoilGold));
         }

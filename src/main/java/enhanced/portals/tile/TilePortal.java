@@ -2,37 +2,15 @@ package enhanced.portals.tile;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.GuiHandler;
+import enhanced.portals.Reference.EPBlocks;
 import enhanced.portals.network.ProxyClient;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
 
 public class TilePortal extends TilePortalPart {
-    @Override
-    public boolean activate(EntityPlayer player, ItemStack stack) {
-        TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, controller, EPGuis.PORTAL_CONTROLLER_A);
-                return true;
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, player.isSneaking() ? EPGuis.TEXTURE_C : EPGuis.TEXTURE_B);
-                return true;
-            }
-
-        return false;
-    }
-
     @Override
     public void addDataToPacket(NBTTagCompound tag) {
 

@@ -20,17 +20,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 import enhanced.base.repack.codechicken.lib.colour.Colour;
 import enhanced.base.repack.codechicken.lib.colour.ColourARGB;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPConfiguration;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
+import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.client.PortalParticleFX;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.portal.EntityManager;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortal;
 import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.EPRenderers;
-import enhanced.portals.utility.Reference.PortalModules;
 
 public class BlockPortal extends BlockContainer {
     IIcon texture;

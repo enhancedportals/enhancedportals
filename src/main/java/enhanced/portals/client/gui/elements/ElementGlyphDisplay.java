@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.util.ResourceLocation;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.core.EnhancedCore;
+import enhanced.core.Reference.ECMod;
 import enhanced.portals.portal.GlyphIdentifier;
 
 public class ElementGlyphDisplay extends BaseElement {
@@ -27,7 +27,7 @@ public class ElementGlyphDisplay extends BaseElement {
 
     @Override
     protected void drawContent() {
-        parent.getMinecraft().renderEngine.bindTexture(new ResourceLocation(EnhancedCore.MOD_ID, "textures/gui/player_inventory.png"));
+        parent.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ECMod.ID, "textures/gui/player_inventory.png"));
         drawTexturedModalRect(posX, posY, 7, 7, sizeX, sizeY);
 
         parent.getMinecraft().renderEngine.bindTexture(ElementGlyphSelector.glyphs);

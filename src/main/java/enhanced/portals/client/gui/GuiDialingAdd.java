@@ -17,16 +17,16 @@ import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerDialingAdd;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingAdd extends BaseGui {
     public static final int CONTAINER_SIZE = 131;

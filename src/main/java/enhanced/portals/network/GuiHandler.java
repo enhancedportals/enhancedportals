@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import enhanced.base.tile.TileBase;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.client.gui.GuiDialingAdd;
 import enhanced.portals.client.gui.GuiDialingDevice;
 import enhanced.portals.client.gui.GuiDialingEdit;
@@ -55,7 +56,6 @@ import enhanced.portals.tile.TileRedstoneInterface;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.Reference.EPGuis;
 
 public class GuiHandler implements IGuiHandler {
     public static void openGui(EntityPlayer player, TileEntity tile, int gui) {
@@ -86,8 +86,6 @@ public class GuiHandler implements IGuiHandler {
             return new GuiNetworkInterfaceGlyphs((TileController) tile, player);
         else if (ID == EPGuis.MODULE_MANIPULATOR)
             return new GuiModuleManipulator((TilePortalManipulator) tile, player);
-        //else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
-        //    return new GuiDimensionalBridgeStabilizer((TileStabilizerMain) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_A)
             return new GuiDialingDevice((TileDialingDevice) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_B)

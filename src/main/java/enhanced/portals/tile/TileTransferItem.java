@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
@@ -21,9 +22,8 @@ import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.GuiHandler;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPGuis;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferItem extends TileFrameTransfer implements IInventory, IPeripheral, SimpleComponent {
@@ -36,11 +36,13 @@ public class TileTransferItem extends TileFrameTransfer implements IInventory, I
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-
-        if (GeneralUtils.isWrench(stack) && controller != null && controller.isFinalized) {
-            GuiHandler.openGui(player, this, EPGuis.TRANSFER_ITEM);
-            return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    GuiHandler.openGui(player, this, EPGuis.TRANSFER_ITEM);
+                    return true;
+                }
+            }
         }
 
         return false;

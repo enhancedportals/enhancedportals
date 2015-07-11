@@ -15,7 +15,6 @@ import enhanced.portals.tile.TileController;
 
 public class ContainerPortalController extends BaseContainer {
     TileController controller;
-    byte wasPublic = -100;
     String oldGlyphs = "EMPTY";
 
     public ContainerPortalController(TileController c, InventoryPlayer p) {
@@ -28,16 +27,12 @@ public class ContainerPortalController extends BaseContainer {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        byte isPublic = (byte) (controller.isPublic ? 1 : 0);
         String glyphs = EnhancedPortals.proxy.networkManager.getPortalUID(controller);
         if (glyphs == null)
             glyphs = "";
 
         for (int i = 0; i < crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) crafters.get(i);
-
-            if (isPublic != wasPublic)
-                icrafting.sendProgressBarUpdate(this, 0, isPublic);
 
             if (!glyphs.equals(oldGlyphs)) {
                 NBTTagCompound t = new NBTTagCompound();
@@ -47,21 +42,16 @@ public class ContainerPortalController extends BaseContainer {
         }
 
         oldGlyphs = glyphs;
-        wasPublic = isPublic;
     }
 
     @Override
     public void handleGuiPacket(NBTTagCompound tag, EntityPlayer player) {
-        if (tag.hasKey("public"))
-            controller.isPublic = !controller.isPublic;
-
         if (tag.hasKey("uid"))
             controller.setUID(new GlyphIdentifier(tag.getString("uid")));
     }
 
     @Override
     public void updateProgressBar(int id, int val) {
-        if (id == 0)
-            controller.isPublic = val == 1;
+
     }
 }

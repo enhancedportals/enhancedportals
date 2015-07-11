@@ -20,6 +20,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -35,6 +36,11 @@ import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
 import enhanced.core.Reference.ECItems;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPConfiguration;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.packet.PacketRerender;
 import enhanced.portals.portal.EntityManager;
@@ -44,12 +50,6 @@ import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.portal.PortalUtils;
 import enhanced.portals.utility.ComputerUtils;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.PortalModules;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileController extends TileFrame implements IPeripheral, SimpleComponent {
@@ -65,7 +65,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
     public PortalTextureManager activeTextureData = new PortalTextureManager(), inactiveTextureData;
     public int connectedPortals = -1, instability = 0, portalType = 0;
-    public boolean isPublic, isFinalized;
+    public boolean isFinalized;
 
     DimensionCoordinates pairedControllerLOAD;
     TileController pairedController;
@@ -108,26 +108,23 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             
             return false;
         }
-
-        try {
-            if (stack != null)
-                if (!isFinalized) {
-                    if (GeneralUtils.isWrench(stack) && !worldObj.isRemote) {
+        else if (stack != null && stack.getItem() instanceof IToolWrench) {
+            if (!isFinalized) {
+                if (!worldObj.isRemote) {
+                    try {
                         configurePortal();
-                        player.addChatComponentMessage(new ChatComponentText(Localisation.getChatSuccess(EPMod.ID, "reconfigure")));
+                    } catch (PortalException e) {
+                        player.addChatComponentMessage(new ChatComponentText(e.getMessage()));
+                        return false;
                     }
-
+                    
+                    player.addChatComponentMessage(new ChatComponentText(Localisation.getChatSuccess(EPMod.ID, "reconfigure")));
                     return true;
-                } else if (isFinalized)
-                    if (GeneralUtils.isWrench(stack)) {
-                        GuiHandler.openGui(player, this, EPGuis.PORTAL_CONTROLLER_A);
-                        return true;
-                    } else if (stack.getItem() == EPItems.nanobrush) {
-                        GuiHandler.openGui(player, this, EPGuis.TEXTURE_A);
-                        return true;
-                    }
-        } catch (PortalException e) {
-            player.addChatComponentMessage(new ChatComponentText(e.getMessage()));
+                }
+            } else {
+                GuiHandler.openGui(player, this, EPGuis.PORTAL_CONTROLLER_A);
+                return true;
+            }
         }
 
         return false;
@@ -441,7 +438,6 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         isFinalized = tagCompound.getInteger("PortalState") == 1;
         instability = tagCompound.getInteger("Instability");
         portalType = tagCompound.getInteger("PortalType");
-        isPublic = tagCompound.getBoolean("isPublic");
 
         portalFrames = GeneralUtils.loadChunkCoordList(tagCompound, "Frames");
         portalBlocks = GeneralUtils.loadChunkCoordList(tagCompound, "Portals");
@@ -471,7 +467,6 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         tagCompound.setInteger("PortalState", isFinalized ? 1 : 0);
         tagCompound.setInteger("Instability", instability);
         tagCompound.setInteger("PortalType", portalType);
-        tagCompound.setBoolean("isPublic", isPublic);
 
         GeneralUtils.saveChunkCoordList(tagCompound, portalFrames, "Frames");
         GeneralUtils.saveChunkCoordList(tagCompound, portalBlocks, "Portals");

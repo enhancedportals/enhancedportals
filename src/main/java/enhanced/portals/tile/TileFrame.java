@@ -1,20 +1,28 @@
 package enhanced.portals.tile;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import cofh.api.block.IDismantleable;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPConfiguration;
+import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.block.BlockFrame;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.PortalFrames;
 
-public abstract class TileFrame extends TilePortalPart {
+public abstract class TileFrame extends TilePortalPart implements IDismantleable {
     protected boolean wearingGoggles = GeneralUtils.isWearingGoggles();
 
     public void breakBlock(Block b, int oldMetadata) {
@@ -67,11 +75,34 @@ public abstract class TileFrame extends TilePortalPart {
         return 0xFFFFFF;
     }
 
-    public void onBlockDismantled() {
+    @Override
+    public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
         TileController controller = getPortalController();
 
         if (controller != null)
             controller.deconstruct();
+
+        ItemStack stack = new ItemStack(EPBlocks.frame, 1, getBlockMetadata());
+        world.setBlockToAir(xCoord, yCoord, zCoord);
+
+        if (!returnDrops) {
+            float f = 0.3F;
+            double d1 = world.rand.nextFloat() * f + (1f - f) * 0.5d;
+            double d2 = world.rand.nextFloat() * f + (1f - f) * 0.5d;
+            double d3 = world.rand.nextFloat() * f + (1f - f) * 0.5d;
+            EntityItem item = new EntityItem(getWorldObj(), x + d1, y + d2, z + d3);
+            item.delayBeforeCanPickup = 10;
+            world.spawnEntityInWorld(item);
+        }
+        
+        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+        list.add(stack);
+        return list;
+    }
+
+    @Override
+    public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
+        return true;
     }
 
     protected boolean shouldShowOverlay() {

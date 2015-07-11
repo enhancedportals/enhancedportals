@@ -9,10 +9,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TilePortal;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPRenderers;
 
 public class PortalRenderer implements ISimpleBlockRenderingHandler {
     public PortalRenderer() {

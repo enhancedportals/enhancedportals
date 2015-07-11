@@ -4,12 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
@@ -17,15 +14,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import enhanced.base.utilities.Localisation;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPItems;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
+import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.client.PortalRenderer;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.EPRenderers;
-import enhanced.portals.utility.Reference.PortalFrames;
 
 public class ProxyClient extends ProxyCommon {
     public class ParticleSet {
@@ -83,31 +79,6 @@ public class ProxyClient extends ProxyCommon {
         return craftingRecipes.get(manualEntry);
     }
 
-    public static boolean manualChapterExists(int chapter_num) {
-        return Localisation.exists(EPMod.ID, "manual.chapter." + chapter_num + ".title");
-    }
-
-    public static boolean manualChapterPageExists(int chapter_num, int chapter_page) {
-        return Localisation.exists(EPMod.ID, "manual.chapter." + chapter_num + ".page." + chapter_page);
-    }
-
-    public static int manualChapterLastPage(int chapter_num) {
-        int max_pages = 10;
-        for (int i = max_pages; i > 0; i--)
-            if (Localisation.exists(EPMod.ID, "manual.chapter." + chapter_num + ".page." + i))
-                return i;
-        return -1;
-    }
-
-    public static void manualChangeEntry(String entry) {
-        manualEntry = entry;
-        manualPage = 0;
-    }
-
-    public static boolean manualEntryHasPage(int page) {
-        return !Localisation.get(EPMod.ID, "manual." + manualEntry + ".page." + page).contains(".page.");
-    }
-
     public static boolean resourceExists(String file) {
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) FMLClientHandler.instance().getClient().getResourceManager();
 
@@ -117,64 +88,6 @@ public class ProxyClient extends ProxyCommon {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public static boolean setManualPageFromBlock(Block b, int meta) {
-        if (b == EPBlocks.frame) {
-            manualChangeEntry("frame" + meta);
-            return true;
-        } else if (b == EPBlocks.portal) {
-            manualChangeEntry("portal");
-            return true;
-        } else if (b == EPBlocks.decorEnderInfusedMetal) {
-            manualChangeEntry("decorStabilizer");
-            return true;
-        //} else if (b == EPBlocks.dimensionalBridgeStabilizer) {
-        //    manualChangeEntry("dbs");
-        //    return true;
-        } else if (b == EPBlocks.dimensionalBridgeStabilizerEmpty) {
-            manualChangeEntry("dbsEmpty");
-            return true;
-        } else if (b == EPBlocks.decorBorderedQuartz) {
-            manualChangeEntry("decorBorderedQuartz");
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean setManualPageFromItem(ItemStack s) {
-        Item i = s.getItem();
-
-        if (i instanceof ItemBlock)
-            return setManualPageFromBlock(Block.getBlockFromItem(i), s.getItemDamage());
-        else if (i == EPItems.portalModuleBlank) {
-            manualChangeEntry("blank_module");
-            return true;
-        } else if (i == EPItems.upgradeBlank) {
-            manualChangeEntry("blank_upgrade");
-            return true;
-        } else if (i == EPItems.glasses) {
-            manualChangeEntry("glasses");
-            return true;
-        } else if (i == EPItems.locationCard) {
-            manualChangeEntry("location_card");
-            return true;
-        } else if (i == EPItems.nanobrush) {
-            manualChangeEntry("nanobrush");
-            return true;
-        } else if (i == EPItems.wrench) {
-            manualChangeEntry("wrench");
-            return true;
-        } else if (i == EPItems.portalModule) {
-            manualChangeEntry("module" + s.getItemDamage());
-            return true;
-        } else if (i == EPItems.upgrade) {
-            manualChangeEntry("upgrade" + s.getItemDamage());
-            return true;
-        }
-
-        return false;
     }
 
     @Override
@@ -202,9 +115,6 @@ public class ProxyClient extends ProxyCommon {
         craftingRecipes.put("blank_module", new ItemStack[] { new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.iron_ingot), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(EPItems.portalModuleBlank) });
         craftingRecipes.put("blank_upgrade", new ItemStack[] { new ItemStack(Items.diamond), null, null, new ItemStack(Items.paper), null, null, new ItemStack(Items.dye, 1, 1), null, null, new ItemStack(EPItems.upgradeBlank) });
         craftingRecipes.put("glasses", new ItemStack[] { new ItemStack(Items.dye, 1, 1), null, new ItemStack(Items.dye, 1, 6), new ItemStack(Blocks.glass_pane), new ItemStack(Items.leather), new ItemStack(Blocks.glass_pane), new ItemStack(Items.leather), null, new ItemStack(Items.leather), new ItemStack(EPItems.glasses) });
-        craftingRecipes.put("location_card", new ItemStack[] { new ItemStack(Items.iron_ingot), new ItemStack(Items.paper), new ItemStack(Items.iron_ingot), new ItemStack(Items.paper), new ItemStack(Items.paper), new ItemStack(Items.paper), new ItemStack(Items.iron_ingot), new ItemStack(Items.dye, 1, 4), new ItemStack(Items.iron_ingot), new ItemStack(EPItems.locationCard, 16) });
-        craftingRecipes.put("wrench", new ItemStack[] { new ItemStack(Items.iron_ingot), null, new ItemStack(Items.iron_ingot), null, new ItemStack(Items.quartz), null, null, new ItemStack(Items.iron_ingot), null, new ItemStack(EPItems.wrench) });
-        craftingRecipes.put("nanobrush", new ItemStack[] { new ItemStack(Blocks.wool), new ItemStack(Items.string), null, new ItemStack(Items.string), new ItemStack(Items.stick), null, null, null, new ItemStack(Items.stick), new ItemStack(EPItems.nanobrush) });
         craftingRecipes.put("module0", new ItemStack[] { new ItemStack(Items.redstone), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.gunpowder), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 0) });
         craftingRecipes.put("module1", new ItemStack[] { new ItemStack(Items.dye, 1, 1), new ItemStack(Items.dye, 1, 2), new ItemStack(Items.dye, 1, 4), null, new ItemStack(EPItems.portalModuleBlank), null, null, null, null, new ItemStack(EPItems.portalModule, 1, 1) });
         craftingRecipes.put("module2", new ItemStack[] { new ItemStack(Items.redstone), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Blocks.noteblock), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 2) });

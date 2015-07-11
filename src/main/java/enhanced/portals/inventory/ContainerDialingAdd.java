@@ -5,11 +5,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerDialingAdd extends BaseContainer {
     TileDialingDevice dial;

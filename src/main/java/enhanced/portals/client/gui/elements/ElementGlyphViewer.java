@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.core.EnhancedCore;
+import enhanced.core.Reference.ECMod;
 
 public class ElementGlyphViewer extends BaseElement {
     ElementGlyphSelector selector;
@@ -17,7 +17,7 @@ public class ElementGlyphViewer extends BaseElement {
     public ElementGlyphViewer(BaseGui gui, int x, int y, ElementGlyphSelector s) {
         super(gui, x, y, 162, 18);
         selector = s;
-        texture = new ResourceLocation(EnhancedCore.MOD_ID, "textures/gui/player_inventory.png");
+        texture = new ResourceLocation(ECMod.ID, "textures/gui/player_inventory.png");
     }
 
     @Override

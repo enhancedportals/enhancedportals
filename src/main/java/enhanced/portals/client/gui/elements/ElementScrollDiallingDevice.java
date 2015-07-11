@@ -9,11 +9,11 @@ import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.base.utilities.Localisation;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.GuiDialingDevice;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class ElementScrollDiallingDevice extends BaseElement {
     TileDialingDevice dial;

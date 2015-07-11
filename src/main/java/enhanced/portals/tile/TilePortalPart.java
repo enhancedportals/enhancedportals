@@ -10,7 +10,10 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import enhanced.base.tile.TileBase;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
 
 public abstract class TilePortalPart extends TileBase {
@@ -18,6 +21,18 @@ public abstract class TilePortalPart extends TileBase {
     TileController cachedController;
 
     public boolean activate(EntityPlayer player, ItemStack stack) {
+        if (player.isSneaking())
+            return false;
+        
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized && (this instanceof TileFrame || this instanceof TilePortal)) {
+                    GuiHandler.openGui(player, getPortalController(), EPGuis.PORTAL_CONTROLLER_A);
+                    return true;
+                }
+            }
+        }
+        
         return false;
     }
 

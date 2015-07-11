@@ -13,12 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
 
 public class TileRedstoneInterface extends TileFrame {
     // Determines if this instance of a RS interface is Output or Input.
@@ -33,16 +33,14 @@ public class TileRedstoneInterface extends TileFrame {
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                GuiHandler.openGui(player, this, EPGuis.REDSTONE_INTERFACE);
-                return true;
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
-                return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    GuiHandler.openGui(player, this, EPGuis.REDSTONE_INTERFACE);
+                    return true;
+                }
             }
+        }
 
         return false;
     }

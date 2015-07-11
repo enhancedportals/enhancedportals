@@ -11,6 +11,7 @@ import net.minecraftforge.common.ForgeChunkManager.OrderedLoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -21,14 +22,15 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
 import enhanced.base.mod.BaseMod;
 import enhanced.base.xmod.ComputerCraft;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.NetworkManager;
 import enhanced.portals.tile.TileController;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPMod;
 
 @Mod(name = EPMod.name, modid = EPMod.ID, version = EPMod.version, dependencies = EPMod.dependencies)
 public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
@@ -75,7 +77,7 @@ public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
 
     @SubscribeEvent
     public void worldSave(WorldEvent.Save event) {
-        if (!event.world.isRemote)
+    	if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
             proxy.networkManager.saveAllData();
     }
 

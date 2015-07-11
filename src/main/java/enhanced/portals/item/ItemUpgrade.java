@@ -14,6 +14,9 @@ import net.minecraft.world.World;
 import enhanced.base.item.ItemBase;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TileDialingDevice;
 import enhanced.portals.tile.TileFrame;
@@ -24,9 +27,6 @@ import enhanced.portals.tile.TileRedstoneInterface;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.PortalFrames;
 
 public class ItemUpgrade extends ItemBase {
     public ItemUpgrade(String n) {

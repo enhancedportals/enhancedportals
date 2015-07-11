@@ -8,6 +8,9 @@ import enhanced.base.client.gui.BaseGui;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementGlyphSelector;
 import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerDialingManual;
@@ -15,9 +18,6 @@ import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingManual extends BaseGui {
     public static final int CONTAINER_SIZE = 163;

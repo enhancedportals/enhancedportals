@@ -8,10 +8,10 @@ import enhanced.base.client.gui.elements.ElementRedstoneFlux;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferEnergy;
 import enhanced.portals.tile.TileTransferEnergy;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTransferEnergy extends BaseGui {
     public static final int CONTAINER_SIZE = 55;

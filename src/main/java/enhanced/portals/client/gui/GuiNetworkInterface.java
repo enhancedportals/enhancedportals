@@ -6,13 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerNetworkInterface;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.tile.TileController;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiNetworkInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;

@@ -6,10 +6,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.client.gui.GuiNetworkInterfaceGlyphs;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.tile.TileController;
-import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerNetworkInterfaceGlyphs extends BaseContainer {
     TileController controller;

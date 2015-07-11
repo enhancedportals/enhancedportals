@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.BaseElement;
-import enhanced.core.EnhancedCore;
+import enhanced.core.Reference.ECMod;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementGlyphSelector extends BaseElement {
     public static final ResourceLocation glyphs = new ResourceLocation(EPMod.ID, "textures/gui/glyphs.png");
@@ -21,7 +21,7 @@ public class ElementGlyphSelector extends BaseElement {
 
     public ElementGlyphSelector(BaseGui gui, int x, int y) {
         super(gui, x, y, 162, 54);
-        texture = new ResourceLocation(EnhancedCore.MOD_ID, "textures/gui/player_inventory.png");
+        texture = new ResourceLocation(ECMod.ID, "textures/gui/player_inventory.png");
     }
 
     @Override

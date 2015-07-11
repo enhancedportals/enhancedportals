@@ -8,10 +8,9 @@ import net.minecraft.world.World;
 import enhanced.base.item.ItemBase;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 
 public class ItemManual extends ItemBase {
     public ItemManual(String n) {
@@ -32,7 +31,7 @@ public class ItemManual extends ItemBase {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10) {
-        if (world.isRemote && player.isSneaking() && ProxyClient.setManualPageFromBlock(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) {
+        if (world.isRemote && player.isSneaking()) {
             player.openGui(EnhancedPortals.instance, EPGuis.MANUAL, world, 0, 0, 0);
             return true;
         }

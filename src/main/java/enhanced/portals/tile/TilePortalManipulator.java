@@ -5,12 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import buildcraft.api.tools.IToolWrench;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPItems;
+import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.network.GuiHandler;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.PortalModules;
 
 public class TilePortalManipulator extends TileFrame implements IInventory {
     ItemStack[] inventory = new ItemStack[9];
@@ -41,16 +41,14 @@ public class TilePortalManipulator extends TileFrame implements IInventory {
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                GuiHandler.openGui(player, this, EPGuis.MODULE_MANIPULATOR);
-                return true;
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
-                return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    GuiHandler.openGui(player, this, EPGuis.MODULE_MANIPULATOR);
+                    return true;
+                }
             }
+        }
 
         return false;
     }

@@ -6,11 +6,11 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPGuis;
 
 public class GuiDialingEditPortal extends GuiTexturePortal {
     TileDialingDevice dial;

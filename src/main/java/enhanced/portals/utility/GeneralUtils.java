@@ -13,7 +13,7 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import enhanced.base.utilities.DimensionCoordinates;
-import enhanced.portals.utility.Reference.EPItems;
+import enhanced.portals.Reference.EPItems;
 
 public class GeneralUtils {
     public static boolean isWearingGoggles() {

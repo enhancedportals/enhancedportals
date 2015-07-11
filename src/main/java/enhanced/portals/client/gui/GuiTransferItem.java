@@ -10,10 +10,10 @@ import enhanced.base.client.gui.BaseGui;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferItem;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTransferItem extends BaseGui {
     public static final int CONTAINER_SIZE = 47;

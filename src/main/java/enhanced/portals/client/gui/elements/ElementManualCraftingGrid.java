@@ -9,9 +9,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.client.gui.GuiManual;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementManualCraftingGrid extends BaseElement {
     int offset = 7;
@@ -40,8 +39,7 @@ public class ElementManualCraftingGrid extends BaseElement {
             int X = i % 3 * 18, Y = i / 3 * 18;
 
             if (x >= offset + X && x < offset + X + 16 && y >= offset + Y && y < offset + Y + 16) {
-                ProxyClient.setManualPageFromItem(items[i]);
-                ((GuiManual) parent).pageChanged();
+                //ProxyClient.setManualPageFromItem(items[i]); // TODO
                 break;
             }
         }

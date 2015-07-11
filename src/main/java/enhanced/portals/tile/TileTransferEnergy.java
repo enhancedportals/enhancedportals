@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.Optional.Interface;
@@ -20,10 +21,9 @@ import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHandler, IPeripheral, SimpleComponent {
@@ -43,16 +43,14 @@ public class TileTransferEnergy extends TileFrameTransfer implements IEnergyHand
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, this, EPGuis.TRANSFER_ENERGY);
-                return true;
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
-                return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    GuiHandler.openGui(player, this, EPGuis.TRANSFER_ENERGY);
+                    return true;
+                }
             }
+        }
 
         return false;
     }

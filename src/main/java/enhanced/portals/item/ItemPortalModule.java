@@ -16,9 +16,9 @@ import net.minecraft.world.World;
 import enhanced.base.item.ItemBase;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
-import enhanced.portals.utility.Reference.PortalModules;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
+import enhanced.portals.Reference.PortalModules;
 
 public class ItemPortalModule extends ItemBase {
     IIcon[] overlayIcons = new IIcon[PortalModules.count()];

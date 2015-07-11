@@ -25,6 +25,10 @@ import enhanced.base.block.BlockContainerBase;
 import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
+import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.tile.TileController;
 import enhanced.portals.tile.TileDialingDevice;
@@ -38,10 +42,6 @@ import enhanced.portals.tile.TileRedstoneInterface;
 import enhanced.portals.tile.TileTransferEnergy;
 import enhanced.portals.tile.TileTransferFluid;
 import enhanced.portals.tile.TileTransferItem;
-import enhanced.portals.utility.Reference;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.EPRenderers;
-import enhanced.portals.utility.Reference.PortalFrames;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = ComputerCraft.MOD_ID) })
 public class BlockFrame extends BlockContainerBase implements IPeripheralProvider {

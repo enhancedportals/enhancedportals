@@ -11,15 +11,15 @@ import org.lwjgl.input.Keyboard;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerDialingEdit;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDialingEdit extends GuiDialingAdd {
     boolean receivedData = false;

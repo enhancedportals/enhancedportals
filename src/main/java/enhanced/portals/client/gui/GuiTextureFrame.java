@@ -22,6 +22,10 @@ import enhanced.base.client.gui.tabs.TabTipSecondary;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementScrollFrameIcons;
 import enhanced.portals.client.gui.tabs.TabColour;
 import enhanced.portals.inventory.ContainerTextureFrame;
@@ -29,10 +33,6 @@ import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.tile.TileController;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTextureFrame extends BaseGui implements IFakeSlotHandler {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;

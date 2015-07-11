@@ -24,13 +24,13 @@ import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.utility.ComputerUtils;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPMod;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileDialingDevice extends TileFrame implements IPeripheral, SimpleComponent {

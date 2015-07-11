@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
@@ -18,11 +19,9 @@ import enhanced.base.utilities.Localisation;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.network.GuiHandler;
-import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.EPMod;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileNetworkInterface extends TileFrame implements IPeripheral, SimpleComponent {
@@ -31,19 +30,21 @@ public class TileNetworkInterface extends TileFrame implements IPeripheral, Simp
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-        
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack) && !player.isSneaking()) {
-                if (!EnhancedPortals.proxy.networkManager.hasUID(controller)) {
-                    if (!worldObj.isRemote)
-                        player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
-                } else
-                    GuiHandler.openGui(player, controller, EPGuis.NETWORK_INTERFACE_A);
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
-                return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    if (!EnhancedPortals.proxy.networkManager.hasUID(getPortalController())) {
+                        if (!worldObj.isRemote) {
+                            player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "noUidSet")));
+                            return true;
+                        }
+                    } else {
+                        GuiHandler.openGui(player, getPortalController(), EPGuis.NETWORK_INTERFACE_A);
+                        return true;
+                    }
+                }
             }
+        }
 
         return false;
     }

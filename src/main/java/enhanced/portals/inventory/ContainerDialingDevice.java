@@ -10,10 +10,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.packet.PacketTextureData;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.utility.Reference.EPGuis;
 
 public class ContainerDialingDevice extends BaseContainer {
     TileDialingDevice dial;

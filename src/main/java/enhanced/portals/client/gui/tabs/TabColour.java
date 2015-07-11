@@ -7,9 +7,9 @@ import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.button.GuiRGBSlider;
 import enhanced.base.client.gui.tabs.BaseTab;
 import enhanced.base.utilities.Localisation;
-import enhanced.portals.utility.Reference.EPItems;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
+import enhanced.portals.Reference.EPItems;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 
 public class TabColour extends BaseTab {
     GuiRGBSlider sliderR, sliderG, sliderB;
@@ -21,7 +21,7 @@ public class TabColour extends BaseTab {
         maxHeight += 89;
         maxWidth = 116;
         name = Localisation.get(EPMod.ID, Locale.GUI_COLOUR);
-        icon = new ItemStack(EPItems.nanobrush).getIconIndex();
+        icon = new ItemStack(EPItems.glasses).getIconIndex();
         sliderR = r;
         sliderG = g;
         sliderB = b;

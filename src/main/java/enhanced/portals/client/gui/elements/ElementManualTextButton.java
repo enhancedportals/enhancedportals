@@ -4,9 +4,8 @@ import java.util.List;
 
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.base.utilities.Localisation;
+import enhanced.portals.Reference.EPMod;
 import enhanced.portals.client.gui.GuiManual;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.utility.Reference.EPMod;
 
 public class ElementManualTextButton extends BaseElement {
     String entry;
@@ -68,8 +67,7 @@ public class ElementManualTextButton extends BaseElement {
         if (entry == null)
             return false;
 
-        ProxyClient.manualChangeEntry(entry);
-        ((GuiManual) parent).pageChanged();
+        //ProxyClient.manualChangeEntry(entry); // TODO
         return true;
     }
 

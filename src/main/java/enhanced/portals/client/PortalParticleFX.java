@@ -5,10 +5,10 @@ import java.awt.Color;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.World;
+import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.ProxyClient.ParticleSet;
 import enhanced.portals.tile.TileController;
-import enhanced.portals.utility.Reference.EPRenderers;
 
 public class PortalParticleFX extends EntityFX {
     private float portalParticleScale;

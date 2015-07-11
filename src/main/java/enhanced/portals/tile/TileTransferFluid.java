@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
@@ -26,10 +27,9 @@ import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import enhanced.base.xmod.ComputerCraft;
 import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.utility.GeneralUtils;
-import enhanced.portals.utility.Reference.EPGuis;
-import enhanced.portals.utility.Reference.EPItems;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferFluid extends TileFrameTransfer implements IFluidHandler, IPeripheral, SimpleComponent {
@@ -48,16 +48,14 @@ public class TileTransferFluid extends TileFrameTransfer implements IFluidHandle
         if (player.isSneaking())
             return false;
 
-        TileController controller = getPortalController();
-
-        if (stack != null && controller != null && controller.isFinalized)
-            if (GeneralUtils.isWrench(stack)) {
-                GuiHandler.openGui(player, this, EPGuis.TRANSFER_FLUID);
-                return true;
-            } else if (stack.getItem() == EPItems.nanobrush) {
-                GuiHandler.openGui(player, controller, EPGuis.TEXTURE_A);
-                return true;
+        if (stack != null) {
+            if (stack.getItem() instanceof IToolWrench) {
+                if (getPortalController() != null && getPortalController().isFinalized) {
+                    GuiHandler.openGui(player, this, EPGuis.TRANSFER_FLUID);
+                    return true;
+                }
             }
+        }
 
         return false;
     }

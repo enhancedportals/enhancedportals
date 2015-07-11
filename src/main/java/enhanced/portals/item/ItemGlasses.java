@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.EPRenderers;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
 
 public class ItemGlasses extends ItemArmor {
     IIcon overlay;

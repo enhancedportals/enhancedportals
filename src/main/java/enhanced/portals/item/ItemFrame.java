@@ -9,10 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import enhanced.base.utilities.Localisation;
-import enhanced.portals.utility.Reference.EPBlocks;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
-import enhanced.portals.utility.Reference.PortalFrames;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
+import enhanced.portals.Reference.PortalFrames;
 
 public class ItemFrame extends ItemBlockWithMetadata {
     public ItemFrame(Block b) {

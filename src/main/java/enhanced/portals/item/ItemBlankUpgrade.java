@@ -2,7 +2,7 @@ package enhanced.portals.item;
 
 import enhanced.base.item.ItemBase;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.Reference.EPMod;
 
 public class ItemBlankUpgrade extends ItemBase {
     public ItemBlankUpgrade(String n) {

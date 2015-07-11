@@ -8,10 +8,10 @@ import enhanced.base.client.gui.elements.ElementFluid;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferFluid;
 import enhanced.portals.tile.TileTransferFluid;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiTransferFluid extends BaseGui {
     public static final int CONTAINER_SIZE = 75;

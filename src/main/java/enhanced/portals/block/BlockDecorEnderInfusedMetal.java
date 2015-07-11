@@ -7,7 +7,7 @@ import net.minecraft.world.IBlockAccess;
 import enhanced.base.block.BlockBase;
 import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.utility.Reference.EPMod;
+import enhanced.portals.Reference.EPMod;
 
 public class BlockDecorEnderInfusedMetal extends BlockBase {
     ConnectedTexturesDetailed connectedTextures;
