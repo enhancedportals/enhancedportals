@@ -10,7 +10,7 @@ import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class GuiDialingEditFrame extends GuiTextureFrame {
     TileDialingDevice dial;

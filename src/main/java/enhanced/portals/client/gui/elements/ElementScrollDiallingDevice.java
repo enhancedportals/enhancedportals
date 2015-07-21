@@ -13,7 +13,7 @@ import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.GuiDialingDevice;
 import enhanced.portals.portal.GlyphElement;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class ElementScrollDiallingDevice extends BaseElement {
     TileDialingDevice dial;

@@ -9,21 +9,21 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import enhanced.portals.block.BlockDecorBorderedQuartz;
 import enhanced.portals.block.BlockDecorEnderInfusedMetal;
-import enhanced.portals.block.BlockFrame;
-import enhanced.portals.block.BlockPortal;
 import enhanced.portals.item.ItemBlankPortalModule;
 import enhanced.portals.item.ItemBlankUpgrade;
 import enhanced.portals.item.ItemGlasses;
 import enhanced.portals.item.ItemManual;
 import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.item.ItemUpgrade;
+import enhanced.portals.portal.frame.BlockFrame;
+import enhanced.portals.portal.portal.BlockPortal;
 
 public class Reference {
     public static class EPMod {
         public static final String name = "Enhanced Portals";
         public static final String ID = "enhancedportals";
         public static final String shortID = "ep3";
-        public static final String version = "3.0.12";
+        public static final String version = "3.1.0";
         public static final String dependencies = "required-after:enhancedcore";
         public static final String url = "https://raw.githubusercontent.com/enhancedportals/VERSION/master/VERSION%20-%20Enhanced%20Portals";
         public static final String proxyClient = "enhanced.portals.network.ProxyClient";
@@ -55,21 +55,20 @@ public class Reference {
     }
 
     public static class EPConfiguration {
-        public static int redstoneFluxCost = 10000;
-        public static int redstoneFluxTime = 20;
-        public static int connectionsPerRow = 2;
-
         public static boolean disableParticles = false;
         public static boolean disableSounds = false;
+        
         public static boolean forceFrameOverlay = false;
+        
         public static boolean portalDestroysBlocks = false;
-        public static boolean fasterPortalCooldown = false;
-        public static boolean requirePower = true;
+        
         public static boolean recipeVanilla = true;
         public static boolean recipeTE = true;
-
-        public static double powerUseMultiplier = 1.0;
-        public static double powerStorageMultiplier = 1.0;
+        
+        public static boolean requirePower = true;
+        public static int initializationCost = 10000;
+        public static int entityBaseCost = 1000;
+        public static int keepAliveCost = 10;
     }
 
     public static class EPGuis {
@@ -101,10 +100,10 @@ public class Reference {
 
     public static class Locale {
         public static final String BLOCK_PORTAL_FRAME_PART = "block.portalFramePart";
-        public static final String BLOCK_MULTIBLOCK_STRUCTURE = "block.multiblockStructure";
-        public static final String BLOCK_DBS_SIZE = "block.dbsSize";
+        
         public static final String ITEM_PORTAL_MODULE = "item.portalModule";
         public static final String ITEM_LOCATION_SET = "item.locationSet";
+        
         public static final String GUI_FACING_X = "gui.facing.";
         public static final String GUI_CANCEL = "gui.cancel";
         public static final String GUI_SAVE = "gui.save";
@@ -170,7 +169,22 @@ public class Reference {
         public static final String GUI_TRANSFER_ENERGY = "gui.transferEnergy";
         public static final String GUI_TRANSFER_FLUID = "gui.transferFluid";
         public static final String GUI_TRANSFER_ITEM = "gui.transferItem";
+        
         public static final String ITEM_MANUAL_DESC = "item.manual.desc";
+
+        public static final String CHAT_SUCCESS_PORTAL_CONFIGURE = "portalConfigure";
+        
+        public static final String CHAT_ERROR_DIAL_AND_NETWORK = "dialAndNetwork";
+        public static final String CHAT_ERROR_MULTIPLE_MANIPULATORS = "multipleMod";
+        public static final String CHAT_ERROR_COULD_NOT_CREATE_PORTAL = "couldNotCreatePortalHere";
+        public static final String CHAT_ERROR_NO_DESTINATION = "noDestinationFound";
+        public static final String CHAT_ERROR_CANT_DIAL_SELF = "cantDialSelf";
+        public static final String CHAT_ERROR_NO_POWER = "noPower";
+        public static final String CHAT_ERROR_NO_POWER_REMOTE = "noPowerRemote";
+        public static final String CHAT_ERROR_PORTAL_ACTIVE = "portalActive";
+        public static final String CHAT_ERROR_PORTAL_ACTIVE_REMOTE = "portalActiveRemote";
+        public static final String CHAT_ERROR_NOT_ENOUGH_ENERGY_TO_TRANSFER = "notEnoughEnergyToTransfer";
+        public static final String CHAT_ERROR_NOT_ENOUGH_ENERGY_TO_RECEIVE = "notEnoughEnergyToReceive";
     }
 
     public static enum PortalModules {

@@ -8,6 +8,7 @@ import enhanced.base.block.BlockBase;
 import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
+import enhanced.portals.portal.frame.BlockFrame;
 
 public class BlockDecorBorderedQuartz extends BlockBase {
     ConnectedTexturesDetailed connectedTextures;

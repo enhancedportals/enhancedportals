@@ -27,7 +27,7 @@ import enhanced.portals.inventory.ContainerTextureParticle;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class GuiTextureParticle extends BaseGui {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;

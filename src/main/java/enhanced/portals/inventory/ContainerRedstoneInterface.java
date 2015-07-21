@@ -10,7 +10,7 @@ import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiRedstoneInterface;
-import enhanced.portals.tile.TileRedstoneInterface;
+import enhanced.portals.portal.frame.TileRedstoneInterface;
 
 public class ContainerRedstoneInterface extends BaseContainer {
     TileRedstoneInterface ri;

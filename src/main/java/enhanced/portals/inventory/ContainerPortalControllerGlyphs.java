@@ -13,7 +13,7 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class ContainerPortalControllerGlyphs extends BaseContainer {
     TileController controller;

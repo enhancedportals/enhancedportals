@@ -11,7 +11,7 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferEnergy;
-import enhanced.portals.tile.TileTransferEnergy;
+import enhanced.portals.portal.frame.TileTransferEnergy;
 
 public class GuiTransferEnergy extends BaseGui {
     public static final int CONTAINER_SIZE = 55;

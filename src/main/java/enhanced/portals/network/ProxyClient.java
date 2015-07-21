@@ -5,20 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.Reference.EPItems;
+import enhanced.base.utilities.BlockPos;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.EPRenderers;
-import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.client.PortalRenderer;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
@@ -39,12 +33,6 @@ public class ProxyClient extends ProxyCommon {
     public static String saveName;
     public static int editingID = -1;
 
-    public static String manualEntry = "subject";
-    public static int manualPage = 0;
-    public static int chapterNum = 0;
-    public static int chapterPage = 0;
-    public static int chapterPageTotal = 0;
-
     public static int editingDialEntry = -1;
     public static PortalTextureManager dialEntryTexture = new PortalTextureManager();
 
@@ -52,32 +40,28 @@ public class ProxyClient extends ProxyCommon {
     public static ArrayList<IIcon> customPortalTextures = new ArrayList<IIcon>();
     public static ArrayList<ParticleSet> particleSets = new ArrayList<ParticleSet>();
 
-    static HashMap<String, ItemStack[]> craftingRecipes = new HashMap<String, ItemStack[]>();
-    public static HashMap<ChunkCoordinates, ArrayList<ChunkCoordinates>> waitingForController = new HashMap<ChunkCoordinates, ArrayList<ChunkCoordinates>>();
+    public static HashMap<BlockPos, ArrayList<BlockPos>> waitingForController = new HashMap<BlockPos, ArrayList<BlockPos>>();
 
     @Override
-    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame) {
+    public void waitForController(BlockPos controller, BlockPos frame) {
         if (waitingForController.containsKey(controller))
             waitingForController.get(controller).add(frame);
         else {
-            waitingForController.put(controller, new ArrayList<ChunkCoordinates>());
+            waitingForController.put(controller, new ArrayList<BlockPos>());
             waitingForController.get(controller).add(frame);
         }
     }
 
     @Override
-    public ArrayList<ChunkCoordinates> getControllerList(ChunkCoordinates controller) {
+    public ArrayList<BlockPos> getControllerList(BlockPos controller) {
         return waitingForController.get(controller);
     }
 
     @Override
-    public void clearControllerList(ChunkCoordinates controller) {
+    public void clearControllerList(BlockPos controller) {
         waitingForController.remove(controller);
     }
 
-    public static ItemStack[] getCraftingRecipeForManualEntry() {
-        return craftingRecipes.get(manualEntry);
-    }
 
     public static boolean resourceExists(String file) {
         IReloadableResourceManager resourceManager = (IReloadableResourceManager) FMLClientHandler.instance().getClient().getResourceManager();
@@ -93,44 +77,6 @@ public class ProxyClient extends ProxyCommon {
     @Override
     public File getWorldDir() {
         return new File(getBaseDir(), "saves/" + DimensionManager.getWorld(0).getSaveHandler().getWorldDirectoryName());
-    }
-
-    @Override
-    public void registerRecipes() {
-        super.registerRecipes();
-
-        craftingRecipes.put("frame0", new ItemStack[] { new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.quartz_block), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(Items.iron_ingot), new ItemStack(Blocks.stone), new ItemStack(EPBlocks.frame, 4, 0) });
-        craftingRecipes.put("frame" + PortalFrames.CONTROLLER.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame), new ItemStack(Items.diamond), null, null, null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.CONTROLLER.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.REDSTONE.ordinal(), new ItemStack[] { null, new ItemStack(Items.redstone), null, new ItemStack(Items.redstone), new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.redstone), null, new ItemStack(Items.redstone), null, new ItemStack(EPBlocks.frame, 1, PortalFrames.REDSTONE.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.NETWORK.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), null, null, null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.DIAL.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new ItemStack(Items.diamond), null, null, null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.DIAL.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.PORTAL_MANIPULATOR.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.diamond), new ItemStack(Items.emerald), new ItemStack(EPItems.portalModuleBlank), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.PORTAL_MANIPULATOR.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.TRANSFER_ENERGY.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.redstone_block), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_ENERGY.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.TRANSFER_FLUID.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.bucket), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_FLUID.ordinal()) });
-        craftingRecipes.put("frame" + PortalFrames.TRANSFER_ITEM.ordinal(), new ItemStack[] { new ItemStack(EPBlocks.frame, 1, 0), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.chest), null, null, null, null, null, new ItemStack(EPBlocks.frame, 1, PortalFrames.TRANSFER_ITEM.ordinal()) });
-        craftingRecipes.put("decorStabilizer", new ItemStack[] { new ItemStack(Blocks.iron_block), new ItemStack(Items.iron_ingot), new ItemStack(Items.iron_ingot), new ItemStack(Items.ender_pearl), new ItemStack(Items.ender_pearl), null, null, null, null, new ItemStack(EPBlocks.decorEnderInfusedMetal, 9) });
-        //craftingRecipes.put("dbs", new ItemStack[] { new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(Items.ender_pearl), new ItemStack(Blocks.iron_block), new ItemStack(EPBlocks.dimensionalBridgeStabilizer, 6) });
-        craftingRecipes.put("dbsEmpty", new ItemStack[] {});
-        craftingRecipes.put("decorBorderedQuartz", new ItemStack[] { new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(Blocks.quartz_block), new ItemStack(Blocks.stone), new ItemStack(EPBlocks.decorBorderedQuartz, 9) });
-        craftingRecipes.put("blank_module", new ItemStack[] { new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.iron_ingot), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(Items.gold_nugget), new ItemStack(EPItems.portalModuleBlank) });
-        craftingRecipes.put("blank_upgrade", new ItemStack[] { new ItemStack(Items.diamond), null, null, new ItemStack(Items.paper), null, null, new ItemStack(Items.dye, 1, 1), null, null, new ItemStack(EPItems.upgradeBlank) });
-        craftingRecipes.put("glasses", new ItemStack[] { new ItemStack(Items.dye, 1, 1), null, new ItemStack(Items.dye, 1, 6), new ItemStack(Blocks.glass_pane), new ItemStack(Items.leather), new ItemStack(Blocks.glass_pane), new ItemStack(Items.leather), null, new ItemStack(Items.leather), new ItemStack(EPItems.glasses) });
-        craftingRecipes.put("module0", new ItemStack[] { new ItemStack(Items.redstone), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.gunpowder), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 0) });
-        craftingRecipes.put("module1", new ItemStack[] { new ItemStack(Items.dye, 1, 1), new ItemStack(Items.dye, 1, 2), new ItemStack(Items.dye, 1, 4), null, new ItemStack(EPItems.portalModuleBlank), null, null, null, null, new ItemStack(EPItems.portalModule, 1, 1) });
-        craftingRecipes.put("module2", new ItemStack[] { new ItemStack(Items.redstone), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Blocks.noteblock), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 2) });
-        craftingRecipes.put("module3", new ItemStack[] { new ItemStack(Blocks.anvil), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.feather), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 3) });
-        // craftingRecipes.put("module4", new ItemStack[] { });
-        craftingRecipes.put("module5", new ItemStack[] { new ItemStack(Items.dye, 1, 15), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.dye, 1, 0), null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 5) });
-        craftingRecipes.put("module6", new ItemStack[] { new ItemStack(Items.compass), new ItemStack(EPItems.portalModuleBlank), null, null, null, null, null, null, null, new ItemStack(EPItems.portalModule, 1, 6) });
-        craftingRecipes.put("module7", new ItemStack[] { new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(EPItems.portalModuleBlank), new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(Items.feather), new ItemStack(EPItems.portalModule, 1, 7) });
-        craftingRecipes.put("upgrade0", new ItemStack[] { null, new ItemStack(Items.redstone), null, new ItemStack(Items.redstone), new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.redstone), null, new ItemStack(Items.redstone), null, new ItemStack(EPItems.upgrade, 1, 0) });
-        craftingRecipes.put("upgrade1", new ItemStack[] { new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.ender_pearl), null, null, null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 1) });
-        craftingRecipes.put("upgrade2", new ItemStack[] { new ItemStack(EPItems.upgrade, 1, 1), new ItemStack(Items.diamond), null, null, null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 2) });
-        craftingRecipes.put("upgrade3", new ItemStack[] {});
-        craftingRecipes.put("upgrade4", new ItemStack[] { new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.diamond), new ItemStack(Items.emerald), new ItemStack(EPItems.portalModuleBlank), null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 4) });
-        craftingRecipes.put("upgrade5", new ItemStack[] { new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Items.bucket), null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 5) });
-        craftingRecipes.put("upgrade6", new ItemStack[] { new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.chest), null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 6) });
-        craftingRecipes.put("upgrade7", new ItemStack[] { new ItemStack(EPItems.upgradeBlank), new ItemStack(Items.ender_pearl), new ItemStack(Items.diamond), new ItemStack(Blocks.redstone_block), null, null, null, null, null, new ItemStack(EPItems.upgrade, 1, 7) });
     }
 
     @Override

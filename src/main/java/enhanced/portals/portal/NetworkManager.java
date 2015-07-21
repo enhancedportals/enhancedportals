@@ -19,12 +19,13 @@ import com.google.gson.reflect.TypeToken;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import enhanced.base.utilities.BidiArrayMap;
 import enhanced.base.utilities.BidiMap;
-import enhanced.base.utilities.DimensionCoordinates;
+import enhanced.base.utilities.WorldPos;
+import enhanced.base.utilities.WorldUtilities;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class NetworkManager {
-    BidiMap<String, DimensionCoordinates> portalCoords;
+    BidiMap<String, WorldPos> portalCoords;
     BidiArrayMap<String, String> portalNetwrks;
     File portalFile, networkFile;
     MinecraftServer server;
@@ -32,7 +33,7 @@ public class NetworkManager {
     public NetworkManager(FMLServerStartingEvent event) {
         server = event.getServer();
 
-        portalCoords = new BidiMap<String, DimensionCoordinates>();
+        portalCoords = new BidiMap<String, WorldPos>();
         portalNetwrks = new BidiArrayMap<String, String>();
 
         portalFile = new File(EnhancedPortals.proxy.getWorldDir(), "EP3_PortalLocations.json");
@@ -65,25 +66,25 @@ public class NetworkManager {
     public void loadAllData() throws Exception {
         if (!makeFiles()) return;
 
-        Type type = new TypeToken<HashMap<String, DimensionCoordinates>>() { }.getType();
+        Type type = new TypeToken<HashMap<String, WorldPos>>() { }.getType();
         Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
         String portalData = FileUtils.readFileToString(portalFile), networkData = FileUtils.readFileToString(networkFile);
 
-        HashMap<String, DimensionCoordinates> portalCoordinates = gson.fromJson(portalData, type);
+        HashMap<String, WorldPos> portalCoordinates = gson.fromJson(portalData, type);
         HashMap<String, String> portalNetworks = gson.fromJson(networkData, new HashMap<String, String>().getClass());
-        HashMap<String, DimensionCoordinates> portalDbs = gson.fromJson(portalData, type);
+        HashMap<String, WorldPos> portalDbs = gson.fromJson(portalData, type);
 
         if (portalCoordinates == null)
-            portalCoordinates = new HashMap<String, DimensionCoordinates>();
+            portalCoordinates = new HashMap<String, WorldPos>();
 
         if (portalNetworks == null)
             portalNetworks = new HashMap<String, String>();
 
         if (portalDbs == null)
-            portalDbs = new HashMap<String, DimensionCoordinates>();
+            portalDbs = new HashMap<String, WorldPos>();
 
         if (!portalCoordinates.isEmpty())
-            for (Entry<String, DimensionCoordinates> entry : portalCoordinates.entrySet())
+            for (Entry<String, WorldPos> entry : portalCoordinates.entrySet())
                 portalCoords.add(entry.getKey(), entry.getValue());
 
         if (!portalNetworks.isEmpty())
@@ -126,7 +127,7 @@ public class NetworkManager {
             removePortalUID(controller);
         }
 
-        portalCoords.add(g.getGlyphString(), controller.getDimensionCoordinates());
+        portalCoords.add(g.getGlyphString(), controller.getWorldPos());
         return true;
     }
 
@@ -142,7 +143,7 @@ public class NetworkManager {
     }
 
     public boolean hasUID(TileController controller) {
-        return portalCoords.containsSecond(controller.getDimensionCoordinates());
+        return portalCoords.containsSecond(controller.getWorldPos());
     }
 
     public boolean hasNID(TileController controller) {
@@ -155,7 +156,7 @@ public class NetworkManager {
 
     public void removePortalUID(TileController controller) {
         if (hasUID(controller))
-            portalCoords.removeSecond(controller.getDimensionCoordinates());
+            portalCoords.removeSecond(controller.getWorldPos());
     }
 
     public void removePortalNID(TileController controller) {
@@ -164,7 +165,7 @@ public class NetworkManager {
     }
 
     public String getPortalUID(TileController controller) {
-        return hasUID(controller) ? portalCoords.getSecond(controller.getDimensionCoordinates()) : null;
+        return hasUID(controller) ? portalCoords.getSecond(controller.getWorldPos()) : null;
     }
 
     public String getPortalNID(TileController controller) {
@@ -172,8 +173,8 @@ public class NetworkManager {
     }
 
     public TileController getPortalController(GlyphIdentifier g) {
-        DimensionCoordinates c = portalCoords.get(g.getGlyphString());
-        TileController controller = (TileController) c.getTileEntity();
+        WorldPos c = portalCoords.get(g.getGlyphString());
+        TileController controller = (TileController) WorldUtilities.getTileEntity(c);
         return controller;
     }
 

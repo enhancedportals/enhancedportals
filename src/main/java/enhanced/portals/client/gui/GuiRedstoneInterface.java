@@ -10,7 +10,7 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerRedstoneInterface;
-import enhanced.portals.tile.TileRedstoneInterface;
+import enhanced.portals.portal.frame.TileRedstoneInterface;
 
 public class GuiRedstoneInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;

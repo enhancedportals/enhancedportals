@@ -8,7 +8,7 @@ import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class ContainerDialingEdit extends ContainerDialingAdd {
     public ContainerDialingEdit(TileDialingDevice d, InventoryPlayer p) {

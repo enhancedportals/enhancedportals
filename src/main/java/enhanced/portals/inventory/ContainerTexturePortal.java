@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiTexturePortal;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class ContainerTexturePortal extends BaseContainer {
     protected TileController controller;

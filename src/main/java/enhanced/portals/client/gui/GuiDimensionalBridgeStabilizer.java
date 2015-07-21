@@ -1,20 +1,5 @@
 package enhanced.portals.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import enhanced.base.client.gui.BaseGui;
-import enhanced.base.client.gui.button.GuiButtonSmall;
-import enhanced.base.client.gui.elements.ElementRedstoneFlux;
-import enhanced.base.client.gui.tabs.TabRedstoneFlux;
-import enhanced.base.network.packet.PacketGuiData;
-import enhanced.base.utilities.Localisation;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.inventory.ContainerDimensionalBridgeStabilizer;
-import enhanced.portals.tile.TileStabilizerMain;
-import enhanced.portals.utility.Reference.EPConfiguration;
-import enhanced.portals.utility.Reference.EPMod;
-import enhanced.portals.utility.Reference.Locale;
 
 public class GuiDimensionalBridgeStabilizer /*extends BaseGui*/ {/*
     public static final int CONTAINER_SIZE = 90;

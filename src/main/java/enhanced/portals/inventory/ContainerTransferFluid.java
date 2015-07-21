@@ -4,11 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiTransferFluid;
-import enhanced.portals.tile.TileTransferFluid;
+import enhanced.portals.portal.frame.TileTransferFluid;
 
 public class ContainerTransferFluid extends BaseContainer {
     TileTransferFluid fluid;
@@ -24,7 +25,7 @@ public class ContainerTransferFluid extends BaseContainer {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         byte isSending = (byte) (fluid.isSending ? 1 : 0);
-        int fID = fluid.tank.getFluid() != null ? fluid.tank.getFluid().fluidID : -1, fAmt = fluid.tank.getFluidAmount();
+        int fID = fluid.tank.getFluid() != null ? fluid.tank.getFluid().getFluidID() : -1, fAmt = fluid.tank.getFluidAmount();
 
         for (int i = 0; i < crafters.size(); i++) {
             ICrafting icrafting = (ICrafting) crafters.get(i);
@@ -57,7 +58,7 @@ public class ContainerTransferFluid extends BaseContainer {
             if (val == -1)
                 fluid.tank.setFluid(null);
             else
-                fluid.tank.setFluid(new FluidStack(val, 0));
+                fluid.tank.setFluid(new FluidStack(FluidRegistry.getFluid(val), 0));
         } else if (id == 2) {
             FluidStack f = fluid.tank.getFluid();
 

@@ -6,7 +6,7 @@ import enhanced.base.utilities.Localisation;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerModuleManipulator;
-import enhanced.portals.tile.TilePortalManipulator;
+import enhanced.portals.portal.frame.TilePortalManipulator;
 
 public class GuiModuleManipulator extends BaseGui {
     public static final int CONTAINER_SIZE = 53;

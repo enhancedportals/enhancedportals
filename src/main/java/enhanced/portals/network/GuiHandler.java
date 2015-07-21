@@ -49,13 +49,13 @@ import enhanced.portals.inventory.ContainerTexturePortal;
 import enhanced.portals.inventory.ContainerTransferEnergy;
 import enhanced.portals.inventory.ContainerTransferFluid;
 import enhanced.portals.inventory.ContainerTransferItem;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.tile.TileRedstoneInterface;
-import enhanced.portals.tile.TileTransferEnergy;
-import enhanced.portals.tile.TileTransferFluid;
-import enhanced.portals.tile.TileTransferItem;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.frame.TileRedstoneInterface;
+import enhanced.portals.portal.frame.TileTransferEnergy;
+import enhanced.portals.portal.frame.TileTransferFluid;
+import enhanced.portals.portal.frame.TileTransferItem;
 
 public class GuiHandler implements IGuiHandler {
     public static void openGui(EntityPlayer player, TileEntity tile, int gui) {

@@ -11,7 +11,7 @@ import enhanced.base.network.packet.PacketGuiData;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiNetworkInterface;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class ContainerNetworkInterface extends BaseContainer {
     TileController controller;

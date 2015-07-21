@@ -29,36 +29,38 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
 import cpw.mods.fml.common.FMLCommonHandler;
+import enhanced.base.utilities.BlockPos;
+import enhanced.base.utilities.WorldUtilities;
 import enhanced.portals.Reference.EPBlocks;
 import enhanced.portals.Reference.PortalModules;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TilePortalManipulator;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.frame.TilePortalManipulator;
 
 public class EntityManager {
     static Random rand = new Random();
     static final int PLAYER_COOLDOWN_RATE = 10;
 
-    static ChunkCoordinates getActualExitLocation(Entity entity, TileController controller) {
+    static BlockPos getActualExitLocation(Entity entity, TileController controller) {
         World world = controller.getWorldObj();
         int entityHeight = Math.round(entity.height);
         boolean horizontal = controller.portalType == 3;
 
         forloop:
-            for (ChunkCoordinates c : new ArrayList<ChunkCoordinates>(controller.portalBlocks)) {
+            for (BlockPos c : new ArrayList<BlockPos>(controller.portalBlocks)) {
                 for (int i = 0; i < entityHeight; i++)
-                    if (world.getBlock(c.posX, c.posY + i, c.posZ) != EPBlocks.portal && !world.isAirBlock(c.posX, c.posY + i, c.posZ))
+                    if (WorldUtilities.getBlock(world, c.offset(0, i, 0)) != EPBlocks.portal && !WorldUtilities.isAirBlock(world, c.offset(0, i, 0)))
                         continue forloop;
 
-                if (horizontal && !world.isAirBlock(c.posX, c.posY + 1, c.posZ))
-                    return new ChunkCoordinates(c.posX, c.posY - 1, c.posZ);
+                if (horizontal && !WorldUtilities.isAirBlock(world, c.offset(0, 1, 0)))
+                    return BlockPos.offset(c, 0, -1, 0);
 
-                return new ChunkCoordinates(c.posX, c.posY, c.posZ);
+                return new BlockPos(c);
             }
 
         return null;
     }
 
-    static float getRotation(Entity entity, TileController controller, ChunkCoordinates loc) {
+    static float getRotation(Entity entity, TileController controller, BlockPos loc) {
         World world = controller.getWorldObj();
         TilePortalManipulator module = controller.getModuleManipulator();
 
@@ -77,22 +79,22 @@ public class EntityManager {
         }
 
         if (controller.portalType == 1) {
-            if (world.isSideSolid(loc.posX, loc.posY, loc.posZ + 1, ForgeDirection.NORTH))
+            if (world.isSideSolid(loc.getX(), loc.getY(), loc.getZ() + 1, ForgeDirection.NORTH))
                 return 180f;
 
             return 0f;
         } else if (controller.portalType == 2) {
-            if (world.isSideSolid(loc.posX - 1, loc.posY, loc.posZ, ForgeDirection.EAST))
+            if (world.isSideSolid(loc.getX() - 1, loc.getY(), loc.getZ(), ForgeDirection.EAST))
                 return -90f;
 
             return 90f;
         } else if (controller.portalType == 4) {
-            if (world.isBlockNormalCubeDefault(loc.posX + 1, loc.posY, loc.posZ + 1, true))
+            if (world.isBlockNormalCubeDefault(loc.getX() + 1, loc.getY(), loc.getZ() + 1, true))
                 return 135f;
 
             return -45f;
         } else if (controller.portalType == 5) {
-            if (world.isBlockNormalCubeDefault(loc.posX - 1, loc.posY, loc.posZ + 1, true))
+            if (world.isBlockNormalCubeDefault(loc.getX() - 1, loc.getY(), loc.getZ() + 1, true))
                 return -135f;
 
             return 45f;
@@ -182,7 +184,7 @@ public class EntityManager {
     }
 
     public static void transferEntity(Entity entity, TileController entry, TileController exit) throws PortalException {
-        ChunkCoordinates exitLoc = getActualExitLocation(entity, exit);
+        BlockPos exitLoc = getActualExitLocation(entity, exit);
 
         if (exitLoc == null)
             throw new PortalException("failedToTransfer");
@@ -196,7 +198,7 @@ public class EntityManager {
         while (entity.ridingEntity != null)
             entity = entity.ridingEntity;
 
-        transferEntityWithRider(entity, exitLoc.posX + 0.5, exitLoc.posY, exitLoc.posZ + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, 0);
+        transferEntityWithRider(entity, exitLoc.getX() + 0.5, exitLoc.getY(), exitLoc.getZ() + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, 0);
     }
 
     static Entity transferEntityToDimension(Entity entity, double x, double y, double z, float yaw, WorldServer exitingWorld, WorldServer enteringWorld, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {

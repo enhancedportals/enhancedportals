@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import enhanced.base.item.ItemBase;
@@ -17,16 +16,16 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPBlocks;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.PortalFrames;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.tile.TileFrame;
-import enhanced.portals.tile.TileNetworkInterface;
-import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.tile.TilePortalPart;
-import enhanced.portals.tile.TileRedstoneInterface;
-import enhanced.portals.tile.TileTransferEnergy;
-import enhanced.portals.tile.TileTransferFluid;
-import enhanced.portals.tile.TileTransferItem;
+import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.frame.TileFrame;
+import enhanced.portals.portal.frame.TileNetworkInterface;
+import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.frame.TileRedstoneInterface;
+import enhanced.portals.portal.frame.TileTransferEnergy;
+import enhanced.portals.portal.frame.TileTransferFluid;
+import enhanced.portals.portal.frame.TileTransferItem;
 
 public class ItemUpgrade extends ItemBase {
     public ItemUpgrade(String n) {
@@ -93,38 +92,38 @@ public class ItemUpgrade extends ItemBase {
             }
 
             if (controller.diallingDevices.size() > 0 && type == PortalFrames.NETWORK) {
-                player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "dialAndNetwork")));
+                player.addChatComponentMessage(Localisation.getChatError(EPMod.ID, "dialAndNetwork"));
                 return false;
             } else if (controller.networkInterfaces.size() > 0 && type == PortalFrames.DIAL) {
-                player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "dialAndNetwork")));
+                player.addChatComponentMessage(Localisation.getChatError(EPMod.ID, "dialAndNetwork"));
                 return false;
             } else if (controller.getModuleManipulator() != null && type == PortalFrames.PORTAL_MANIPULATOR) {
-                player.addChatComponentMessage(new ChatComponentText(Localisation.getChatError(EPMod.ID, "multipleMod")));
+                player.addChatComponentMessage(Localisation.getChatError(EPMod.ID, "multipleMod"));
                 return false;
             }
 
-            controller.portalFrames.remove(frame.getChunkCoordinates());
+            controller.portalFrames.remove(frame.getBlockPos());
             frame = null;
             world.setBlock(x, y, z, EPBlocks.frame, type.ordinal(), 2);
             decrementStack(player, stack);
             TilePortalPart t = (TilePortalPart) world.getTileEntity(x, y, z);
 
             if (t instanceof TileRedstoneInterface)
-                controller.redstoneInterfaces.add(t.getChunkCoordinates());
+                controller.redstoneInterfaces.add(t.getBlockPos());
             else if (t instanceof TileDialingDevice)
-                controller.diallingDevices.add(t.getChunkCoordinates());
+                controller.diallingDevices.add(t.getBlockPos());
             else if (t instanceof TileNetworkInterface)
-                controller.networkInterfaces.add(t.getChunkCoordinates());
+                controller.networkInterfaces.add(t.getBlockPos());
             else if (t instanceof TilePortalManipulator)
-                controller.setModuleManipulator(t.getChunkCoordinates());
+                controller.setModuleManipulator(t.getBlockPos());
             else if (t instanceof TileTransferEnergy)
-                controller.transferEnergy.add(t.getChunkCoordinates());
+                controller.transferEnergy.add(t.getBlockPos());
             else if (t instanceof TileTransferFluid)
-                controller.transferFluids.add(t.getChunkCoordinates());
+                controller.transferFluids.add(t.getBlockPos());
             else if (t instanceof TileTransferItem)
-                controller.transferItems.add(t.getChunkCoordinates());
+                controller.transferItems.add(t.getBlockPos());
 
-            t.setPortalController(controller.getChunkCoordinates());
+            t.setPortalController(controller.getBlockPos());
             world.markBlockForUpdate(controller.xCoord, controller.yCoord, controller.zCoord);
             return true;
         }

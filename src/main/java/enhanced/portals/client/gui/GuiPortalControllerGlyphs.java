@@ -19,7 +19,7 @@ import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerPortalControllerGlyphs;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class GuiPortalControllerGlyphs extends BaseGui {
     public static final int CONTAINER_SIZE = 135;

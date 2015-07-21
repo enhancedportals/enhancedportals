@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
@@ -20,6 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import enhanced.base.mod.BaseProxy;
 import enhanced.base.network.packet.PacketGui;
 import enhanced.base.network.packet.PacketGuiData;
+import enhanced.base.utilities.BlockPos;
 import enhanced.base.xmod.ThermalExpansion;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPBlocks;
@@ -32,29 +32,29 @@ import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.network.packet.PacketRerender;
 import enhanced.portals.network.packet.PacketTextureData;
 import enhanced.portals.portal.NetworkManager;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TileDialingDevice;
-import enhanced.portals.tile.TileFrameBasic;
-import enhanced.portals.tile.TileNetworkInterface;
-import enhanced.portals.tile.TilePortal;
-import enhanced.portals.tile.TilePortalManipulator;
-import enhanced.portals.tile.TileRedstoneInterface;
-import enhanced.portals.tile.TileTransferEnergy;
-import enhanced.portals.tile.TileTransferFluid;
-import enhanced.portals.tile.TileTransferItem;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.frame.TileFrame;
+import enhanced.portals.portal.frame.TileNetworkInterface;
+import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.frame.TileRedstoneInterface;
+import enhanced.portals.portal.frame.TileTransferEnergy;
+import enhanced.portals.portal.frame.TileTransferFluid;
+import enhanced.portals.portal.frame.TileTransferItem;
+import enhanced.portals.portal.portal.TilePortal;
 
 public class ProxyCommon extends BaseProxy {
     public NetworkManager networkManager;
 
-    public void waitForController(ChunkCoordinates controller, ChunkCoordinates frame) {
+    public void waitForController(BlockPos controller, BlockPos frame) {
 
     }
 
-    public ArrayList<ChunkCoordinates> getControllerList(ChunkCoordinates controller) {
+    public ArrayList<BlockPos> getControllerList(BlockPos controller) {
         return null;
     }
 
-    public void clearControllerList(ChunkCoordinates controller) {
+    public void clearControllerList(BlockPos controller) {
 
     }
 
@@ -88,10 +88,10 @@ public class ProxyCommon extends BaseProxy {
         GameRegistry.registerItem(EPItems.manual, "manual");
 
         if (EPConfiguration.recipeTE && Loader.isModLoaded(ThermalExpansion.MOD_ID)) {
-            ThermalExpansion.addTransposerFill(10000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.REDSTONE.ordinal()), new FluidStack(FluidRegistry.getFluidID("redstone"), 400), false);
-            ThermalExpansion.addTransposerFill(10000, new ItemStack(EPItems.upgradeBlank, 1, 0), new ItemStack(EPItems.upgrade, 1, 0), new FluidStack(FluidRegistry.getFluidID("redstone"), 400), false);
-            ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
-            ThermalExpansion.addTransposerFill(15000, new ItemStack(EPItems.upgradeBlank, 1, 1), new ItemStack(EPItems.upgrade, 1, 1), new FluidStack(FluidRegistry.getFluidID("ender"), 250), false);
+            ThermalExpansion.addTransposerFill(10000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.REDSTONE.ordinal()), new FluidStack(FluidRegistry.getFluid("redstone"), 400), false);
+            ThermalExpansion.addTransposerFill(10000, new ItemStack(EPItems.upgradeBlank, 1, 0), new ItemStack(EPItems.upgrade, 1, 0), new FluidStack(FluidRegistry.getFluid("redstone"), 400), false);
+            ThermalExpansion.addTransposerFill(15000, new ItemStack(EPBlocks.frame, 1, PortalFrames.BASIC.ordinal()), new ItemStack(EPBlocks.frame, 1, PortalFrames.NETWORK.ordinal()), new FluidStack(FluidRegistry.getFluid("ender"), 250), false);
+            ThermalExpansion.addTransposerFill(15000, new ItemStack(EPItems.upgradeBlank, 1, 1), new ItemStack(EPItems.upgrade, 1, 1), new FluidStack(FluidRegistry.getFluid("ender"), 250), false);
         }
     }
 
@@ -107,7 +107,7 @@ public class ProxyCommon extends BaseProxy {
     @Override
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TilePortal.class, "epP");
-        GameRegistry.registerTileEntity(TileFrameBasic.class, "epF");
+        GameRegistry.registerTileEntity(TileFrame.class, "epF");
         GameRegistry.registerTileEntity(TileController.class, "epPC");
         GameRegistry.registerTileEntity(TileRedstoneInterface.class, "epRI");
         GameRegistry.registerTileEntity(TileNetworkInterface.class, "epNI");
@@ -177,17 +177,17 @@ public class ProxyCommon extends BaseProxy {
         EPConfiguration.disableParticles = config.get("General", "DisableParticles", EPConfiguration.disableParticles, "Disables all portal particles").getBoolean();
         EPConfiguration.portalDestroysBlocks = config.get("Portal", "PortalsDestroyBlocks", EPConfiguration.portalDestroysBlocks, "Destroy any blocks placed in the way of an initialized portal to allow a connection?").getBoolean();
         EPConfiguration.requirePower = config.get("Power", "RequirePower", EPConfiguration.requirePower, "Should the portals require power to operate?").getBoolean();
-        EPConfiguration.powerUseMultiplier = config.get("Power", "PowerMultiplier", EPConfiguration.powerUseMultiplier, "Multiplier for how much power the portals use. 0.5 is half, 2.0 is double etc.").getDouble();
-        EPConfiguration.powerStorageMultiplier = config.get("Power", "DBSPowerStorageMultiplier", EPConfiguration.powerStorageMultiplier, "Multiplier for how much power the Dimensional Bridge Stabilizer can store. 0.5 is half, 2.0 is double etc.").getDouble();
-        EPConfiguration.connectionsPerRow = config.get("Portal", "ActivePortalsPerRow", EPConfiguration.connectionsPerRow, "The amount of simultanous active portals the DBS can hold (per row)").getInt();
+        EPConfiguration.initializationCost = config.get("Power", "InitializationCost", EPConfiguration.initializationCost, "The amount of power required to create a portal connection. (This is taken from both portals)").getInt();
+        EPConfiguration.entityBaseCost = config.get("Power", "BaseEntityCost", EPConfiguration.entityBaseCost, "The base amount of power required to transport an entity. The actual amount required is calculated like this (base cost * (width * height)) (at 100% stability) Note that the actual cost is double this, as it is taken from both portals.").getInt();
+        EPConfiguration.keepAliveCost = config.get("Portal", "KeepAliveCost", EPConfiguration.keepAliveCost, "The amount of power required to keep the portal connection alive. Taken each tick the portal connection is active.").getInt();
         EnhancedPortals.instance.CHECK_FOR_UPDATES = config.get("General", "UpdateCheck", EnhancedPortals.instance.CHECK_FOR_UPDATES, "Allow checking for updates from " + EPMod.url).getBoolean();
         EPConfiguration.recipeVanilla = config.get("General", "VanillaRecipes", EPConfiguration.recipeVanilla, "Should the recipes using the vanilla materials be enabled?").getBoolean();
         EPConfiguration.recipeTE = config.get("General", "ThermalExpansionRecipes", EPConfiguration.recipeTE, "Should the recipes using the Thermal Expansion materials be enabled?").getBoolean();
         
-        if (EPConfiguration.powerUseMultiplier < 0)
-            EPConfiguration.requirePower = false;
-
-        if (EPConfiguration.powerStorageMultiplier < 0.01)
-            EPConfiguration.powerStorageMultiplier = 0.01;
+        if (!EPConfiguration.requirePower) {
+            EPConfiguration.initializationCost = 0;
+            EPConfiguration.entityBaseCost = 0;
+            EPConfiguration.keepAliveCost = 0;
+        }
     }
 }

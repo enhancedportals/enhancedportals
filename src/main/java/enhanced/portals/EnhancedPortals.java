@@ -30,7 +30,7 @@ import enhanced.portals.Reference.EPMod;
 import enhanced.portals.network.GuiHandler;
 import enhanced.portals.network.ProxyCommon;
 import enhanced.portals.portal.NetworkManager;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 @Mod(name = EPMod.name, modid = EPMod.ID, version = EPMod.version, dependencies = EPMod.dependencies)
 public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
@@ -81,6 +81,9 @@ public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
             proxy.networkManager.saveAllData();
     }
 
+    /**
+     * Tell the controller that we want the chunk to be forced
+     */
     @Override
     public void ticketsLoaded(List<Ticket> tickets, World world) {
         for (Ticket ticket : tickets) {
@@ -94,6 +97,9 @@ public class EnhancedPortals extends BaseMod implements OrderedLoadingCallback {
         }
     }
 
+    /**
+     * Make sure the tickets are valid
+     */
     @Override
     public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
         List<Ticket> valid = new ArrayList<Ticket>();

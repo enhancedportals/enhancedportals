@@ -16,8 +16,8 @@ import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerDialingManual;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class GuiDialingManual extends BaseGui {
     public static final int CONTAINER_SIZE = 163;

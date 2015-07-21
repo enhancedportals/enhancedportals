@@ -9,7 +9,7 @@ import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class ContainerDialingAdd extends BaseContainer {
     TileDialingDevice dial;

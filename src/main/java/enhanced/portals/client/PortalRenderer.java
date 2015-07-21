@@ -11,8 +11,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import enhanced.portals.Reference.EPBlocks;
 import enhanced.portals.Reference.EPRenderers;
-import enhanced.portals.tile.TileController;
-import enhanced.portals.tile.TilePortal;
+import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.portal.TilePortal;
 
 public class PortalRenderer implements ISimpleBlockRenderingHandler {
     public PortalRenderer() {

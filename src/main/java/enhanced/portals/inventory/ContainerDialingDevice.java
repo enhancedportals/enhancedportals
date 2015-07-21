@@ -13,7 +13,7 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.packet.PacketTextureData;
 import enhanced.portals.portal.GlyphElement;
-import enhanced.portals.tile.TileDialingDevice;
+import enhanced.portals.portal.frame.TileDialingDevice;
 
 public class ContainerDialingDevice extends BaseContainer {
     TileDialingDevice dial;

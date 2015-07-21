@@ -11,7 +11,7 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferFluid;
-import enhanced.portals.tile.TileTransferFluid;
+import enhanced.portals.portal.frame.TileTransferFluid;
 
 public class GuiTransferFluid extends BaseGui {
     public static final int CONTAINER_SIZE = 75;

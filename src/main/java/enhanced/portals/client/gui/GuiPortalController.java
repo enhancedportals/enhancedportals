@@ -13,7 +13,7 @@ import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerPortalController;
 import enhanced.portals.network.packet.PacketRequestGui;
-import enhanced.portals.tile.TileController;
+import enhanced.portals.portal.frame.TileController;
 
 public class GuiPortalController extends BaseGui {
     public static final int CONTAINER_SIZE = 66; //55;
