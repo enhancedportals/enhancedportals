@@ -2,67 +2,41 @@ package enhanced.portals.portal;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S06PacketUpdateHealth;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.BlockFluidBase;
 import cpw.mods.fml.common.FMLCommonHandler;
 import enhanced.base.utilities.BlockPos;
-import enhanced.base.utilities.WorldUtilities;
 import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.Locale;
 import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.portal.frame.TileController;
 import enhanced.portals.portal.frame.TilePortalManipulator;
 
 public class EntityManager {
-    static Random rand = new Random();
     static final int PLAYER_COOLDOWN_RATE = 10;
-
-    static BlockPos getActualExitLocation(Entity entity, TileController controller) {
-        World world = controller.getWorldObj();
-        int entityHeight = Math.round(entity.height);
-        boolean horizontal = controller.portalType == 3;
-
-        forloop:
-            for (BlockPos c : new ArrayList<BlockPos>(controller.portalBlocks)) {
-                for (int i = 0; i < entityHeight; i++)
-                    if (WorldUtilities.getBlock(world, c.offset(0, i, 0)) != EPBlocks.portal && !WorldUtilities.isAirBlock(world, c.offset(0, i, 0)))
-                        continue forloop;
-
-                if (horizontal && !WorldUtilities.isAirBlock(world, c.offset(0, 1, 0)))
-                    return BlockPos.offset(c, 0, -1, 0);
-
-                return new BlockPos(c);
-            }
-
-        return null;
-    }
 
     static float getRotation(Entity entity, TileController controller, BlockPos loc) {
         World world = controller.getWorldObj();
-        TilePortalManipulator module = controller.getModuleManipulator();
+        TilePortalManipulator module = controller.getPortalManipulator();
 
         if (module != null) {
             ItemStack s = module.getModule(PortalModules.FACING);
@@ -164,286 +138,171 @@ public class EntityManager {
             entity.timeUntilPortal = entity.timeUntilPortal == -1 ? 0 : 300; // Reduced to 300 ticks from 900.
     }
 
-    public static void teleportEntityHighestInstability(Entity par1Entity) // TODO: CRIMSON
-    {
-        ChunkCoordinates spawn = par1Entity.worldObj.getSpawnPoint();
-        spawn.posY = par1Entity.worldObj.getTopSolidOrLiquidBlock(spawn.posX, spawn.posY);
+    public static Entity teleportEntity(Entity entity, TileController entrance, TileController exit) throws PortalException {
+        if (entity == null || !isEntityFitForTravel(entity))
+            return entity;
 
-        if (par1Entity.worldObj.isAirBlock(spawn.posX, spawn.posY, spawn.posZ) || par1Entity.worldObj.getBlock(spawn.posX, spawn.posY, spawn.posZ) instanceof BlockFluidBase)
-            par1Entity.worldObj.setBlock(spawn.posX, spawn.posY, spawn.posZ, Blocks.stone);
-
-        // transferEntityWithinDimension(par1Entity, spawn.posX, spawn.posY + 1, spawn.posZ, 0f, -1, -1, false);
-    }
-
-    static Entity transferEntity(Entity entity, double x, double y, double z, float yaw, WorldServer world, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {
-        // If entity is going to the same dimension...
-        if (entity.worldObj.provider.dimensionId == world.provider.dimensionId)
-            return transferEntityWithinDimension(entity, x, y, z, yaw, touchedPortalType, exitPortalType, keepMomentum, instability);
-
-        return transferEntityToDimension(entity, x, y, z, yaw, (WorldServer) entity.worldObj, world, touchedPortalType, exitPortalType, keepMomentum, instability);
-    }
-
-    public static void transferEntity(Entity entity, TileController entry, TileController exit) throws PortalException {
-        BlockPos exitLoc = getActualExitLocation(entity, exit);
-
-        if (exitLoc == null)
-            throw new PortalException("failedToTransfer");
-
-        boolean keepMomentum = false;
-        TilePortalManipulator manip = exit.getModuleManipulator();
-
-        if (manip != null)
-            keepMomentum = manip.hasModule(PortalModules.MOMENTUM);
-
-        while (entity.ridingEntity != null)
+        while (entity.ridingEntity != null) // Go all the way down and get the bottom entity of the stack
             entity = entity.ridingEntity;
 
-        transferEntityWithRider(entity, exitLoc.getX() + 0.5, exitLoc.getY(), exitLoc.getZ() + 0.5, getRotation(entity, exit, exitLoc), (WorldServer) exit.getWorldObj(), entry.portalType, exit.portalType, keepMomentum, 0);
-    }
-
-    static Entity transferEntityToDimension(Entity entity, double x, double y, double z, float yaw, WorldServer exitingWorld, WorldServer enteringWorld, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {
-        if (touchedPortalType == -1 && exitPortalType == -1) {
-            // Look for an open airblock to teleport entity to in other dimension.
-            while (!enteringWorld.isAirBlock((int) x, (int) y, (int) z) || !enteringWorld.isAirBlock((int) x, (int) y + 1, (int) z)) {
-                y++;
-
-                if (y > 250)
-                    break;
-            }
-
-            y++;
-        }
-
-        if (entity == null)
-            return null;
-        else if (!isEntityFitForTravel(entity))
-            return entity;
-        else if (entity instanceof EntityPlayer) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
-            player.worldObj.theProfiler.startSection("portal");
-
-            if (!player.worldObj.isRemote) {
-                player.worldObj.theProfiler.startSection("changeDimension");
-                ServerConfigurationManager config = player.mcServer.getConfigurationManager();
-
-                player.closeScreen();
-                player.dimension = enteringWorld.provider.dimensionId;
-                player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, enteringWorld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
-
-                exitingWorld.removeEntity(player);
-                player.isDead = false;
-                player.setLocationAndAngles(x, y, z, yaw, player.rotationPitch);
-                handleMomentum(player, touchedPortalType, exitPortalType, yaw, keepMomentum);
-
-                enteringWorld.spawnEntityInWorld(player);
-                player.setWorld(enteringWorld);
-
-                config.func_72375_a(player, exitingWorld);
-                player.playerNetServerHandler.setPlayerLocation(x, y, z, yaw, entity.rotationPitch);
-                player.theItemInWorldManager.setWorld(enteringWorld);
-
-                config.updateTimeAndWeatherForPlayer(player, enteringWorld);
-                config.syncPlayerInventory(player);
-
-                player.worldObj.theProfiler.endSection();
-                exitingWorld.resetUpdateEntityTick();
-                enteringWorld.resetUpdateEntityTick();
-                player.worldObj.theProfiler.endSection();
-
-                // Instate any potion effects the player had when teleported.
-                for (Iterator<PotionEffect> potion = player.getActivePotionEffects().iterator(); potion.hasNext();)
-                    player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potion.next()));
-
-                // If there is instability, give effects.
-                checkInstabilityEffects(entity, instability);
-
-                player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
-
-                FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, exitingWorld.provider.dimensionId, player.dimension);
-
-                setEntityPortalCooldown(player);
-            }
-            player.worldObj.theProfiler.endSection();
-            return player;
-        }
-        // If the entity teleporting is something other than a player:
-        else {
-            NBTTagCompound tag = new NBTTagCompound();
-            entity.writeToNBTOptional(tag);
-
-            // Clear their inventory
-            if (entity instanceof IInventory) {
-                IInventory entityInventory = (IInventory) entity;
-
-                for (int i = 0; i < entityInventory.getSizeInventory(); i++)
-                    entityInventory.setInventorySlotContents(i, null);
-            }
-
-            // Delete the entity. Will be taken care of next tick.
-            entity.setDead();
-
-            // Create new entity.
-            Entity newEntity = EntityList.createEntityFromNBT(tag, enteringWorld);
-
-            // Set position, momentum of new entity at the other portal.
-            if (newEntity != null) {
-                handleMomentum(newEntity, touchedPortalType, exitPortalType, yaw, keepMomentum);
-                newEntity.setLocationAndAngles(x, y, z, yaw, entity.rotationPitch);
-                newEntity.forceSpawn = true;
-                enteringWorld.spawnEntityInWorld(newEntity);
-                newEntity.setWorld(enteringWorld);
-                setEntityPortalCooldown(newEntity);
-            }
-
-            exitingWorld.resetUpdateEntityTick();
-            enteringWorld.resetUpdateEntityTick();
-
-            return newEntity;
-        }
-    }
-
-    static Entity transferEntityWithinDimension(Entity entity, double x, double y, double z, float yaw, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {
-        if (entity == null)
-            return null;
-        else if (!isEntityFitForTravel(entity))
-            return entity;
-        else if (entity instanceof EntityPlayer) {
-            EntityPlayerMP player = (EntityPlayerMP) entity;
-            // The actual transporting.
-            player.rotationYaw = yaw;
-            player.setPositionAndUpdate(x, y, z);
-            // For the momentum module.
-            handleMomentum(player, touchedPortalType, exitPortalType, yaw, keepMomentum);
-            player.worldObj.updateEntityWithOptionalForce(player, false);
-
-            player.playerNetServerHandler.sendPacket(new S06PacketUpdateHealth(player.getHealth(), player.getFoodStats().getFoodLevel(), player.getFoodStats().getSaturationLevel()));
-            setEntityPortalCooldown(player);
-
-            // If there is instability, give effects.
-            checkInstabilityEffects(entity, instability);
-            return player;
-        }
-        // If the entity teleporting is something other than a player:
-        else {
-            WorldServer world = (WorldServer) entity.worldObj;
-            NBTTagCompound tag = new NBTTagCompound();
-            entity.writeToNBTOptional(tag);
-
-            if (entity instanceof IInventory) {
-                IInventory entityInventory = (IInventory) entity;
-
-                for (int i = 0; i < entityInventory.getSizeInventory(); i++)
-                    entityInventory.setInventorySlotContents(i, null);
-            }
-
-            // Delete the entity. Will be taken care of next tick.
-            entity.setDead();
-
-            // Create new entity.
-            Entity newEntity = EntityList.createEntityFromNBT(tag, world);
-
-            // Set position, momentum of new entity at the other portal.
-            if (newEntity != null) {
-                handleMomentum(newEntity, touchedPortalType, exitPortalType, yaw, keepMomentum);
-                newEntity.setLocationAndAngles(x, y, z, yaw, entity.rotationPitch);
-                newEntity.forceSpawn = true;
-                world.spawnEntityInWorld(newEntity);
-                newEntity.setWorld(world);
-                setEntityPortalCooldown(newEntity);
-            }
-
-            world.resetUpdateEntityTick();
-
-            return newEntity;
-        }
-    }
-
-    static Entity transferEntityWithRider(Entity entity, double x, double y, double z, float yaw, WorldServer world, int touchedPortalType, int exitPortalType, boolean keepMomentum, int instability) {
         Entity rider = entity.riddenByEntity;
 
-        // If Entity has a rider...
-        if (rider != null) {
-            // Unmount rider
+        if (rider != null) { // If we have a rider, dismount it and then teleport it first
             rider.mountEntity(null);
-            // Send it back through as it's own entity
-            rider = transferEntityWithRider(rider, x, y, z, yaw, world, touchedPortalType, exitPortalType, keepMomentum, instability);
+            rider = teleportEntity(rider, entrance, exit);
         }
 
-        // Transfer the entity.
-        entity = transferEntity(entity, x, y, z, yaw, world, touchedPortalType, exitPortalType, keepMomentum, instability);
+        entity = teleportEntity(entrance, exit, entity);
 
-        // Remount entity with rider.
-        if (rider != null)
+        if (rider != null) // Remount the entities
             rider.mountEntity(entity);
 
         setEntityPortalCooldown(entity);
         return entity;
     }
 
-    protected static void checkInstabilityEffects(Entity entity, int instability) {
-        int chance_of_effect = rand.nextInt(100);
-        if (chance_of_effect < instability)
-            if (instability >= 70)
-                addHighInstabilityEffects(entity);
-            else if (instability >= 50)
-                addMediumInstabilityEffects(entity);
-            else if (instability >= 20)
-                addLowInstabilityEffects(entity);
+    static Entity teleportEntity(TileController start, TileController end, Entity entity) throws PortalException {
+        TilePortalManipulator exitManip = end.getPortalManipulator();
+        BlockPos exitLoc = getExitLocation(entity, end);
+
+        if (exitLoc == null)
+            throw new PortalException(Locale.CHAT_ERROR_FAILED_TO_TRANSFER);
+        
+        if (entity instanceof EntityPlayer) {
+            teleportPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
+        } else
+            teleportNonPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
+
+        return null;
     }
 
-    static void addHighInstabilityEffects(Entity entity) {
-        if (entity instanceof EntityLivingBase) {
-            PotionEffect blindness = new PotionEffect(Potion.blindness.id, 600, 1);
-            PotionEffect hunger = new PotionEffect(Potion.hunger.id, 600, 1);
-            PotionEffect poison = new PotionEffect(Potion.poison.id, 600, 1);
-
-            blindness.setCurativeItems(new ArrayList<ItemStack>());
-            hunger.setCurativeItems(new ArrayList<ItemStack>());
-            poison.setCurativeItems(new ArrayList<ItemStack>());
-
-            ((EntityLivingBase) entity).addPotionEffect(blindness);
-            ((EntityLivingBase) entity).addPotionEffect(hunger);
-            ((EntityLivingBase) entity).addPotionEffect(poison);
-        }
-    }
-
-    static void addLowInstabilityEffects(Entity entity) {
-        if (entity instanceof EntityLivingBase) {
-            PotionEffect blindness = new PotionEffect(Potion.blindness.id, 200, 1);
-            PotionEffect hunger = new PotionEffect(Potion.hunger.id, 200, 1);
-            PotionEffect poison = new PotionEffect(Potion.poison.id, 200, 1);
-
-            blindness.setCurativeItems(new ArrayList<ItemStack>());
-            hunger.setCurativeItems(new ArrayList<ItemStack>());
-            poison.setCurativeItems(new ArrayList<ItemStack>());
-
-            int effect = rand.nextInt(3);
-            ((EntityLivingBase) entity).addPotionEffect(effect == 0 ? blindness : effect == 1 ? hunger : poison);
-        }
-    }
-
-    static void addMediumInstabilityEffects(Entity entity) {
-        if (entity instanceof EntityLivingBase) {
-            PotionEffect blindness = new PotionEffect(Potion.blindness.id, 400, 1);
-            PotionEffect hunger = new PotionEffect(Potion.hunger.id, 400, 1);
-            PotionEffect poison = new PotionEffect(Potion.poison.id, 400, 1);
-
-            blindness.setCurativeItems(new ArrayList<ItemStack>());
-            hunger.setCurativeItems(new ArrayList<ItemStack>());
-            poison.setCurativeItems(new ArrayList<ItemStack>());
-
-            int effect = rand.nextInt(3);
-
-            if (effect == 0) {
-                ((EntityLivingBase) entity).addPotionEffect(blindness);
-                ((EntityLivingBase) entity).addPotionEffect(hunger);
-            } else if (effect == 1) {
-                ((EntityLivingBase) entity).addPotionEffect(blindness);
-                ((EntityLivingBase) entity).addPotionEffect(poison);
-            } else {
-                ((EntityLivingBase) entity).addPotionEffect(poison);
-                ((EntityLivingBase) entity).addPotionEffect(hunger);
+    static BlockPos getExitLocation(Entity entity, TileController exit) throws PortalException {
+        ArrayList<BlockPos> portals = exit.portalBlocks;
+        AxisAlignedBB entityBoundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, entity.width, entity.yOffset + entity.ySize, entity.width);
+        
+        for (BlockPos p : portals) {
+            if (isValidForSpawn(exit.getWorldObj(), entityBoundingBox.copy().offset(p.getX(), p.getY(), p.getZ()))) {
+                return p;
             }
         }
+
+        return null;
+    }
+    
+    static Entity teleportPlayerEntity(Entity entity, TileController start, TileController end, boolean keepMomentum, BlockPos exitLoc, float yaw) {
+        WorldServer startWorld = (WorldServer) start.getWorldObj(), endWorld = (WorldServer) end.getWorldObj();
+        boolean dimensionalTransport = startWorld.provider.dimensionId != endWorld.provider.dimensionId;
+        EntityPlayerMP player = (EntityPlayerMP) entity;
+        ServerConfigurationManager config = null;
+        double exitX = exitLoc.getX() + (end.portalType == 1 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
+        double exitY = exitLoc.getY();
+        double exitZ = exitLoc.getZ() + (end.portalType == 2 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
+        
+        player.closeScreen();
+        
+        if (dimensionalTransport) {
+            config = player.mcServer.getConfigurationManager();
+            player.dimension = endWorld.provider.dimensionId;
+            player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, endWorld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+        
+            startWorld.removeEntity(player);
+            player.isDead = false;
+            player.setLocationAndAngles(exitX, exitY, exitZ, yaw, player.rotationPitch);
+            handleMomentum(player, start.portalType, end.portalType, yaw, keepMomentum);
+            endWorld.spawnEntityInWorld(player);
+            player.setWorld(endWorld);
+
+            config.func_72375_a(player, startWorld);
+            player.playerNetServerHandler.setPlayerLocation(exitX, exitY, exitZ, yaw, entity.rotationPitch);
+            player.theItemInWorldManager.setWorld(endWorld);
+
+            config.updateTimeAndWeatherForPlayer(player, endWorld);
+            config.syncPlayerInventory(player);
+
+            player.worldObj.theProfiler.endSection();
+            startWorld.resetUpdateEntityTick();
+            endWorld.resetUpdateEntityTick();
+            player.worldObj.theProfiler.endSection();
+
+            // Instate any potion effects the player had when teleported.
+            for (Iterator<PotionEffect> potion = player.getActivePotionEffects().iterator(); potion.hasNext();)
+                player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potion.next()));
+
+            player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+
+            FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, startWorld.provider.dimensionId, player.dimension);
+        } else {
+            player.rotationYaw = yaw;
+            player.setPositionAndUpdate(exitX, exitY, exitZ);
+            handleMomentum(player, start.portalType, end.portalType, yaw, keepMomentum);
+            player.worldObj.updateEntityWithOptionalForce(player, false);
+        }
+        
+        return player;
+    }
+
+    static Entity teleportNonPlayerEntity(Entity entity, TileController start, TileController end, boolean keepMomentum, BlockPos exitLoc, float yaw) {
+        boolean dimensionalTransport = start.getWorldObj().provider.dimensionId != end.getWorldObj().provider.dimensionId;
+        WorldServer theWorld = (WorldServer) (dimensionalTransport ? end.getWorldObj() : start.getWorldObj());
+        //double exitX = exitLoc.getX() + (end.portalType == 1 || end.portalType == 3 ? (entity.width / 2) : 0);
+        //double exitY = exitLoc.getY();
+        //double exitZ = exitLoc.getZ() + (end.portalType == 2 || end.portalType == 3 ? (entity.width / 2) : 0);
+        double exitX = exitLoc.getX() + (end.portalType == 1 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
+        double exitY = exitLoc.getY();
+        double exitZ = exitLoc.getZ() + (end.portalType == 2 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
+
+        NBTTagCompound tag = new NBTTagCompound();
+        entity.writeToNBTOptional(tag);
+
+        if (entity instanceof IInventory) { // Clear the inventory (so these items don't get dropped on the floor when the entity dies)
+            IInventory entityInventory = (IInventory) entity;
+
+            for (int i = 0; i < entityInventory.getSizeInventory(); i++)
+                entityInventory.setInventorySlotContents(i, null);
+        }
+
+        entity.setDead(); // Delete the entity. Will be taken care of next tick.
+        Entity newEntity = EntityList.createEntityFromNBT(tag, theWorld); // Create new entity.
+
+        if (newEntity != null) { // Set position, rotation and momentum of new entity at the other portal.
+            handleMomentum(newEntity, start.portalType, end.portalType, yaw, keepMomentum);
+            newEntity.setLocationAndAngles(exitX, exitY, exitZ, yaw, entity.rotationPitch);
+            newEntity.forceSpawn = true;
+            theWorld.spawnEntityInWorld(newEntity);
+            newEntity.setWorld(theWorld);
+            setEntityPortalCooldown(newEntity);
+        }
+
+        if (dimensionalTransport) // If we're sending the entity to the new world, do this on the old world too.
+            ((WorldServer) start.getWorldObj()).resetUpdateEntityTick();
+
+        theWorld.resetUpdateEntityTick();
+        return newEntity;
+    }
+
+    static boolean isValidForSpawn(World world, AxisAlignedBB box) {
+        int i = MathHelper.floor_double(box.minX);
+        int j = MathHelper.floor_double(box.maxX + 1.0D);
+        int k = MathHelper.floor_double(box.minY);
+        int l = MathHelper.floor_double(box.maxY + 1.0D);
+        int i1 = MathHelper.floor_double(box.minZ);
+        int j1 = MathHelper.floor_double(box.maxZ + 1.0D);
+
+        for (int k1 = i; k1 < j; ++k1) {
+            for (int l1 = k; l1 < l; ++l1) {
+                for (int i2 = i1; i2 < j1; ++i2) {
+                    System.out.println(k1 + ", " + l1 + ", " + i2 + " :: " + world.getBlock(k1, l1, i2));
+                    
+                    if (!world.isAirBlock(k1, l1, i2) && world.getBlock(k1, l1, i2) != EPBlocks.portal) {
+                        System.out.println("NO");
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        System.out.println("YES");
+
+        return true;
     }
 }

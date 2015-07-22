@@ -115,19 +115,19 @@ public class BlockPortal extends BlockContainer {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if (!world.isRemote) {
-            if (EntityManager.isEntityFitForTravel(entity)) {
-                if (entity instanceof EntityPlayer)
-                    ((EntityPlayer) entity).closeScreen();
+        if (EntityManager.isEntityFitForTravel(entity)) {
+            if (entity instanceof EntityPlayer)
+                ((EntityPlayer) entity).closeScreen();
 
+            if (!world.isRemote) {
                 TileEntity t = world.getTileEntity(x, y, z);
 
                 if (t instanceof TilePortal)
                     ((TilePortal) t).onEntityCollidedWithBlock(entity);
             }
-
-            EntityManager.setEntityPortalCooldown(entity);
         }
+
+        EntityManager.setEntityPortalCooldown(entity);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class BlockPortal extends BlockContainer {
 
         int metadata = world.getBlockMetadata(x, y, z);
         TileController controller = ((TilePortal) tile).getPortalController();
-        TilePortalManipulator module = controller == null ? null : controller.getModuleManipulator();
+        TilePortalManipulator module = controller == null ? null : controller.getPortalManipulator();
         boolean doSounds = !EPConfiguration.disableSounds && random.nextInt(100) == 0, doParticles = !EPConfiguration.disableParticles;
 
         if (module != null) {
@@ -222,7 +222,7 @@ public class BlockPortal extends BlockContainer {
                         fx.setRBGColorF(r / 255f, g / 255f, b / 255f);
                     }
                 }
-                
+
                 FMLClientHandler.instance().getClient().effectRenderer.addEffect(fx);
             }
     }
@@ -252,7 +252,7 @@ public class BlockPortal extends BlockContainer {
         if (tile instanceof TilePortal) {
             TilePortal portal = (TilePortal) tile;
             TileController controller = portal.getPortalController();
-            TilePortalManipulator manip = controller == null ? null : controller.getModuleManipulator();
+            TilePortalManipulator manip = controller == null ? null : controller.getPortalManipulator();
 
             if (controller != null && manip != null && manip.hasModule(PortalModules.PORTAL_INVISIBLE)) {
                 setBlockBounds(0f, 0f, 0f, 0f, 0f, 0f);

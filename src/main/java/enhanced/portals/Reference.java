@@ -177,6 +177,7 @@ public class Reference {
         public static final String CHAT_ERROR_DIAL_AND_NETWORK = "dialAndNetwork";
         public static final String CHAT_ERROR_MULTIPLE_MANIPULATORS = "multipleMod";
         public static final String CHAT_ERROR_COULD_NOT_CREATE_PORTAL = "couldNotCreatePortalHere";
+        public static final String CHAT_ERROR_FAILED_TO_CREATE_PORTAL = "failedToCreatePortal";
         public static final String CHAT_ERROR_NO_DESTINATION = "noDestinationFound";
         public static final String CHAT_ERROR_CANT_DIAL_SELF = "cantDialSelf";
         public static final String CHAT_ERROR_NO_POWER = "noPower";
@@ -185,6 +186,7 @@ public class Reference {
         public static final String CHAT_ERROR_PORTAL_ACTIVE_REMOTE = "portalActiveRemote";
         public static final String CHAT_ERROR_NOT_ENOUGH_ENERGY_TO_TRANSFER = "notEnoughEnergyToTransfer";
         public static final String CHAT_ERROR_NOT_ENOUGH_ENERGY_TO_RECEIVE = "notEnoughEnergyToReceive";
+        public static final String CHAT_ERROR_FAILED_TO_TRANSFER = "failedToTransfer";
     }
 
     public static enum PortalModules {

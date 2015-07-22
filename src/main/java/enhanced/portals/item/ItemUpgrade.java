@@ -97,7 +97,7 @@ public class ItemUpgrade extends ItemBase {
             } else if (controller.networkInterfaces.size() > 0 && type == PortalFrames.DIAL) {
                 player.addChatComponentMessage(Localisation.getChatError(EPMod.ID, "dialAndNetwork"));
                 return false;
-            } else if (controller.getModuleManipulator() != null && type == PortalFrames.PORTAL_MANIPULATOR) {
+            } else if (controller.getPortalManipulator() != null && type == PortalFrames.PORTAL_MANIPULATOR) {
                 player.addChatComponentMessage(Localisation.getChatError(EPMod.ID, "multipleMod"));
                 return false;
             }

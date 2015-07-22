@@ -14,6 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -45,6 +46,7 @@ import enhanced.portals.Reference.EPBlocks;
 import enhanced.portals.Reference.EPConfiguration;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.network.GuiHandler;
@@ -314,7 +316,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    public TilePortalManipulator getModuleManipulator() {
+    public TilePortalManipulator getPortalManipulator() {
         if (moduleManipulator != null) {
             TileEntity tile = WorldUtilities.getTileEntity(getWorldObj(), moduleManipulator);
 
@@ -375,27 +377,78 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             if (this.instability > instability)
                 instability = this.instability;
 
-            int rand = new Random().nextInt(10);
+            int rand = EPRenderers.random.nextInt(10);
 
-            if (instability == 1) { // TODO: before-teleport instability effects
-                if (rand < 4) { // Level 1 @ 40%
+            if (entity instanceof EntityLivingBase) {
+                if (instability == 1) { // TODO: before-teleport instability effects
+                    if (rand < 4) { // Level 1 @ 40%
+                        PotionEffect blindness = new PotionEffect(Potion.blindness.id, 200, 1);
+                        PotionEffect hunger = new PotionEffect(Potion.hunger.id, 200, 1);
+                        PotionEffect poison = new PotionEffect(Potion.poison.id, 200, 1);
 
-                }
-            } else if (instability == 2) {
-                if (rand < 80)  { // Level 2 @ 80%
+                        blindness.setCurativeItems(new ArrayList<ItemStack>());
+                        hunger.setCurativeItems(new ArrayList<ItemStack>());
+                        poison.setCurativeItems(new ArrayList<ItemStack>());
 
-                }
-            } else if (instability == 3) {
-                if (rand < 50) { // Level 3 @ 50%
+                        int effect = EPRenderers.random.nextInt(3);
+                        ((EntityLivingBase) entity).addPotionEffect(effect == 0 ? blindness : effect == 1 ? hunger : poison);
+                    }
+                } else if (instability == 2) {
+                    if (rand < 8)  { // Level 2 @ 80%
+                        PotionEffect blindness = new PotionEffect(Potion.blindness.id, 400, 1);
+                        PotionEffect hunger = new PotionEffect(Potion.hunger.id, 400, 1);
+                        PotionEffect poison = new PotionEffect(Potion.poison.id, 400, 1);
 
-                }
-            } else if (instability == 4) {
-                if (rand < 80) { // Level 4 @ 80%
+                        blindness.setCurativeItems(new ArrayList<ItemStack>());
+                        hunger.setCurativeItems(new ArrayList<ItemStack>());
+                        poison.setCurativeItems(new ArrayList<ItemStack>());
 
+                        int effect = EPRenderers.random.nextInt(3);
+
+                        if (effect == 0) {
+                            ((EntityLivingBase) entity).addPotionEffect(blindness);
+                            ((EntityLivingBase) entity).addPotionEffect(hunger);
+                        } else if (effect == 1) {
+                            ((EntityLivingBase) entity).addPotionEffect(blindness);
+                            ((EntityLivingBase) entity).addPotionEffect(poison);
+                        } else {
+                            ((EntityLivingBase) entity).addPotionEffect(poison);
+                            ((EntityLivingBase) entity).addPotionEffect(hunger);
+                        }
+                    }
+                } else if (instability == 3) {
+                    if (rand < 5) { // Level 3 @ 50%
+                        PotionEffect blindness = new PotionEffect(Potion.blindness.id, 600, 1);
+                        PotionEffect hunger = new PotionEffect(Potion.hunger.id, 600, 1);
+                        PotionEffect poison = new PotionEffect(Potion.poison.id, 600, 1);
+
+                        blindness.setCurativeItems(new ArrayList<ItemStack>());
+                        hunger.setCurativeItems(new ArrayList<ItemStack>());
+                        poison.setCurativeItems(new ArrayList<ItemStack>());
+
+                        ((EntityLivingBase) entity).addPotionEffect(blindness);
+                        ((EntityLivingBase) entity).addPotionEffect(hunger);
+                        ((EntityLivingBase) entity).addPotionEffect(poison);
+                    }
+                } else if (instability == 4) {
+                    if (rand < 8) { // Level 4 @ 80%
+                        // TODO: More punishing effect than this
+                        PotionEffect blindness = new PotionEffect(Potion.blindness.id, 600, 1);
+                        PotionEffect hunger = new PotionEffect(Potion.hunger.id, 600, 1);
+                        PotionEffect poison = new PotionEffect(Potion.poison.id, 600, 1);
+
+                        blindness.setCurativeItems(new ArrayList<ItemStack>());
+                        hunger.setCurativeItems(new ArrayList<ItemStack>());
+                        poison.setCurativeItems(new ArrayList<ItemStack>());
+
+                        ((EntityLivingBase) entity).addPotionEffect(blindness);
+                        ((EntityLivingBase) entity).addPotionEffect(hunger);
+                        ((EntityLivingBase) entity).addPotionEffect(poison);
+                    }
                 }
             }
 
-            EntityManager.transferEntity(entity, this, pairedController);
+            EntityManager.teleportEntity(entity, this, pairedController);
             onEntityTeleported(entity, instability);
             pairedController.onEntityTeleported(entity, instability);
         } catch (PortalException e) {
@@ -417,7 +470,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             extractEnergy(ForgeDirection.UNKNOWN, teleportCost / 3, false);
         }
 
-        TilePortalManipulator module = getModuleManipulator();
+        TilePortalManipulator module = getPortalManipulator();
 
         if (module != null && module.hasModule(PortalModules.FEATHERFALL) && entity instanceof EntityLivingBase)
             ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(ECItems.potionFeatherfall.id, 200, 0));
@@ -432,7 +485,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
                 if (EPConfiguration.portalDestroysBlocks)
                     WorldUtilities.setBlockToAir(getWorldObj(), c);
                 else
-                    throw new PortalException("failedToCreatePortal");
+                    throw new PortalException(Locale.CHAT_ERROR_FAILED_TO_CREATE_PORTAL);
 
         for (BlockPos c : portalBlocks) {
             WorldUtilities.setBlock(getWorldObj(), c, EPBlocks.portal, portalType, 2);
