@@ -1,14 +1,14 @@
 package enhanced.portals.inventory;
 
+import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
+import enhanced.portals.client.gui.GuiTransferItem;
+import enhanced.portals.portal.transfer.TileTransferItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
-import enhanced.base.client.gui.BaseGui;
-import enhanced.base.inventory.BaseContainer;
-import enhanced.portals.client.gui.GuiTransferItem;
-import enhanced.portals.portal.frame.TileTransferItem;
 
 public class ContainerTransferItem extends BaseContainer {
     TileTransferItem item;

@@ -2,10 +2,6 @@ package enhanced.portals.client.gui;
 
 import java.util.Random;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
 import enhanced.base.network.packet.PacketGuiData;
@@ -19,7 +15,11 @@ import enhanced.portals.client.gui.elements.ElementGlyphViewer;
 import enhanced.portals.inventory.ContainerNetworkInterfaceGlyphs;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiNetworkInterfaceGlyphs extends BaseGui {
     public static final int CONTAINER_SIZE = 135;

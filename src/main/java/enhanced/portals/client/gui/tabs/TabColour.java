@@ -1,8 +1,5 @@
 package enhanced.portals.client.gui.tabs;
 
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.button.GuiRGBSlider;
 import enhanced.base.client.gui.tabs.BaseTab;
@@ -10,6 +7,9 @@ import enhanced.base.utilities.Localisation;
 import enhanced.portals.Reference.EPItems;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
 
 public class TabColour extends BaseTab {
     GuiRGBSlider sliderR, sliderG, sliderB;

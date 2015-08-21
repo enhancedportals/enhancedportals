@@ -2,8 +2,6 @@ package enhanced.portals;
 
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -12,11 +10,13 @@ import enhanced.portals.block.BlockDecorEnderInfusedMetal;
 import enhanced.portals.item.ItemBlankPortalModule;
 import enhanced.portals.item.ItemBlankUpgrade;
 import enhanced.portals.item.ItemGlasses;
-import enhanced.portals.item.ItemManual;
 import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.item.ItemUpgrade;
+import enhanced.portals.item.manual.ItemManual;
 import enhanced.portals.portal.frame.BlockFrame;
 import enhanced.portals.portal.portal.BlockPortal;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 
 public class Reference {
     public static class EPMod {
@@ -136,9 +136,7 @@ public class Reference {
         public static final String GUI_CLICK_TO_MODIFY = "gui.clickToModify";
         public static final String GUI_TERMINATE = "gui.terminate";
         public static final String GUI_MANUAL_ENTRY = "gui.manualEntry";
-        public static final String GUI_INFORMATION = "gui.information";
-        public static final String GUI_ACTIVE_PORTALS = "gui.activePortals";
-        public static final String GUI_INSTABILITY = "gui.instability";
+        public static final String GUI_FORCED_INSTABILITY = "gui.forcedInstability";
         public static final String GUI_MODULES = "gui.modules";
         public static final String GUI_NETWORKED_PORTALS = "gui.networkedPortals";
         public static final String GUI_PORTAL_CREATED = "gui.portalCreated";

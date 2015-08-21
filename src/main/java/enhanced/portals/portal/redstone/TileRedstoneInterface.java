@@ -1,9 +1,17 @@
-package enhanced.portals.portal.frame;
-
-import io.netty.buffer.ByteBuf;
+package enhanced.portals.portal.redstone;
 
 import java.util.Random;
 
+import buildcraft.api.tools.IToolWrench;
+import enhanced.base.utilities.BlockPos;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.network.GuiHandler;
+import enhanced.portals.portal.GlyphElement;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.frame.TileFrame;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
@@ -12,12 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
-import enhanced.base.utilities.BlockPos;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.Reference.EPGuis;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.portal.GlyphElement;
 
 public class TileRedstoneInterface extends TileFrame {
     // Determines if this instance of a RS interface is Output or Input.

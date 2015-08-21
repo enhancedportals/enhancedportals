@@ -1,14 +1,14 @@
 package enhanced.portals.block;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
 import enhanced.base.block.BlockBase;
 import enhanced.base.utilities.ConnectedTexturesDetailed;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.portal.frame.BlockFrame;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockDecorBorderedQuartz extends BlockBase {
     ConnectedTexturesDetailed connectedTextures;

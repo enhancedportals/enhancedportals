@@ -2,17 +2,17 @@ package enhanced.portals.item;
 
 import java.util.List;
 
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
+import enhanced.portals.Reference.PortalFrames;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
-import enhanced.base.utilities.Localisation;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.Reference.EPMod;
-import enhanced.portals.Reference.Locale;
-import enhanced.portals.Reference.PortalFrames;
 
 public class ItemFrame extends ItemBlockWithMetadata {
     public ItemFrame(Block b) {

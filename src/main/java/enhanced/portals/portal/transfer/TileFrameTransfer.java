@@ -1,5 +1,6 @@
-package enhanced.portals.portal.frame;
+package enhanced.portals.portal.transfer;
 
+import enhanced.portals.portal.frame.TileFrame;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileFrameTransfer extends TileFrame {

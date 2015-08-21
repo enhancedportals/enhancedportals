@@ -2,9 +2,6 @@ package enhanced.portals.client.gui;
 
 import java.util.Random;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
 import enhanced.base.utilities.Localisation;
@@ -18,7 +15,10 @@ import enhanced.portals.inventory.ContainerDialingEditIdentifier;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiDialingEditIdentifier extends BaseGui {
     public static final int CONTAINER_SIZE = 135;

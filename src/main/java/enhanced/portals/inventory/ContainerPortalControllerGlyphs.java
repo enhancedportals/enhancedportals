@@ -1,10 +1,5 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.FMLCommonHandler;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
@@ -13,7 +8,12 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerPortalControllerGlyphs extends BaseContainer {
     TileController controller;

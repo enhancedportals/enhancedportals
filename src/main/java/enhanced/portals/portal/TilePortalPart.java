@@ -1,5 +1,14 @@
 package enhanced.portals.portal;
 
+import buildcraft.api.tools.IToolWrench;
+import enhanced.base.tile.TileBase;
+import enhanced.base.utilities.BlockPos;
+import enhanced.base.utilities.WorldUtilities;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.network.GuiHandler;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.frame.TileFrame;
+import enhanced.portals.portal.portal.TilePortal;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,15 +18,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
-import enhanced.base.tile.TileBase;
-import enhanced.base.utilities.BlockPos;
-import enhanced.base.utilities.WorldUtilities;
-import enhanced.portals.Reference.EPGuis;
-import enhanced.portals.network.GuiHandler;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TileFrame;
-import enhanced.portals.portal.portal.TilePortal;
 
 public abstract class TilePortalPart extends TileBase {
     public BlockPos portalController;

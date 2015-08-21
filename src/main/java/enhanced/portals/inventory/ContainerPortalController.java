@@ -1,18 +1,18 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiPortalController;
 import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ContainerPortalController extends BaseContainer {
     TileController controller;

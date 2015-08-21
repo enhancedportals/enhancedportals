@@ -1,15 +1,15 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.portal.GlyphElement;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerDialingAdd extends BaseContainer {
     TileDialingDevice dial;

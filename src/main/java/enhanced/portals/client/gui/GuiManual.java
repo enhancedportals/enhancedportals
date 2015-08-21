@@ -2,13 +2,13 @@ package enhanced.portals.client.gui;
 
 import java.util.HashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.manual.ManualParser;
 import enhanced.base.manual.PageManual;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.inventory.ContainerManual;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiManual extends BaseGui {
     public static final int CONTAINER_SIZE = 180, CONTAINER_WIDTH = 279;

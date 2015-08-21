@@ -1,8 +1,5 @@
 package enhanced.portals.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.ElementRedstoneFlux;
 import enhanced.base.network.packet.PacketGuiData;
@@ -11,7 +8,10 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferEnergy;
-import enhanced.portals.portal.frame.TileTransferEnergy;
+import enhanced.portals.portal.transfer.TileTransferEnergy;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiTransferEnergy extends BaseGui {
     public static final int CONTAINER_SIZE = 55;

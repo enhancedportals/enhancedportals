@@ -2,15 +2,14 @@ package enhanced.portals.client.gui.elements;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.client.gui.GuiManual;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class ElementManualCraftingGrid extends BaseElement {
     int offset = 7;

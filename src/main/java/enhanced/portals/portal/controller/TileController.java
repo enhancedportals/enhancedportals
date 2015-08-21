@@ -1,27 +1,8 @@
-package enhanced.portals.portal.frame;
+package enhanced.portals.portal.controller;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -58,7 +39,34 @@ import enhanced.portals.portal.PortalException;
 import enhanced.portals.portal.PortalTextureManager;
 import enhanced.portals.portal.PortalUtils;
 import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.frame.TileFrame;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import enhanced.portals.portal.network.TileNetworkInterface;
 import enhanced.portals.portal.portal.TilePortal;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import enhanced.portals.portal.transfer.TileTransferEnergy;
+import enhanced.portals.portal.transfer.TileTransferFluid;
+import enhanced.portals.portal.transfer.TileTransferItem;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
+import net.minecraftforge.common.util.ForgeDirection;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileController extends TileFrame implements IPeripheral, SimpleComponent, IEnergyHandler {
@@ -380,7 +388,7 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             int rand = EPRenderers.random.nextInt(10);
 
             if (entity instanceof EntityLivingBase) {
-                if (instability == 1) { // TODO: before-teleport instability effects
+                if (instability == 1) {
                     if (rand < 4) { // Level 1 @ 40%
                         PotionEffect blindness = new PotionEffect(Potion.blindness.id, 200, 1);
                         PotionEffect hunger = new PotionEffect(Potion.hunger.id, 200, 1);
@@ -619,9 +627,22 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
             ticket.getModData().setInteger("controllerX", xCoord);
             ticket.getModData().setInteger("controllerY", yCoord);
             ticket.getModData().setInteger("controllerZ", zCoord);
-            ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4));
+            
+            ArrayList<ChunkCoordIntPair> loadedChunks = new ArrayList<ChunkCoordIntPair>();
+            
+            ForgeChunkManager.forceChunk(ticket, getBlockPos().getChunk());
+            loadedChunks.add(getBlockPos().getChunk());
+            
+            for (BlockPos pos : portalFrames) {
+                if (!loadedChunks.contains(pos.getChunk())) {
+                    ForgeChunkManager.forceChunk(ticket, pos.getChunk());
+                    loadedChunks.add(pos.getChunk());
+                }
+            }
+            
+            EnhancedPortals.instance.getLogger().debug("Keeping " + loadedChunks.size() + " chunks loaded at " + getWorldPos());
         } else {
-            EnhancedPortals.instance.getLogger().warn("Could not get a ChunkLoading ticket for Portal at " + xCoord + ", " + yCoord + ", " + zCoord + " (Dimension: " + getWorldObj().provider.dimensionId + ") Things may not work as expected!"); 
+            EnhancedPortals.instance.getLogger().warn("Could not get a ChunkLoading ticket for Portal at " + getWorldPos() + " Things may not work as expected!"); 
         }
 
         chunkLoadTicket = ticket;
@@ -629,8 +650,8 @@ public class TileController extends TileFrame implements IPeripheral, SimpleComp
 
     public void releaseChunk() {
         if (chunkLoadTicket != null) {
-            ForgeChunkManager.unforceChunk(chunkLoadTicket, new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4));
             ForgeChunkManager.releaseTicket(chunkLoadTicket);
+            EnhancedPortals.instance.getLogger().debug("Released chunks loaded at " + getWorldPos());
         }
     }
 

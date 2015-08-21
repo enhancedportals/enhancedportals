@@ -2,18 +2,18 @@ package enhanced.portals.inventory;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.network.packet.PacketTextureData;
 import enhanced.portals.portal.GlyphElement;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerDialingDevice extends BaseContainer {
     TileDialingDevice dial;

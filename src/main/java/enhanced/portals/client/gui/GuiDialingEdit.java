@@ -2,10 +2,6 @@ package enhanced.portals.client.gui;
 
 import java.util.Arrays;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.input.Keyboard;
 
 import enhanced.base.network.packet.PacketGuiData;
@@ -19,7 +15,10 @@ import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiDialingEdit extends GuiDialingAdd {
     boolean receivedData = false;

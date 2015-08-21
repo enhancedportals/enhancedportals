@@ -2,18 +2,6 @@ package enhanced.portals.portal.portal;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,8 +16,20 @@ import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.client.PortalParticleFX;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.portal.EntityManager;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockPortal extends BlockContainer {
     IIcon texture;

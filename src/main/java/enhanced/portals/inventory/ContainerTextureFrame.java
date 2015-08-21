@@ -1,13 +1,13 @@
 package enhanced.portals.inventory;
 
+import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
+import enhanced.portals.client.gui.GuiTextureFrame;
+import enhanced.portals.portal.controller.TileController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import enhanced.base.client.gui.BaseGui;
-import enhanced.base.inventory.BaseContainer;
-import enhanced.portals.client.gui.GuiTextureFrame;
-import enhanced.portals.portal.frame.TileController;
 
 public class ContainerTextureFrame extends BaseContainer {
     protected TileController controller;

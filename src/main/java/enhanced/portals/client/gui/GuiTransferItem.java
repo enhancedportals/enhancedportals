@@ -1,9 +1,5 @@
 package enhanced.portals.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
@@ -13,7 +9,10 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerTransferItem;
-import enhanced.portals.portal.frame.TileTransferItem;
+import enhanced.portals.portal.transfer.TileTransferItem;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiTransferItem extends BaseGui {
     public static final int CONTAINER_SIZE = 47;

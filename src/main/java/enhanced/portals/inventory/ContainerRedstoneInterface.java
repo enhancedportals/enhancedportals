@@ -1,16 +1,16 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.base.network.packet.PacketGui;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.client.gui.GuiRedstoneInterface;
-import enhanced.portals.portal.frame.TileRedstoneInterface;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerRedstoneInterface extends BaseContainer {
     TileRedstoneInterface ri;

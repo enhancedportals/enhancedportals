@@ -2,20 +2,6 @@ package enhanced.portals.portal.frame;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
@@ -31,6 +17,29 @@ import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import enhanced.portals.portal.network.TileNetworkInterface;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import enhanced.portals.portal.transfer.TileFrameTransfer;
+import enhanced.portals.portal.transfer.TileTransferEnergy;
+import enhanced.portals.portal.transfer.TileTransferFluid;
+import enhanced.portals.portal.transfer.TileTransferItem;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = ComputerCraft.MOD_ID) })
 public class BlockFrame extends BlockContainerBase implements IPeripheralProvider {

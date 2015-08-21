@@ -1,8 +1,5 @@
 package enhanced.portals.client.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.network.packet.PacketGuiData;
 import enhanced.base.utilities.Localisation;
@@ -10,7 +7,10 @@ import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.inventory.ContainerRedstoneInterface;
-import enhanced.portals.portal.frame.TileRedstoneInterface;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiRedstoneInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;

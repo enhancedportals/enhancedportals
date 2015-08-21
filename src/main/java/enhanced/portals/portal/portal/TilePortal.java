@@ -1,16 +1,16 @@
 package enhanced.portals.portal.portal;
 
+import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.network.ProxyClient;
+import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.controller.TileController;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.portal.TilePortalPart;
-import enhanced.portals.portal.frame.TileController;
 
 public class TilePortal extends TilePortalPart {
     @Override

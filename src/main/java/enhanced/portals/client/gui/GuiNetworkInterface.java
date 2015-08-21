@@ -2,7 +2,6 @@ package enhanced.portals.client.gui;
 
 import java.util.Arrays;
 
-import net.minecraft.entity.player.EntityPlayer;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.utilities.Localisation;
 import enhanced.portals.EnhancedPortals;
@@ -12,7 +11,8 @@ import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.elements.ElementGlyphDisplay;
 import enhanced.portals.inventory.ContainerNetworkInterface;
 import enhanced.portals.network.packet.PacketRequestGui;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiNetworkInterface extends BaseGui {
     public static final int CONTAINER_SIZE = 68;

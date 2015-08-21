@@ -4,10 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.DimensionManager;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import enhanced.base.utilities.BlockPos;
@@ -16,6 +12,10 @@ import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.client.PortalRenderer;
 import enhanced.portals.portal.GlyphIdentifier;
 import enhanced.portals.portal.PortalTextureManager;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DimensionManager;
 
 public class ProxyClient extends ProxyCommon {
     public class ParticleSet {

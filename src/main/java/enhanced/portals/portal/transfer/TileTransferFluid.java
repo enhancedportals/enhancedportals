@@ -1,5 +1,19 @@
-package enhanced.portals.portal.frame;
+package enhanced.portals.portal.transfer;
 
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.InterfaceList;
+import cpw.mods.fml.common.Optional.Method;
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import enhanced.base.utilities.BlockPos;
+import enhanced.base.utilities.WorldUtilities;
+import enhanced.base.xmod.ComputerCraft;
+import enhanced.base.xmod.OpenComputers;
+import enhanced.portals.Reference.EPGuis;
+import enhanced.portals.network.GuiHandler;
+import enhanced.portals.portal.controller.TileController;
 import io.netty.buffer.ByteBuf;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -17,19 +31,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.common.Optional.Method;
-import dan200.computercraft.api.lua.ILuaContext;
-import dan200.computercraft.api.peripheral.IComputerAccess;
-import dan200.computercraft.api.peripheral.IPeripheral;
-import enhanced.base.utilities.BlockPos;
-import enhanced.base.utilities.WorldUtilities;
-import enhanced.base.xmod.ComputerCraft;
-import enhanced.base.xmod.OpenComputers;
-import enhanced.portals.Reference.EPGuis;
-import enhanced.portals.network.GuiHandler;
 
 @InterfaceList(value = { @Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = ComputerCraft.MOD_ID), @Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = OpenComputers.MOD_ID) })
 public class TileTransferFluid extends TileFrameTransfer implements IFluidHandler, IPeripheral, SimpleComponent {

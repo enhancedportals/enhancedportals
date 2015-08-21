@@ -1,9 +1,9 @@
 package enhanced.portals.network.packet;
 
+import enhanced.base.network.packet.PacketBase;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
-import enhanced.base.network.packet.PacketBase;
 
 public class PacketRerender extends PacketBase {
     int posX, posY, posZ;

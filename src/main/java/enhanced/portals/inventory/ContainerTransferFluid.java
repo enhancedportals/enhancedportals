@@ -1,15 +1,15 @@
 package enhanced.portals.inventory;
 
+import enhanced.base.client.gui.BaseGui;
+import enhanced.base.inventory.BaseContainer;
+import enhanced.portals.client.gui.GuiTransferFluid;
+import enhanced.portals.portal.transfer.TileTransferFluid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import enhanced.base.client.gui.BaseGui;
-import enhanced.base.inventory.BaseContainer;
-import enhanced.portals.client.gui.GuiTransferFluid;
-import enhanced.portals.portal.frame.TileTransferFluid;
 
 public class ContainerTransferFluid extends BaseContainer {
     TileTransferFluid fluid;

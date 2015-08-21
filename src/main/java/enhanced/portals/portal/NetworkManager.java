@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import net.minecraft.server.MinecraftServer;
-
 import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
@@ -22,7 +20,8 @@ import enhanced.base.utilities.BidiMap;
 import enhanced.base.utilities.WorldPos;
 import enhanced.base.utilities.WorldUtilities;
 import enhanced.portals.EnhancedPortals;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.server.MinecraftServer;
 
 public class NetworkManager {
     BidiMap<String, WorldPos> portalCoords;

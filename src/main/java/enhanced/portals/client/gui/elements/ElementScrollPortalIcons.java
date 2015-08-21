@@ -2,15 +2,14 @@ package enhanced.portals.client.gui.elements;
 
 import java.util.List;
 
-import net.minecraft.client.gui.Gui;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.portals.client.gui.GuiTexturePortal;
 import enhanced.portals.network.ProxyClient;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
 
 public class ElementScrollPortalIcons extends BaseElement {
     float currentScroll = 0f;

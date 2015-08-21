@@ -1,61 +1,61 @@
 package enhanced.portals.network;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import enhanced.base.tile.TileBase;
 import enhanced.portals.EnhancedPortals;
 import enhanced.portals.Reference.EPGuis;
-import enhanced.portals.client.gui.GuiDialingAdd;
-import enhanced.portals.client.gui.GuiDialingDevice;
-import enhanced.portals.client.gui.GuiDialingEdit;
-import enhanced.portals.client.gui.GuiDialingEditFrame;
-import enhanced.portals.client.gui.GuiDialingEditIdentifier;
-import enhanced.portals.client.gui.GuiDialingEditParticle;
-import enhanced.portals.client.gui.GuiDialingEditPortal;
-import enhanced.portals.client.gui.GuiDialingManual;
-import enhanced.portals.client.gui.GuiManual;
-import enhanced.portals.client.gui.GuiModuleManipulator;
-import enhanced.portals.client.gui.GuiNetworkInterface;
-import enhanced.portals.client.gui.GuiNetworkInterfaceGlyphs;
-import enhanced.portals.client.gui.GuiPortalController;
-import enhanced.portals.client.gui.GuiPortalControllerGlyphs;
-import enhanced.portals.client.gui.GuiRedstoneInterface;
 import enhanced.portals.client.gui.GuiTextureFrame;
 import enhanced.portals.client.gui.GuiTextureParticle;
 import enhanced.portals.client.gui.GuiTexturePortal;
-import enhanced.portals.client.gui.GuiTransferEnergy;
-import enhanced.portals.client.gui.GuiTransferFluid;
-import enhanced.portals.client.gui.GuiTransferItem;
-import enhanced.portals.inventory.ContainerDialingAdd;
-import enhanced.portals.inventory.ContainerDialingDevice;
-import enhanced.portals.inventory.ContainerDialingEdit;
-import enhanced.portals.inventory.ContainerDialingEditIdentifier;
-import enhanced.portals.inventory.ContainerDialingEditParticle;
-import enhanced.portals.inventory.ContainerDialingEditPortal;
-import enhanced.portals.inventory.ContainerDialingEditTexture;
-import enhanced.portals.inventory.ContainerDialingManual;
-import enhanced.portals.inventory.ContainerManual;
-import enhanced.portals.inventory.ContainerModuleManipulator;
-import enhanced.portals.inventory.ContainerNetworkInterface;
-import enhanced.portals.inventory.ContainerNetworkInterfaceGlyphs;
-import enhanced.portals.inventory.ContainerPortalController;
-import enhanced.portals.inventory.ContainerPortalControllerGlyphs;
-import enhanced.portals.inventory.ContainerRedstoneInterface;
 import enhanced.portals.inventory.ContainerTextureFrame;
 import enhanced.portals.inventory.ContainerTextureParticle;
 import enhanced.portals.inventory.ContainerTexturePortal;
-import enhanced.portals.inventory.ContainerTransferEnergy;
-import enhanced.portals.inventory.ContainerTransferFluid;
-import enhanced.portals.inventory.ContainerTransferItem;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TileDialingDevice;
-import enhanced.portals.portal.frame.TilePortalManipulator;
-import enhanced.portals.portal.frame.TileRedstoneInterface;
-import enhanced.portals.portal.frame.TileTransferEnergy;
-import enhanced.portals.portal.frame.TileTransferFluid;
-import enhanced.portals.portal.frame.TileTransferItem;
+import enhanced.portals.item.manual.ContainerManual;
+import enhanced.portals.item.manual.GuiManual;
+import enhanced.portals.portal.controller.ContainerPortalController;
+import enhanced.portals.portal.controller.ContainerPortalControllerGlyphs;
+import enhanced.portals.portal.controller.GuiPortalController;
+import enhanced.portals.portal.controller.GuiPortalControllerGlyphs;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.ContainerDialingAdd;
+import enhanced.portals.portal.dial.ContainerDialingDevice;
+import enhanced.portals.portal.dial.ContainerDialingEdit;
+import enhanced.portals.portal.dial.ContainerDialingEditIdentifier;
+import enhanced.portals.portal.dial.ContainerDialingEditParticle;
+import enhanced.portals.portal.dial.ContainerDialingEditPortal;
+import enhanced.portals.portal.dial.ContainerDialingEditTexture;
+import enhanced.portals.portal.dial.ContainerDialingManual;
+import enhanced.portals.portal.dial.GuiDialingAdd;
+import enhanced.portals.portal.dial.GuiDialingDevice;
+import enhanced.portals.portal.dial.GuiDialingEdit;
+import enhanced.portals.portal.dial.GuiDialingEditFrame;
+import enhanced.portals.portal.dial.GuiDialingEditIdentifier;
+import enhanced.portals.portal.dial.GuiDialingEditParticle;
+import enhanced.portals.portal.dial.GuiDialingEditPortal;
+import enhanced.portals.portal.dial.GuiDialingManual;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.manipulator.ContainerPortalManipulator;
+import enhanced.portals.portal.manipulator.GuiPortalManipulator;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import enhanced.portals.portal.network.ContainerNetworkInterface;
+import enhanced.portals.portal.network.ContainerNetworkInterfaceGlyphs;
+import enhanced.portals.portal.network.GuiNetworkInterface;
+import enhanced.portals.portal.network.GuiNetworkInterfaceGlyphs;
+import enhanced.portals.portal.redstone.ContainerRedstoneInterface;
+import enhanced.portals.portal.redstone.GuiRedstoneInterface;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import enhanced.portals.portal.transfer.ContainerTransferEnergy;
+import enhanced.portals.portal.transfer.ContainerTransferFluid;
+import enhanced.portals.portal.transfer.ContainerTransferItem;
+import enhanced.portals.portal.transfer.GuiTransferEnergy;
+import enhanced.portals.portal.transfer.GuiTransferFluid;
+import enhanced.portals.portal.transfer.GuiTransferItem;
+import enhanced.portals.portal.transfer.TileTransferEnergy;
+import enhanced.portals.portal.transfer.TileTransferFluid;
+import enhanced.portals.portal.transfer.TileTransferItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
     public static void openGui(EntityPlayer player, TileEntity tile, int gui) {
@@ -85,7 +85,7 @@ public class GuiHandler implements IGuiHandler {
         else if (ID == EPGuis.NETWORK_INTERFACE_B)
             return new GuiNetworkInterfaceGlyphs((TileController) tile, player);
         else if (ID == EPGuis.MODULE_MANIPULATOR)
-            return new GuiModuleManipulator((TilePortalManipulator) tile, player);
+            return new GuiPortalManipulator((TilePortalManipulator) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_A)
             return new GuiDialingDevice((TileDialingDevice) tile, player);
         else if (ID == EPGuis.DIALING_DEVICE_B)
@@ -147,7 +147,7 @@ public class GuiHandler implements IGuiHandler {
         else if (ID == EPGuis.NETWORK_INTERFACE_B)
             return new ContainerNetworkInterfaceGlyphs((TileController) tile, player.inventory);
         else if (ID == EPGuis.MODULE_MANIPULATOR)
-            return new ContainerModuleManipulator((TilePortalManipulator) tile, player.inventory);
+            return new ContainerPortalManipulator((TilePortalManipulator) tile, player.inventory);
         //else if (ID == EPGuis.DIMENSIONAL_BRIDGE_STABILIZER)
         //    return new ContainerDimensionalBridgeStabilizer((TileStabilizerMain) tile, player.inventory);
         else if (ID == EPGuis.DIALING_DEVICE_A)

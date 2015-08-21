@@ -2,8 +2,6 @@ package enhanced.portals.client.gui.elements;
 
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -13,7 +11,8 @@ import enhanced.portals.Reference.EPMod;
 import enhanced.portals.Reference.Locale;
 import enhanced.portals.client.gui.GuiDialingDevice;
 import enhanced.portals.portal.GlyphElement;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.client.gui.GuiScreen;
 
 public class ElementScrollDiallingDevice extends BaseElement {
     TileDialingDevice dial;

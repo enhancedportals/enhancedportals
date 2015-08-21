@@ -3,9 +3,6 @@ package enhanced.portals.client.gui.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.Gui;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
@@ -13,6 +10,8 @@ import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.core.Reference.ECMod;
 import enhanced.portals.Reference.EPMod;
 import enhanced.portals.portal.GlyphIdentifier;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
 
 public class ElementGlyphSelector extends BaseElement {
     public static final ResourceLocation glyphs = new ResourceLocation(EPMod.ID, "textures/gui/glyphs.png");

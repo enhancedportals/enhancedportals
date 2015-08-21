@@ -1,16 +1,16 @@
 package enhanced.portals.network.packet;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import enhanced.base.network.packet.PacketBase;
+import enhanced.portals.network.ProxyClient;
+import enhanced.portals.portal.GlyphIdentifier;
+import enhanced.portals.portal.PortalTextureManager;
+import enhanced.portals.portal.dial.GuiDialingEdit;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import enhanced.base.network.packet.PacketBase;
-import enhanced.portals.client.gui.GuiDialingEdit;
-import enhanced.portals.network.ProxyClient;
-import enhanced.portals.portal.GlyphIdentifier;
-import enhanced.portals.portal.PortalTextureManager;
 
 public class PacketTextureData extends PacketBase {
     PortalTextureManager ptm;

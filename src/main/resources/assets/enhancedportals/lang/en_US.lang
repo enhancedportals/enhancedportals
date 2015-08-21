@@ -4,39 +4,26 @@ tile.frame.controller.name=Portal Controller
 tile.frame.redstone.name=Redstone Interface
 tile.frame.network_interface.name=Network Interface
 tile.frame.dial_device.name=Dialling Device
-tile.frame.program_interface.name=Programmable Interface
+tile.frame.program_interface.name=[ Unused ]
 tile.frame.upgrade.name=Portal Manipulator
 tile.frame.fluid.name=Fluid Transportation Module
 tile.frame.item.name=Item Transportation Module
 tile.frame.energy.name=Energy Transportation Module
 tile.portal.name=Portal
-tile.dbs.name=Dimensional Bridge Stabilizer
-tile.dbs_empty.name=Dimensional Bridge Stabilizer (Empty)
-tile.decor_dbs.name=Ender-Infused Metal
-tile.decor_frame.name=Bordered Quartz
-
-# Block Misc
 enhancedportals.block.portalFramePart=Portal Frame Part
-enhancedportals.block.multiblockStructure=Multiblock Structure
-enhancedportals.block.dbsSize=2x3x2 to 2x3x256
-enhancedportals.block.decorativeBlock=Decorative Block
 
 # Items
-item.wrench.name=Wrench
-item.nanobrush.name=Nanobrush
 item.glasses.name=Glasses
-item.location_card.name=Location Card
 item.blank_portal_module.name=Blank Portal Module
 item.blank_upgrade.name=Blank Upgrade
 item.manual.name=Enhanced Portals Manual
 enhancedportals.item.manual.desc=Wormhole Tunnelling
-item.diamondNugget.name=Diamond Nugget
 
 # In-place upgrades
 item.upgrade.redstone.name=Redstone Interface Upgrade
 item.upgrade.network_interface.name=Network Interface Upgrade
 item.upgrade.dial_device.name=Dialling Device Upgrade
-item.upgrade.program_interface.name=Programmable Interface Upgrade
+item.upgrade.program_interface.name=[ Unused ]
 item.upgrade.upgrade.name=Portal Manipulator Upgrade
 item.upgrade.fluid.name=Fluid Transportation Upgrade
 item.upgrade.item.name=Item Transportation Upgrade
@@ -44,21 +31,13 @@ item.upgrade.energy.name=Energy Transportation Upgrade
 
 # Upgrades
 item.portal_module.0.name=Particle Destroyer
-item.portal_module.0.desc=Stops particles from getting created
 item.portal_module.1.name=Rainbow Particles
-item.portal_module.1.desc=Every particle will have a random colour
 item.portal_module.2.name=Silencer
-item.portal_module.2.desc=Silences the portal
 item.portal_module.3.name=Momentum
-item.portal_module.3.desc=Entities keep their momentum
 item.portal_module.4.name=Cloaking
-item.portal_module.4.desc=Makes the portal completely invisible
 item.portal_module.5.name=Particle Shader
-item.portal_module.5.desc=Particles randomly spawn lighter or darker
 item.portal_module.6.name=Facing
-item.portal_module.6.desc=Direction to face on teleport
 item.portal_module.7.name=Featherfall
-item.portal_module.7.desc=Negates fall damage
 enhancedportals.gui.facing.0=North
 enhancedportals.gui.facing.1=East
 enhancedportals.gui.facing.2=South
@@ -71,26 +50,14 @@ potion.featherfall=Featherfall
 # Creative Tab
 itemGroup.enhancedportals=Enhanced Portals 3
 
-# GUI DBS
-enhancedportals.gui.dimensionalBridgeStabilizer=Dimensional Bridge Stabilizer
-enhancedportals.gui.information=Information
-enhancedportals.gui.activePortals=Active Portals
-enhancedportals.gui.instability=Instability
-
 # GUI Portal Controller
 enhancedportals.gui.portalController=Portal Controller
 enhancedportals.gui.uniqueIdentifier=Unique Identifier
-enhancedportals.gui.public=Public
-enhancedportals.gui.private=Private
 enhancedportals.gui.noUidSet=No UID set
-
-# Private/Public Tip Tab
-enhancedportals.tab.privatePublic=Private or Public?
-enhancedportals.tab.privatePublic.info=<6>Public:<0> Allow all connections<NL><6>Private:<0> Only allow connections from the same DBS
-
-# Glyphs Tab
-enhancedportals.tab.glyphs=Glyphs
-enhancedportals.tab.glyphs.info=// TODO
+enhancedportals.gui.forcedInstability.0=No Instability
+enhancedportals.gui.forcedInstability.1=Low Instability
+enhancedportals.gui.forcedInstability.2=Medium Instability
+enhancedportals.gui.forcedInstability.3=High Instability
 
 # GUI Dialler
 enhancedportals.gui.dialDevice=Dialling Device
@@ -103,10 +70,6 @@ enhancedportals.gui.identifierName=Identifier Name
 enhancedportals.gui.manualEntry=Manual Entry
 enhancedportals.gui.delete=Delete
 enhancedportals.gui.edit=Edit
-
-# GUI Dial Tab
-enhancedportals.tab.dialling=Dialling Device
-enhancedportals.tab.dialling.info=// TODO
 
 # GUI Texture
 enhancedportals.gui.customIcon=Custom Icon
@@ -142,11 +105,6 @@ enhancedportals.gui.networkIdentifier=Network Identifier
 enhancedportals.gui.networkInformation=Network Information
 enhancedportals.gui.networkedPortals=Networked Portals
 enhancedportals.gui.notSet=Not Set
-
-# GUI Programmable Interface
-enhancedportals.gui.programmableInterface=Programmable Interface
-enhancedportals.gui.errorLog=Error Log
-enhancedportals.gui.compile=Compile
 
 # GUI Redstone
 enhancedportals.gui.redstoneInterface=Redstone Interface
@@ -200,23 +158,16 @@ enhancedportals.gui.receiving=Receiving
 # Errors
 enhancedportals.error=[Error]
 enhancedportals.error.noUidSet=%s You must set a Unique Identifier before doing this
-enhancedportals.error.voidLinkCard=%s This card no longer links to a valid Dimensional Bridge Stabilizer
 enhancedportals.error.receivingPortalNotInitialized=%s The receiving portal has not been initialized
 enhancedportals.error.sendingPortalNotInitialized=%s The sending portal has not been initialized
-enhancedportals.error.stabilizerNotFound=%s The DBS could not be found. Insert a new valid Location Card to continue
-enhancedportals.error.receivingPortalNoDialler=%s You cannot dial a portal that does not have a Dialling Device
-enhancedportals.error.sendingPortalNoDialler=%s You cannot dial from a portal that does not have a Dialling Device
 enhancedportals.error.uniqueIdentifierNotSet=%s You cannot dial without setting a unique identifier
 enhancedportals.error.networkIdentifierNotSet=%s You cannot dial without setting a network identifier
 enhancedportals.error.dialDeviceNotFound=%s You cannot dial without a Dialling Device
 enhancedportals.error.diallingPortalAlreadyActive=%s You cannot dial from a portal that already has an active connection
 enhancedportals.error.receivingPortalAlreadyActive=%s You cannot dial to a portal that is already active
-enhancedportals.error.notEnoughPowerToStart=%s There is not enough power in the DBS to create a connection
-enhancedportals.error.maxedConnectionLimit=%s The DBS has too many active connections
 enhancedportals.error.cannotDialDiallingPortal=%s You cannot dial the same portal you're dialling from
 enhancedportals.error.diallingPortalNotFound=%s Failed to locate the portal that you are dialling from
 enhancedportals.error.receivingPortalNotFound=%s Failed to locate the receiving portal
-enhancedportals.error.notOnSameStabilizer=%s The portals are not connected to the same DBS
 enhancedportals.error.sendingPortalFailedToCreatePortal=%s The sending Portal Controller failed to create a portal
 enhancedportals.error.receivingPortalFailedToCreatePortal=%s The receiving Portal Controller failed to create a portal
 enhancedportals.error.noPortalWithThatIdentifierReceiving=%s Could not find an exit portal with that UID
@@ -233,7 +184,7 @@ enhancedportals.error.couldNotCreatePortalHere=%s A portal could not be created 
 # Success
 enhancedportals.success=[Success]
 enhancedportals.success.create=%s Portal initialized
-enhancedportals.success.reconfigure=%s Portal reconfigured
+enhancedportals.success.portalConfigure=%s Portal configured
 
 enhancedportals.chat.updateMessage=There is an update available for Enhanced Portals (%1$s)
 
@@ -242,7 +193,6 @@ enhancedportals.chat.updateMessage=There is an update available for Enhanced Por
 ############
 
 enhancedportals.manual.decorBorderedQuartz.subtitle=Decorative
-enhancedportals.manual.dbsEmpty.title=Dimensional Bridge Stabilizer (Empty)
 enhancedportals.manual.upgrade0.subtitle=Portal Upgrade
 enhancedportals.manual.module0.subtitle=Portal Module
 enhancedportals.manual.frame0.subtitle=Portal Component

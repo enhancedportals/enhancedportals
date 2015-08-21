@@ -1,18 +1,7 @@
 package enhanced.portals.portal.frame;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
 import cofh.api.block.IDismantleable;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -23,6 +12,17 @@ import enhanced.portals.Reference.EPItems;
 import enhanced.portals.Reference.PortalFrames;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.controller.TileController;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 public class TileFrame extends TilePortalPart implements IDismantleable {
     protected boolean wearingGoggles = TileFrame.isWearingGoggles();

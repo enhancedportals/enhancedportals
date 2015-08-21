@@ -2,6 +2,12 @@ package enhanced.portals.item;
 
 import java.util.List;
 
+import enhanced.base.item.ItemBase;
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.Locale;
+import enhanced.portals.Reference.PortalModules;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,14 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import enhanced.base.item.ItemBase;
-import enhanced.base.utilities.Localisation;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.Reference.EPMod;
-import enhanced.portals.Reference.Locale;
-import enhanced.portals.Reference.PortalModules;
 
 public class ItemPortalModule extends ItemBase {
     IIcon[] overlayIcons = new IIcon[PortalModules.count()];
@@ -42,8 +41,6 @@ public class ItemPortalModule extends ItemBase {
 
             list.add(EnumChatFormatting.GRAY + Localisation.get(EPMod.ID, Locale.GUI_FACING_X + i));
         }
-
-        list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal(getUnlocalizedNameInefficiently(stack) + ".desc"));
     }
 
     @Override

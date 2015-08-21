@@ -3,6 +3,13 @@ package enhanced.portals.portal;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import enhanced.base.utilities.BlockPos;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.Locale;
+import enhanced.portals.Reference.PortalModules;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityBoat;
@@ -23,13 +30,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.FMLCommonHandler;
-import enhanced.base.utilities.BlockPos;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.Reference.Locale;
-import enhanced.portals.Reference.PortalModules;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TilePortalManipulator;
 
 public class EntityManager {
     static final int PLAYER_COOLDOWN_RATE = 10;
@@ -168,12 +168,10 @@ public class EntityManager {
         if (exitLoc == null)
             throw new PortalException(Locale.CHAT_ERROR_FAILED_TO_TRANSFER);
         
-        if (entity instanceof EntityPlayer) {
-            teleportPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
-        } else
-            teleportNonPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
-
-        return null;
+        if (entity instanceof EntityPlayer)
+            return teleportPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
+        
+        return teleportNonPlayerEntity(entity, start, end, exitManip != null && exitManip.hasModule(PortalModules.MOMENTUM), exitLoc, getRotation(entity, end, exitLoc));
     }
 
     static BlockPos getExitLocation(Entity entity, TileController exit) throws PortalException {
@@ -224,7 +222,6 @@ public class EntityManager {
             endWorld.resetUpdateEntityTick();
             player.worldObj.theProfiler.endSection();
 
-            // Instate any potion effects the player had when teleported.
             for (Iterator<PotionEffect> potion = player.getActivePotionEffects().iterator(); potion.hasNext();)
                 player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potion.next()));
 
@@ -244,9 +241,6 @@ public class EntityManager {
     static Entity teleportNonPlayerEntity(Entity entity, TileController start, TileController end, boolean keepMomentum, BlockPos exitLoc, float yaw) {
         boolean dimensionalTransport = start.getWorldObj().provider.dimensionId != end.getWorldObj().provider.dimensionId;
         WorldServer theWorld = (WorldServer) (dimensionalTransport ? end.getWorldObj() : start.getWorldObj());
-        //double exitX = exitLoc.getX() + (end.portalType == 1 || end.portalType == 3 ? (entity.width / 2) : 0);
-        //double exitY = exitLoc.getY();
-        //double exitZ = exitLoc.getZ() + (end.portalType == 2 || end.portalType == 3 ? (entity.width / 2) : 0);
         double exitX = exitLoc.getX() + (end.portalType == 1 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
         double exitY = exitLoc.getY();
         double exitZ = exitLoc.getZ() + (end.portalType == 2 || end.portalType == 3 ? entity.width < 1 ? 0.5 : entity.width / 2 : 0.5);
@@ -291,18 +285,13 @@ public class EntityManager {
         for (int k1 = i; k1 < j; ++k1) {
             for (int l1 = k; l1 < l; ++l1) {
                 for (int i2 = i1; i2 < j1; ++i2) {
-                    System.out.println(k1 + ", " + l1 + ", " + i2 + " :: " + world.getBlock(k1, l1, i2));
-                    
                     if (!world.isAirBlock(k1, l1, i2) && world.getBlock(k1, l1, i2) != EPBlocks.portal) {
-                        System.out.println("NO");
                         return false;
                     }
                 }
             }
         }
         
-        System.out.println("YES");
-
         return true;
     }
 }

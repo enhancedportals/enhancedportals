@@ -1,9 +1,9 @@
 package enhanced.portals.inventory;
 
+import enhanced.portals.Reference.EPItems;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import enhanced.portals.Reference.EPItems;
 
 public class SlotPortalModule extends Slot {
     public SlotPortalModule(IInventory par1iInventory, int par2, int par3, int par4) {

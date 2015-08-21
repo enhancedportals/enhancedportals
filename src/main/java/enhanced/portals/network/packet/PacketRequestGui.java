@@ -1,12 +1,12 @@
 package enhanced.portals.network.packet;
 
+import enhanced.base.network.packet.PacketBase;
+import enhanced.base.tile.TileBase;
+import enhanced.portals.EnhancedPortals;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import enhanced.base.network.packet.PacketBase;
-import enhanced.base.tile.TileBase;
-import enhanced.portals.EnhancedPortals;
 
 public class PacketRequestGui extends PacketBase {
     int x, y, z, g;

@@ -2,15 +2,15 @@ package enhanced.portals.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.EPRenderers;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.Reference.EPMod;
-import enhanced.portals.Reference.EPRenderers;
 
 public class ItemGlasses extends ItemArmor {
     IIcon overlay;

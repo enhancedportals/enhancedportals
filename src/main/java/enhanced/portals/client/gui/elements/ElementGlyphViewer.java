@@ -2,14 +2,13 @@ package enhanced.portals.client.gui.elements;
 
 import java.util.List;
 
-import net.minecraft.client.gui.Gui;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.elements.BaseElement;
 import enhanced.core.Reference.ECMod;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.util.ResourceLocation;
 
 public class ElementGlyphViewer extends BaseElement {
     ElementGlyphSelector selector;

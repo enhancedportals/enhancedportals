@@ -2,6 +2,22 @@ package enhanced.portals.item;
 
 import java.util.List;
 
+import enhanced.base.item.ItemBase;
+import enhanced.base.utilities.Localisation;
+import enhanced.portals.EnhancedPortals;
+import enhanced.portals.Reference.EPBlocks;
+import enhanced.portals.Reference.EPMod;
+import enhanced.portals.Reference.PortalFrames;
+import enhanced.portals.portal.TilePortalPart;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.frame.TileFrame;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import enhanced.portals.portal.network.TileNetworkInterface;
+import enhanced.portals.portal.redstone.TileRedstoneInterface;
+import enhanced.portals.portal.transfer.TileTransferEnergy;
+import enhanced.portals.portal.transfer.TileTransferFluid;
+import enhanced.portals.portal.transfer.TileTransferItem;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,22 +26,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import enhanced.base.item.ItemBase;
-import enhanced.base.utilities.Localisation;
-import enhanced.portals.EnhancedPortals;
-import enhanced.portals.Reference.EPBlocks;
-import enhanced.portals.Reference.EPMod;
-import enhanced.portals.Reference.PortalFrames;
-import enhanced.portals.portal.TilePortalPart;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TileDialingDevice;
-import enhanced.portals.portal.frame.TileFrame;
-import enhanced.portals.portal.frame.TileNetworkInterface;
-import enhanced.portals.portal.frame.TilePortalManipulator;
-import enhanced.portals.portal.frame.TileRedstoneInterface;
-import enhanced.portals.portal.frame.TileTransferEnergy;
-import enhanced.portals.portal.frame.TileTransferFluid;
-import enhanced.portals.portal.frame.TileTransferItem;
 
 public class ItemUpgrade extends ItemBase {
     public ItemUpgrade(String n) {

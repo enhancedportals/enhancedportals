@@ -1,16 +1,17 @@
-package enhanced.portals.portal.frame;
+package enhanced.portals.portal.manipulator;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import buildcraft.api.tools.IToolWrench;
 import enhanced.portals.Reference.EPGuis;
 import enhanced.portals.Reference.EPItems;
 import enhanced.portals.Reference.PortalModules;
 import enhanced.portals.item.ItemPortalModule;
 import enhanced.portals.network.GuiHandler;
+import enhanced.portals.portal.frame.TileFrame;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class TilePortalManipulator extends TileFrame implements IInventory {
     ItemStack[] inventory = new ItemStack[9];

@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import enhanced.base.utilities.BlockPos;
 import enhanced.base.utilities.WorldUtilities;
 import enhanced.portals.Reference.Locale;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TileDialingDevice;
-import enhanced.portals.portal.frame.TileNetworkInterface;
-import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import enhanced.portals.portal.network.TileNetworkInterface;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class PortalUtils {
     static final int MAXIMUM_CHANCES = 40;

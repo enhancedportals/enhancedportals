@@ -1,10 +1,5 @@
 package enhanced.portals.client.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.client.gui.tabs.TabTip;
 import enhanced.base.network.packet.PacketGuiData;
@@ -17,8 +12,13 @@ import enhanced.portals.client.gui.elements.ElementScrollDiallingDevice;
 import enhanced.portals.inventory.ContainerDialingDevice;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
-import enhanced.portals.portal.frame.TileController;
-import enhanced.portals.portal.frame.TileDialingDevice;
+import enhanced.portals.portal.controller.TileController;
+import enhanced.portals.portal.dial.TileDialingDevice;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiDialingDevice extends BaseGui {
     public static final int CONTAINER_SIZE = 175, CONTAINER_WIDTH = 256;

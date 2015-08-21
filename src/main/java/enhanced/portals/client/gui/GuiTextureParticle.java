@@ -2,12 +2,6 @@ package enhanced.portals.client.gui;
 
 import java.awt.Color;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import enhanced.base.client.gui.BaseGui;
@@ -27,7 +21,12 @@ import enhanced.portals.inventory.ContainerTextureParticle;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.packet.PacketRequestGui;
 import enhanced.portals.portal.PortalTextureManager;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiTextureParticle extends BaseGui {
     public static final int CONTAINER_SIZE = 92, CONTAINER_WIDTH = 190;

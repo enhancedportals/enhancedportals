@@ -1,12 +1,12 @@
 package enhanced.portals.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import enhanced.base.client.gui.BaseGui;
 import enhanced.base.inventory.BaseContainer;
 import enhanced.portals.client.gui.GuiModuleManipulator;
-import enhanced.portals.portal.frame.TilePortalManipulator;
+import enhanced.portals.portal.manipulator.TilePortalManipulator;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerModuleManipulator extends BaseContainer {
     TilePortalManipulator module;

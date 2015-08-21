@@ -2,13 +2,13 @@ package enhanced.portals.client;
 
 import java.awt.Color;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.world.World;
 import enhanced.portals.Reference.EPRenderers;
 import enhanced.portals.network.ProxyClient;
 import enhanced.portals.network.ProxyClient.ParticleSet;
-import enhanced.portals.portal.frame.TileController;
+import enhanced.portals.portal.controller.TileController;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.world.World;
 
 public class PortalParticleFX extends EntityFX {
     private float portalParticleScale;
